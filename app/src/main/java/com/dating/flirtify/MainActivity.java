@@ -1,12 +1,9 @@
 package com.dating.flirtify;
 
-import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextPaint;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -35,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 //                Shader.TileMode.CLAMP
 //        );
 //
-        TextView tvAppName = findViewById(R.id.textView);
+        TextView tvAppName = findViewById(R.id.tvAppName);
 //        tvAppName.getPaint().setShader(textShader);
 
         setColorGradient(tvAppName, getResources().getColor(R.color.gradient_top), getResources().getColor(R.color.gradient_center), getResources().getColor(R.color.gradient_bottom));
