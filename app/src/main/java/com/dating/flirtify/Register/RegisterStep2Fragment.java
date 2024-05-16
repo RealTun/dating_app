@@ -48,9 +48,10 @@ public class RegisterStep2Fragment extends Fragment {
 
         tvPhoneNumber.setText(phoneNumber);
 
-        addTextWatcher(etNum1, etNum2);
-        addTextWatcher(etNum2, etNum3);
-        addTextWatcher(etNum3, etNum4);
+        addTextWatcher(null, etNum1, etNum2); // Không có previousEditText cho etNum1
+        addTextWatcher(etNum1, etNum2, etNum3);
+        addTextWatcher(etNum2, etNum3, etNum4);
+        addTextWatcher(etNum3, etNum4, null); // Không có nextEditText cho etNum4
 
         startCountdown(tvCountdownTime);
 
@@ -84,15 +85,19 @@ public class RegisterStep2Fragment extends Fragment {
         return view;
     }
 
-    public void addTextWatcher(final EditText currentEditText, final EditText nextEditText) {
+    public void addTextWatcher(final EditText previousEditText, final EditText currentEditText, final EditText nextEditText) {
         currentEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
                 String value = currentEditText.getText().toString();
                 if (value.length() == 0) {
-                    currentEditText.requestFocus();
+                    if (previousEditText != null) {
+                        previousEditText.requestFocus();
+                    }
                 } else if (value.length() == 1) {
-                    nextEditText.requestFocus();
+                    if (nextEditText != null){
+                        nextEditText.requestFocus();
+                    }
                 } else {
                     currentEditText.setText(value.substring(0, 1));
                     currentEditText.setSelection(1);

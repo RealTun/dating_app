@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
+        android:fontFamily="@font/montserrat_bold"
         android:text="@string/app_name"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -23,15 +24,19 @@
         android:id="@+id/nextButton"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/config_button"
+        android:fontFamily="@font/montserrat_semi_bold"
         android:text="Tiếp tục"
         android:textColor="@color/white"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewPager2" />
+        app:layout_constraintTop_toBottomOf="@+id/viewPager2"
+        app:layout_constraintVertical_bias="0.883" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager2"

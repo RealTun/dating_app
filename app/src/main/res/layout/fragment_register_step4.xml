@@ -6,13 +6,67 @@
     android:layout_height="match_parent"
     tools:context=".Register.RegisterStep4Fragment">
 
+    <EditText
+        android:id="@+id/etNumberPhone"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:fontFamily="@font/montserrat_medium"
+        android:hint="Họ tên"
+        android:inputType="text"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        tools:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tvCountdownTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="Thông tin cơ bản"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="Nhập họ tên, giới tính và tuổi của bạn"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCountdownTime" />
+
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="150dp"
+        android:layout_width="350dp"
         android:layout_height="10dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="20dp"
         android:src="@drawable/register_step4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/gender_spinner"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etNumberPhone" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
