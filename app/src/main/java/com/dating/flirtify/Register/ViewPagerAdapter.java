@@ -33,6 +33,9 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
             case 3:
                 fragment = new RegisterStep4Fragment();
                 break;
+            case 4:
+                fragment = new RegisterStep5Fragment();
+                break;
             default:
                 fragment = new RegisterStep1Fragment();
                 break;
@@ -43,7 +46,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 4; // Số lượng các trang
+        return 5; // Số lượng các trang
     }
 
     public Fragment getFragment(int position) {

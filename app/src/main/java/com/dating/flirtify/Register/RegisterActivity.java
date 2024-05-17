@@ -74,6 +74,9 @@ public class RegisterActivity extends AppCompatActivity {
                         viewPager.setCurrentItem(currentItem + 1);
                         break;
                     case 3:
+                        viewPager.setCurrentItem(currentItem + 1);
+                        break;
+                    case 4:
                         break;
 
 
