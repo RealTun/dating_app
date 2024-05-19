@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="1"
+                android:centerColor="#E64B77"
+                android:endColor="#EE8585"
+                android:startColor="#E32F70"
+                />
+            <corners android:radius="30dp" /> <!-- Độ bo tròn góc -->
+            <stroke
+                android:width="2dp"
+                android:color="#0000" /> <!-- Độ dày và màu viền -->
+        </shape>
+    </item>
+
+</layer-list>

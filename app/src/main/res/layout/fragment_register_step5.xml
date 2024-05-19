@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Register.RegisterStep5Fragment" >
+    tools:context=".Register.RegisterStep5Fragment">
 
     <ImageView
         android:id="@+id/imageView"
@@ -20,9 +20,9 @@
         android:id="@+id/tvCountdownTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="30dp"
         android:fontFamily="@font/montserrat_medium"
-        android:text="Thông tin cơ bản"
+        android:text="Ảnh của bạn"
         android:textColor="@color/black"
         android:textSize="25sp"
         android:textStyle="bold"
@@ -36,10 +36,121 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/montserrat_medium"
-        android:text="Nhập họ tên, giới tính và tuổi của bạn"
+        android:text="Thêm ảnh hiện có từ thư viện"
         android:textAlignment="center"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvCountdownTime" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="300dp"
+        android:layout_height="500dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/imageView1"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:background="@drawable/image_border"
+            android:scaleType="centerCrop"
+            android:src="@drawable/icon_camera_gradient"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_border_color="#0000"
+            app:riv_border_width="1dip"
+            app:riv_corner_radius="20dp"
+            app:riv_mutate_background="true"
+            app:riv_oval="false"
+            app:riv_tile_mode="clamp" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/imageView2"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:background="@drawable/image_border"
+            android:scaleType="centerCrop"
+            android:src="@drawable/icon_camera"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_border_color="#0000"
+            app:riv_border_width="1dip"
+            app:riv_corner_radius="20dp"
+            app:riv_mutate_background="true"
+            app:riv_oval="false"
+            app:riv_tile_mode="clamp" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/imageView3"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/image_border"
+            android:scaleType="centerCrop"
+            android:src="@drawable/icon_camera"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView1"
+            app:riv_border_color="#0000"
+            app:riv_border_width="1dip"
+            app:riv_corner_radius="20dp"
+            app:riv_mutate_background="true"
+            app:riv_oval="false"
+            app:riv_tile_mode="clamp" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/imageView4"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/image_border"
+            android:scaleType="centerCrop"
+            android:src="@drawable/icon_camera"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2"
+            app:riv_border_color="#0000"
+            app:riv_border_width="1dip"
+            app:riv_corner_radius="20dp"
+            app:riv_mutate_background="true"
+            app:riv_oval="false"
+            app:riv_tile_mode="clamp" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/imageView5"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/image_border"
+            android:src="@drawable/icon_camera"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView3"
+            app:riv_border_color="#0000"
+            app:riv_border_width="1dip"
+            app:riv_corner_radius="20dp"
+            app:riv_mutate_background="true"
+            app:riv_oval="false"
+            app:riv_tile_mode="clamp" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/imageView6"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/image_border"
+            android:scaleType="centerCrop"
+            android:src="@drawable/icon_camera"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView4"
+            app:riv_border_color="#0000"
+            app:riv_border_width="1dip"
+            app:riv_corner_radius="20dp"
+            app:riv_mutate_background="true"
+            app:riv_oval="false"
+            app:riv_tile_mode="clamp" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

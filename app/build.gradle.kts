@@ -32,12 +32,16 @@ android {
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation("com.makeramen:roundedimageview:2.3.0")
+
+    // Unit Testing
     testImplementation(libs.junit)
+
+    // Android Instrumentation Testing
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }
