@@ -36,9 +36,6 @@ public class MainActivity extends AppCompatActivity {
 //        tvAppName.getPaint().setShader(textShader);
 
         setColorGradient(tvAppName, getResources().getColor(R.color.gradient_top), getResources().getColor(R.color.gradient_center), getResources().getColor(R.color.gradient_bottom));
-
-
-
     }
 
     private void setColorGradient(TextView tv, int... color){
