@@ -21,4 +21,9 @@
         <item>Tháng 11</item>
         <item>Tháng 12</item>
     </string-array>
+
+    <string name="facebook_app_id">465307416166909</string>
+    <string name="fb_login_protocol_scheme">fb465307416166909</string>
+    <string name="facebook_client_token">bf73ac142808e7a9118ae79884b738d4</string>
+
 </resources>

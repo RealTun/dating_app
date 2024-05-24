@@ -1,9 +1,13 @@
 package com.dating.flirtify;
 
+import android.content.Intent;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
 import android.os.Bundle;
 import android.text.TextPaint;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -12,7 +16,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.dating.flirtify.UI.Activity.FacebookLoginActivity;
+import com.dating.flirtify.UI.Activity.LoginPhoneActivity;
+import com.dating.flirtify.UI.Activity.RegisterActivity;
+
 public class MainActivity extends AppCompatActivity {
+
+    Button btnRegister;
+    TextView tvPhoneLogin;
+    ImageView ivLoginFB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,17 +37,35 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-//        Shader textShader = new LinearGradient(
-//                0, 0, 0, 200,
-//                new int[]{Color.parseColor("#E32F70"), Color.parseColor("#E64B77"), Color.parseColor("#EE8585")},
-//                new float[]{0, 0.5f, 1},
-//                Shader.TileMode.CLAMP
-//        );
-//
         TextView tvAppName = findViewById(R.id.tvAppName);
-//        tvAppName.getPaint().setShader(textShader);
-
         setColorGradient(tvAppName, getResources().getColor(R.color.gradient_top), getResources().getColor(R.color.gradient_center), getResources().getColor(R.color.gradient_bottom));
+
+        btnRegister = findViewById(R.id.btnRegister);
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+                startActivity(intent); // Khởi chạy RegisterActivity
+            }
+        });
+
+        tvPhoneLogin = findViewById(R.id.tvPhoneLogin);
+        tvPhoneLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LoginPhoneActivity.class);
+                startActivity(intent); // Khởi chạy PhoneLoginActivity
+            }
+        });
+
+        ivLoginFB = findViewById(R.id.ivLoginFB);
+        ivLoginFB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, FacebookLoginActivity.class);
+                startActivity(intent); // Khởi chạy PhoneLoginActivity
+            }
+        });
 
 
 

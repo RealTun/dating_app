@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Register.RegisterStep1Fragment" >
+    tools:context=".UI.Fragment.RegisterStep1Fragment" >
 
     <TextView
         android:id="@+id/textView6"
@@ -20,17 +20,19 @@
         app:layout_constraintTop_toBottomOf="@+id/tvCountdownTime" />
 
     <EditText
-        android:id="@+id/etNumberPhone"
+        android:id="@+id/tvEmail"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:ems="10"
         android:background="@drawable/config_edittext_bg"
+        android:ems="10"
         android:fontFamily="@font/montserrat_medium"
+        android:inputType="textEmailAddress"
         android:paddingVertical="10dp"
-        android:inputType="phone"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         android:textAlignment="center"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
         android:fontFamily="@font/montserrat_semi_bold"
-        android:text="Nhập số điện thoại"
+        android:text="Nhập Email"
         android:textColor="@color/black"
         android:textSize="25sp"
         android:textStyle="bold"

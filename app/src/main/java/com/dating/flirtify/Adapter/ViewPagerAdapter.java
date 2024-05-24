@@ -1,9 +1,15 @@
-package com.dating.flirtify.Register;
+package com.dating.flirtify.Adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import com.dating.flirtify.UI.Fragment.RegisterStep1Fragment;
+import com.dating.flirtify.UI.Fragment.RegisterStep2Fragment;
+import com.dating.flirtify.UI.Fragment.RegisterStep3Fragment;
+import com.dating.flirtify.UI.Fragment.RegisterStep4Fragment;
+import com.dating.flirtify.UI.Fragment.RegisterStep5Fragment;
 
 import java.util.HashMap;
 import java.util.Map;
