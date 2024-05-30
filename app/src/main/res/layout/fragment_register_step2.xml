@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Register.RegisterStep2Fragment">
+    tools:context=".UI.Fragment.RegisterStep2Fragment">
 
     <ImageView
         android:id="@+id/imageView"
@@ -37,7 +37,7 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPhoneNumber">
+        app:layout_constraintTop_toBottomOf="@+id/tvEmail">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -49,6 +49,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="5dp"
+                android:background="@drawable/config_edittext_bg"
                 android:ems="10"
                 android:inputType="numberSigned"
                 android:textAlignment="center"
@@ -60,6 +61,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="5dp"
+                android:background="@drawable/config_edittext_bg"
                 android:ems="10"
                 android:inputType="numberSigned"
                 android:textAlignment="center"
@@ -71,6 +73,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="5dp"
+                android:background="@drawable/config_edittext_bg"
                 android:ems="10"
                 android:inputType="numberSigned"
                 android:textAlignment="center"
@@ -82,6 +85,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="5dp"
+                android:background="@drawable/config_edittext_bg"
                 android:ems="10"
                 android:inputType="numberSigned"
                 android:textAlignment="center"
@@ -114,7 +118,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <TextView
-        android:id="@+id/tvPhoneNumber"
+        android:id="@+id/tvEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"

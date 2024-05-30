@@ -4,17 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Register.RegisterStep4Fragment">
+    tools:context=".UI.Fragment.RegisterStep4Fragment">
 
     <EditText
-        android:id="@+id/etNumberPhone"
+        android:id="@+id/etName"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:background="@drawable/config_edittext_bg"
         android:ems="10"
         android:fontFamily="@font/montserrat_medium"
         android:hint="Họ tên"
         android:inputType="text"
+        android:paddingVertical="10dp"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
@@ -64,9 +66,59 @@
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:background="@drawable/config_edittext_bg"
+        android:dropDownVerticalOffset="55dp"
+        android:paddingVertical="10dp"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etNumberPhone" />
+        app:layout_constraintTop_toBottomOf="@+id/etName" />
+
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:weightSum="6"
+        android:dropDownVerticalOffset="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gender_spinner">
+
+        <Spinner
+            android:id="@+id/spinner_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/config_edittext_bg"
+            android:dropDownWidth="match_parent"
+            android:dropDownHeight="300dp"
+            android:dropDownVerticalOffset="55dp"
+            android:paddingVertical="10dp"
+            android:textAlignment="center" />
+
+        <Spinner
+            android:id="@+id/spinner_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_weight="3"
+            android:background="@drawable/config_edittext_bg"
+            android:dropDownHeight="300dp"
+            android:dropDownVerticalOffset="55dp"
+            android:paddingVertical="10dp" />
+
+        <Spinner
+            android:id="@+id/spinner_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:background="@drawable/config_edittext_bg"
+            android:dropDownHeight="100dp"
+            android:dropDownVerticalOffset="55dp"
+            android:dropDownHorizontalOffset="15dp"
+            android:paddingVertical="10dp" />
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

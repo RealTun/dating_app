@@ -1,9 +1,15 @@
-package com.dating.flirtify.Register;
+package com.dating.flirtify.Adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import com.dating.flirtify.UI.Fragment.RegisterStep1Fragment;
+import com.dating.flirtify.UI.Fragment.RegisterStep2Fragment;
+import com.dating.flirtify.UI.Fragment.RegisterStep3Fragment;
+import com.dating.flirtify.UI.Fragment.RegisterStep4Fragment;
+import com.dating.flirtify.UI.Fragment.RegisterStep5Fragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +39,9 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
             case 3:
                 fragment = new RegisterStep4Fragment();
                 break;
+            case 4:
+                fragment = new RegisterStep5Fragment();
+                break;
             default:
                 fragment = new RegisterStep1Fragment();
                 break;
@@ -43,7 +52,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 4; // Số lượng các trang
+        return 5; // Số lượng các trang
     }
 
     public Fragment getFragment(int position) {

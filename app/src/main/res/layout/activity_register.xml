@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Register.RegisterActivity">
+    tools:context=".UI.Activity.RegisterActivity">
 
     <TextView
         android:id="@+id/tvAppName"
@@ -24,6 +24,7 @@
         android:id="@+id/nextButton"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/config_button"
         android:fontFamily="@font/montserrat_semi_bold"
@@ -35,14 +36,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewPager2"
-        app:layout_constraintVertical_bias="0.883" />
+        app:layout_constraintTop_toBottomOf="@+id/viewPager2" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager2"
         android:layout_width="0dp"
-        android:layout_height="553dp"
-        android:layout_marginTop="1dp"
+        android:layout_height="600dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvAppName" />
