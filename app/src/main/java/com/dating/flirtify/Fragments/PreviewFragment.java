@@ -22,8 +22,6 @@ public class PreviewFragment extends Fragment {
     private View view;
     private CardView cvPreview, detailInformationWrapper; // Declare a member variable to store the CardView reference
     private LinearLayout infoWrapper;
-    private ScrollView svInformation;
-    private ConstraintLayout previewAvatarWrapper;
 
     @Nullable
     @Override
@@ -32,33 +30,6 @@ public class PreviewFragment extends Fragment {
         cvPreview = (CardView) view.findViewById(R.id.cv_preview);
         infoWrapper = (LinearLayout) view.findViewById(R.id.infoWrapper);
         detailInformationWrapper = (CardView) view.findViewById(R.id.detail_information_wrapper);
-        previewAvatarWrapper = (ConstraintLayout) view.findViewById(R.id.preview_avatar_wrapper);
-
-        /*svInformation.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                Log.e("Scroll Y", String.valueOf(scrollY));
-
-                if (scrollY >= 400) {
-                    // Tránh ẩn/hiện View trực tiếp
-                    // Thay vào đó, sử dụng postOnAnimation để thực hiện sau khi cuộn kết thúc
-                    ViewCompat.postOnAnimation(previewAvatarWrapper, new Runnable() {
-                        @Override
-                        public void run() {
-                            previewAvatarWrapper.setVisibility(View.GONE);
-                        }
-                    });
-                } else {
-                    // Hiển thị View khi kéo về vị trí khác
-                    ViewCompat.postOnAnimation(previewAvatarWrapper, new Runnable() {
-                        @Override
-                        public void run() {
-                            previewAvatarWrapper.setVisibility(View.VISIBLE);
-                        }
-                    });
-                }
-            }
-        });*/
 
         return view;
     }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="CustomCardCorners" parent="@style/Widget.MaterialComponents.CardView">
         <item name="shapeAppearanceOverlay">@style/ShapeAppearance_custom_corners</item>
     </style>
@@ -9,4 +10,22 @@
         <item name="cornerSizeTopLeft">26dp</item>
         <item name="cornerSizeTopRight">26dp</item>
     </style>
+
+    <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="CustomRangeSlider" parent="Widget.MaterialComponents.Slider">
+        <item name="trackHeight">16dp</item>
+        <item name="trackColorInactive">#fff</item>
+        <item name="trackColorActive">#E64B77</item>
+        <item name="haloColor">@android:color/transparent</item>
+        <item name="haloRadius">0dp</item>
+        <item name="thumbRadius">0dp</item>
+        <item name="thumbColor">#ffa400</item>
+        <item name="thumbStrokeWidth">0dp</item>
+        <item name="thumbStrokeColor">#F44336</item>
+    </style>
+
+
 </resources>

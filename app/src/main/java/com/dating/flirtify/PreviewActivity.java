@@ -11,6 +11,7 @@ import android.text.TextPaint;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -31,6 +32,7 @@ import androidx.fragment.app.FragmentManager;
 import com.dating.flirtify.Fragments.HeaderFragment;
 import com.dating.flirtify.Fragments.PreviewFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 public class PreviewActivity extends AppCompatActivity {
 
@@ -69,7 +71,6 @@ public class PreviewActivity extends AppCompatActivity {
         headerFragment.setHeaderType(1);
 
         PreviewFragment fragment = (PreviewFragment) fragmentManager.findFragmentById(R.id.fragment_card_view);
-
 
         ibArrowUp.setOnClickListener(v -> {
             ibArrowUp.setVisibility(View.GONE);

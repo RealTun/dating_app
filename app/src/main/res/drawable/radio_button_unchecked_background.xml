@@ -1,0 +1,5 @@
+<!-- res/drawable/radio_button_unchecked_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@android:color/transparent" /> <!-- Màu trắng cho trạng thái chưa chọn -->
+    <corners android:radius="1000dp" />
+</shape>

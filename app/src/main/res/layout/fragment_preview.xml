@@ -12,6 +12,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -114,6 +115,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/infoWrapper" />
 
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.cardview.widget.CardView
@@ -157,6 +159,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginEnd="16dp"
                                 android:background="@drawable/circle_button"
                                 android:backgroundTint="#2C6FF2"
                                 android:fontFamily="@font/montserrat_regular"
@@ -166,10 +169,6 @@
                                 android:textColor="@color/white"
                                 android:textSize="16sp"
                                 app:layout_flexShrink="1" />
-
-                            <Space
-                                android:layout_width="16dp"
-                                android:layout_height="wrap_content" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -392,18 +391,49 @@
                             android:textColor="@color/text_color"
                             android:textSize="24sp" />
 
-                        <com.google.android.flexbox.FlexboxLayout
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            app:flexWrap="wrap">
+                            android:gravity="center">
 
-                            <ImageView
-                                android:layout_width="200dp"
-                                android:layout_height="200dp"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/guts" />
-                        </com.google.android.flexbox.FlexboxLayout>
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="125dp"
+                                android:layout_height="125dp"
+                                android:layout_marginHorizontal="8dp"
+                                app:cardCornerRadius="8dp">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/guts" />
+                            </androidx.cardview.widget.CardView>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="8dp"
+                                    android:fontFamily="@font/montserrat_semi_bold"
+                                    android:text="Traitor"
+                                    android:textColor="@color/text_color"
+                                    android:textSize="22sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="8dp"
+                                    android:fontFamily="@font/montserrat_medium"
+                                    android:text="Olivia Rodrigo"
+                                    android:textColor="@color/secondary_color"
+                                    android:textSize="18sp" />
+                            </LinearLayout>
+                        </LinearLayout>
                     </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -413,4 +443,3 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.cardview.widget.CardView>
-

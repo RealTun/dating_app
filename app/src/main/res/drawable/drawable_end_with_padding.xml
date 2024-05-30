@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Phần tử drawable chính -->
+    <item
+        android:drawable="@drawable/close_white"
+        android:gravity="center"/>
+
+    <!-- Lớp padding cho phần cuối -->
+    <item
+        android:left="0dp"
+        android:right="12dp"
+        android:drawable="@android:color/transparent"/>
+</layer-list>

@@ -39,11 +39,11 @@
                 app:layout_constraintStart_toStartOf="parent">
 
                 <fragment
-                    android:layout_marginTop="16dp"
                     android:id="@+id/fragment_header"
                     android:name="com.dating.flirtify.Fragments.HeaderFragment"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="16dp"
                     android:layout_weight="1" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -109,6 +109,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -117,10 +118,12 @@
             android:clickable="true"
             android:contentDescription="matchesClose"
             android:elevation="0dp"
+            android:focusable="true"
             app:backgroundTint="#D9D9D9"
             app:borderWidth="1dp"
             app:elevation="0dp"
-            app:srcCompat="@drawable/close" />
+            app:srcCompat="@drawable/close"
+            app:tint="@null" />
 
         <Space
             android:layout_width="150dp"
@@ -133,10 +136,11 @@
             android:backgroundTint="#fff"
             android:contentDescription="matchesHeart"
             android:elevation="0dp"
+            android:focusable="true"
             app:backgroundTint="#D9D9D9"
             app:borderWidth="1dp"
             app:elevation="0dp"
-            app:srcCompat="@drawable/heart" />
+            app:srcCompat="@drawable/heart"
+            app:tint="@null" />
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
