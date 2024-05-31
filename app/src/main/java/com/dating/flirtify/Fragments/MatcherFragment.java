@@ -1,4 +1,4 @@
-package com.dating.flirtify.Matches;
+package com.dating.flirtify.Fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.androidApplication)
-    id("com.google.gms.google-services")
+//    id("com.google.gms.google-services")
 }
 
 android {
@@ -63,6 +63,11 @@ dependencies {
     // Facebook login
     implementation("com.facebook.android:facebook-login:latest.release")
     implementation("com.facebook.android:facebook-android-sdk:latest.release")
+
+    // api
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
 
     // Unit Testing
     testImplementation(libs.junit)

@@ -1,4 +1,4 @@
-package com.dating.flirtify.UI.Fragment;
+package com.dating.flirtify.Fragments;
 
 import android.os.Bundle;
 import android.widget.EditText;

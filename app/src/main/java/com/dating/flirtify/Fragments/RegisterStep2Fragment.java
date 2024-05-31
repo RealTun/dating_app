@@ -1,4 +1,4 @@
-package com.dating.flirtify.UI.Fragment;
+package com.dating.flirtify.Fragments;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -18,7 +18,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.dating.flirtify.R;
-import com.dating.flirtify.UI.Activity.RegisterActivity;
+import com.dating.flirtify.Activities.RegisterActivity;
 import com.dating.flirtify.Services.CountdownTimerHelper;
 import com.dating.flirtify.Services.GmailSender;
 import com.dating.flirtify.Services.OTPGenerators;
@@ -41,7 +41,7 @@ public class RegisterStep2Fragment extends Fragment {
 //        if (phoneNumber.startsWith("0")) {
 //            phoneNumber = "+84" + phoneNumber.substring(1);
 //        }
-        USER_EMAIL = _registerActivity.getEmail();
+//        USER_EMAIL = _registerActivity.getEmail();
         generatedOTP = OTPGenerators.generateOTP();
         // sendOTPEmail(USER_EMAIL, generatedOTP); // Bỏ cmt để gửi OTP
     }

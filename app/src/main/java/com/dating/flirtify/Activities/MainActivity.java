@@ -1,4 +1,4 @@
-package com.dating.flirtify;
+package com.dating.flirtify.Activities;
 
 import android.content.Intent;
 import android.graphics.LinearGradient;
@@ -16,9 +16,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.dating.flirtify.UI.Activity.FacebookLoginActivity;
-import com.dating.flirtify.UI.Activity.LoginPhoneActivity;
-import com.dating.flirtify.UI.Activity.RegisterActivity;
+import com.dating.flirtify.R;
 
 public class MainActivity extends AppCompatActivity {
 

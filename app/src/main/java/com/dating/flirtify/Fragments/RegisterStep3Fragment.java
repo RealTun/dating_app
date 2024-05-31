@@ -1,6 +1,5 @@
-package com.dating.flirtify.UI.Fragment;
+package com.dating.flirtify.Fragments;
 
-import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -9,10 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.dating.flirtify.R;
-import com.dating.flirtify.UI.Activity.RegisterActivity;
+import com.dating.flirtify.Activities.RegisterActivity;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

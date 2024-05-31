@@ -1,4 +1,4 @@
-package com.dating.flirtify.UI.Fragment;
+package com.dating.flirtify.Fragments;
 
 import android.content.Intent;
 import android.net.Uri;

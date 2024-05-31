@@ -1,4 +1,4 @@
-package com.dating.flirtify.Matches;
+package com.dating.flirtify.Adapters;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
