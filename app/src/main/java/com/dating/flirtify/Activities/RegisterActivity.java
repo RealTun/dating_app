@@ -11,16 +11,15 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.dating.flirtify.Fragments.RegisterStep3Fragment;
+import com.dating.flirtify.Fragments.RegisterStep4Fragment;
+import com.dating.flirtify.Fragments.RegisterStep5Fragment;
+import com.dating.flirtify.Fragments.RegisterWantToSeeFragment;
 import com.dating.flirtify.R;
-import com.dating.flirtify.UI.Fragment.RegisterSearchOptionsFragment;
-import com.dating.flirtify.UI.Fragment.RegisterStep1Fragment;
-import com.dating.flirtify.UI.Fragment.RegisterStep2Fragment;
-import com.dating.flirtify.Adapter.ViewPagerAdapter;
-import com.dating.flirtify.Model.RegisterData;
-import com.dating.flirtify.UI.Fragment.RegisterStep3Fragment;
-import com.dating.flirtify.UI.Fragment.RegisterStep4Fragment;
-import com.dating.flirtify.UI.Fragment.RegisterStep5Fragment;
-import com.dating.flirtify.UI.Fragment.RegisterWantToSeeFragment;
+import com.dating.flirtify.Fragments.RegisterSearchOptionsFragment;
+import com.dating.flirtify.Fragments.RegisterStep1Fragment;
+import com.dating.flirtify.Fragments.RegisterStep2Fragment;
+import com.dating.flirtify.Adapters.ViewPagerAdapter;
 
 public class RegisterActivity extends AppCompatActivity {
     private ViewPager2 viewPager;

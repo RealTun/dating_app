@@ -69,7 +69,7 @@
 //    }
 //}
 
-package com.dating.flirtify.Adapter;
+package com.dating.flirtify.Adapters;
 
 import android.util.Log;
 
@@ -78,13 +78,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.dating.flirtify.UI.Fragment.RegisterSearchOptionsFragment;
-import com.dating.flirtify.UI.Fragment.RegisterStep1Fragment;
-import com.dating.flirtify.UI.Fragment.RegisterStep2Fragment;
-import com.dating.flirtify.UI.Fragment.RegisterStep3Fragment;
-import com.dating.flirtify.UI.Fragment.RegisterStep4Fragment;
-import com.dating.flirtify.UI.Fragment.RegisterStep5Fragment;
-import com.dating.flirtify.UI.Fragment.RegisterWantToSeeFragment;
+
+import com.dating.flirtify.Fragments.RegisterSearchOptionsFragment;
+import com.dating.flirtify.Fragments.RegisterStep1Fragment;
+import com.dating.flirtify.Fragments.RegisterStep2Fragment;
+import com.dating.flirtify.Fragments.RegisterStep3Fragment;
+import com.dating.flirtify.Fragments.RegisterStep4Fragment;
+import com.dating.flirtify.Fragments.RegisterStep5Fragment;
+import com.dating.flirtify.Fragments.RegisterWantToSeeFragment;
 
 import java.util.HashMap;
 import java.util.Map;
