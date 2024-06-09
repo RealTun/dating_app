@@ -2,6 +2,7 @@ package com.dating.flirtify.Adapters;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.dating.flirtify.Models.Matcher;
 import com.dating.flirtify.R;
@@ -37,7 +39,7 @@ public class MatcherAdapter extends ArrayAdapter {
         convertView = myFlater.inflate(idLayout, null);
         Matcher matcher = arrMatcher.get(position);
         ImageView img_matcher = convertView.findViewById(R.id.imgMatcher);
-        img_matcher.setImageResource(matcher.getImage());
+        img_matcher.setImageURI(Uri.parse(matcher.getImage()));
 
         TextView tv_name = convertView.findViewById(R.id.tv_nameMatcher);
         tv_name.setText(matcher.getName());

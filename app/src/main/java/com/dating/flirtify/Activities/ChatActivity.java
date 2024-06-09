@@ -1,11 +1,13 @@
 package com.dating.flirtify.Activities;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -25,6 +27,7 @@ import retrofit2.Response;
 
 public class ChatActivity extends AppCompatActivity {
     EditText etMessage;
+    ImageButton btn_back;
     ApiService apiService;
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -39,7 +42,10 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         etMessage = findViewById(R.id.etMessage);
+        btn_back = findViewById(R.id.imgbtn_back);
         apiService = ApiClient.getClient();
+
+        Intent intent = getIntent();
 
         etMessage.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -56,6 +62,11 @@ public class ChatActivity extends AppCompatActivity {
                 }
                 return false;
             }
+        });
+
+        // back to matcher display
+        btn_back.setOnClickListener(v -> {
+            finish();
         });
     }
 

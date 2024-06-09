@@ -1,28 +1,26 @@
 package com.dating.flirtify.Models;
 
 public class Matcher {
-    private int image;
-    private String name;
+    private final int id;
+    private final String imageUrl;
+    private final String fullname;
 
 
-    public Matcher(int image, String name) {
-        this.image = image;
-        this.name = name;
+    public Matcher(int id, String image, String name) {
+        this.id = id;
+        this.imageUrl = image;
+        this.fullname = name;
     }
 
-    public int getImage() {
-        return image;
-    }
-
-    public void setImage(int image) {
-        this.image = image;
+    public String getImage() {
+        return imageUrl;
     }
 
     public String getName() {
-        return name;
+        return fullname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public int getId() {
+        return id;
     }
 }

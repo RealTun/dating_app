@@ -1,5 +1,6 @@
 package com.dating.flirtify.Api;
 
+import com.dating.flirtify.Models.Matcher;
 import com.dating.flirtify.Models.User;
 
 import retrofit2.Call;
@@ -21,5 +22,7 @@ public interface ApiService {
     @GET("user")
     Call<User> getUser(@Header("Authorization") String accessToken);
 
+    @GET("matchers")
+    Call<Matcher> getMatchers(@Header("Authorization") String accessToken);
 }
 
