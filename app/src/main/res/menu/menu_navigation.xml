@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/menu_tab1"
+        android:id="@+id/nav_preview"
         android:icon="@drawable/nav_logo"
         android:title="" />
     <item
-        android:id="@+id/menu_tab2"
-        android:icon="@drawable/nav_search"
-        android:title="" />
-    <item
-        android:id="@+id/menu_tab3"
+        android:id="@+id/nav_chat"
         android:icon="@drawable/nav_chat"
         android:title="" />
     <item
-        android:id="@+id/menu_tab4"
+        android:id="@+id/nav_account"
         android:icon="@drawable/nav_account"
         android:title="" />
 </menu>

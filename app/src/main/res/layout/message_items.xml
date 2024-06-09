@@ -13,7 +13,8 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.cardview.widget.CardView
             android:layout_width="70dp"
@@ -41,14 +42,16 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_semi_bold"
-                android:textColor="@color/black"
                 android:text="minh ngọc"
+                android:textColor="@color/black"
                 android:textSize="16dp" />
 
             <TextView
+                android:id="@+id/tv_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_medium"

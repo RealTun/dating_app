@@ -2,14 +2,10 @@ package com.dating.flirtify.Activities;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.graphics.LinearGradient;
-import android.graphics.Shader;
 import android.os.Bundle;
-import android.text.TextPaint;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,20 +14,22 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.dating.flirtify.Fragments.HeaderFragment;
+import com.dating.flirtify.Fragments.MatcherFragment;
 import com.dating.flirtify.Fragments.PreviewFragment;
+import com.dating.flirtify.Fragments.AccountFragment;
 import com.dating.flirtify.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class PreviewActivity extends AppCompatActivity {
 
-    TextView tvAppName;
-    ImageButton ibArrowUp, ibArrowDown;
-    BottomNavigationView footerWrapper;
-    LinearLayout bottomCardWrapper;
-    ConstraintLayout headerWrapper, mConstraintLayout;
+    private BottomNavigationView footerWrapper;
+    private ImageButton ibArrowDown, ibArrowUp;
+    private ConstraintLayout headerWrapper, mConstraintLayout;
+    private LinearLayout bottomCardWrapper, layoutSpacer;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -45,67 +43,73 @@ public class PreviewActivity extends AppCompatActivity {
             return insets;
         });
 
-        tvAppName = findViewById(R.id.tv_app_name);
-        setColorGradient(tvAppName, getResources().getColor(R.color.gradient_top), getResources().getColor(R.color.gradient_center), getResources().getColor(R.color.gradient_bottom));
+        initializeView();
+        handlerEvent();
+    }
 
-        ibArrowUp = findViewById(R.id.ib_arrow_up);
+    private void initializeView() {
         ibArrowDown = findViewById(R.id.ib_arrow_down);
         footerWrapper = findViewById(R.id.footer_wrapper);
-        bottomCardWrapper = findViewById(R.id.bottom_card_wrapper);
         headerWrapper = findViewById(R.id.header_wrapper);
         mConstraintLayout = findViewById(R.id.main);
+        bottomCardWrapper = findViewById(R.id.bottom_card_wrapper);
+        layoutSpacer = findViewById(R.id.ll_spacer);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+    }
 
+    private void handlerEvent() {
         FragmentManager fragmentManager = getSupportFragmentManager();
+        PreviewFragment previewFragment = new PreviewFragment();
+        fragmentManager.beginTransaction().replace(R.id.fragment_container, previewFragment).commit();
         HeaderFragment headerFragment = (HeaderFragment) fragmentManager.findFragmentById(R.id.fragment_header);
         headerFragment.setHeaderType(1);
 
-        PreviewFragment fragment = (PreviewFragment) fragmentManager.findFragmentById(R.id.fragment_card_view);
-
-        ibArrowUp.setOnClickListener(v -> {
-            ibArrowUp.setVisibility(View.GONE);
-            footerWrapper.setVisibility(View.GONE);
-
-            ObjectAnimator animator = ObjectAnimator.ofFloat(bottomCardWrapper, "translationY", 0, 125f);
-            animator.setDuration(300);
-            animator.start();
-            headerFragment.setHeaderType(2);
-
-            fragment.SlideUp();
-
-            ConstraintSet mConstraintSet = new ConstraintSet();
-            mConstraintSet.clone(mConstraintLayout);
-            mConstraintSet.constrainPercentHeight(R.id.content_wrapper, 0.9f);
-            mConstraintSet.applyTo(mConstraintLayout);
-        });
-
         ibArrowDown.setOnClickListener(v -> {
+            ibArrowUp = findViewById(R.id.ib_arrow_up);
+
+            ibArrowUp.setVisibility(View.VISIBLE);
             footerWrapper.setVisibility(View.VISIBLE);
             headerWrapper.setVisibility(View.VISIBLE);
-            ibArrowUp.setVisibility(View.VISIBLE);
+
 
             ObjectAnimator animator = ObjectAnimator.ofFloat(bottomCardWrapper, "translationY", 125f, 0f);
             animator.setDuration(300);
             animator.start();
             headerFragment.setHeaderType(1);
 
-            fragment.SlideDown();
+            previewFragment.SlideDown();
             ConstraintSet mConstraintSet = new ConstraintSet();
             mConstraintSet.clone(mConstraintLayout);
-            mConstraintSet.constrainPercentHeight(R.id.content_wrapper, 0.75f);
+            mConstraintSet.constrainPercentHeight(R.id.content_wrapper, 0.78f);
             mConstraintSet.applyTo(mConstraintLayout);
         });
-    }
 
-    private void setColorGradient(TextView tv, int... color) {
-        TextPaint textPaint = tv.getPaint();
-        float width = textPaint.measureText(tv.getText().toString());
-        float height = tv.getTextSize();
+        footerWrapper.setOnNavigationItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
 
-        Shader textShader = new LinearGradient(0, 0, 0, height, color, null, Shader.TileMode.CLAMP);
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_preview) {
+                selectedFragment = new PreviewFragment();
+                headerFragment.setHeaderType(1);
+                bottomCardWrapper.setVisibility(View.VISIBLE);
+                layoutSpacer.setVisibility(View.VISIBLE);
+            } else if (itemId == R.id.nav_chat) {
+                selectedFragment = new MatcherFragment();
+                headerFragment.setHeaderType(3);
+                bottomCardWrapper.setVisibility(View.GONE);
+                layoutSpacer.setVisibility(View.GONE);
+            } else if (itemId == R.id.nav_account) {
+                selectedFragment = new AccountFragment();
+                headerFragment.setHeaderType(3);
+                bottomCardWrapper.setVisibility(View.GONE);
+                layoutSpacer.setVisibility(View.GONE);
+            }
 
-        tv.getPaint().setShader(textShader);
-        tv.setTextColor(color[0]);
+            if (selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+            }
+            return true;
+        });
     }
 }

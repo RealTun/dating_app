@@ -1,37 +1,73 @@
 package com.dating.flirtify.Fragments;
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.view.ViewCompat;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.Toast;
 
 import com.dating.flirtify.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class PreviewFragment extends Fragment {
     private View view;
     private CardView cvPreview, detailInformationWrapper; // Declare a member variable to store the CardView reference
-    private LinearLayout infoWrapper;
+    private LinearLayout infoWrapper, bottomCardWrapper;
+    private ImageButton ibArrowUp;
+    BottomNavigationView footerWrapper;
+    ConstraintLayout mConstraintLayout;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_preview, container, false);
-        cvPreview = (CardView) view.findViewById(R.id.cv_preview);
-        infoWrapper = (LinearLayout) view.findViewById(R.id.infoWrapper);
-        detailInformationWrapper = (CardView) view.findViewById(R.id.detail_information_wrapper);
+        initViews(view);
+        handlerEvent();
 
         return view;
+    }
+
+    private void handlerEvent() {
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        HeaderFragment headerFragment = (HeaderFragment) fragmentManager.findFragmentById(R.id.fragment_header);
+
+        ibArrowUp.setOnClickListener(v -> {
+            ibArrowUp.setVisibility(View.GONE);
+            footerWrapper.setVisibility(View.GONE);
+
+            ObjectAnimator animator = ObjectAnimator.ofFloat(bottomCardWrapper, "translationY", 0, 125f);
+            animator.setDuration(300);
+            animator.start();
+            headerFragment.setHeaderType(2);
+
+            this.SlideUp();
+            ConstraintSet mConstraintSet = new ConstraintSet();
+            mConstraintSet.clone(mConstraintLayout);
+            mConstraintSet.constrainPercentHeight(R.id.content_wrapper, 0.92f);
+            mConstraintSet.applyTo(mConstraintLayout);
+        });
+    }
+
+    private void initViews(View view) {
+        cvPreview = view.findViewById(R.id.cv_preview);
+        ibArrowUp = view.findViewById(R.id.ib_arrow_up);
+        infoWrapper = view.findViewById(R.id.infoWrapper);
+        detailInformationWrapper = view.findViewById(R.id.detail_information_wrapper);
+        bottomCardWrapper = requireActivity().findViewById(R.id.bottom_card_wrapper);
+        footerWrapper = requireActivity().findViewById(R.id.footer_wrapper);
+        mConstraintLayout = requireActivity().findViewById(R.id.main);
     }
 
     public void SlideUp() {

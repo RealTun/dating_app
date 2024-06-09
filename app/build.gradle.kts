@@ -76,4 +76,5 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(libs.flexbox)
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 }
