@@ -8,7 +8,7 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="300dp"
+        android:layout_width="350dp"
         android:layout_height="10dp"
         android:layout_marginTop="20dp"
         android:src="@drawable/register_step2"
@@ -20,7 +20,7 @@
         android:id="@+id/tvCountdownTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="120dp"
         android:text="01:30"
         android:textColor="@color/black"
         android:textSize="30sp"
@@ -82,6 +82,30 @@
 
             <EditText
                 android:id="@+id/etNum4"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/config_edittext_bg"
+                android:ems="10"
+                android:inputType="numberSigned"
+                android:textAlignment="center"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etNum5"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/config_edittext_bg"
+                android:ems="10"
+                android:inputType="numberSigned"
+                android:textAlignment="center"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etNum6"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="5dp"

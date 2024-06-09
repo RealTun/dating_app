@@ -12,12 +12,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.dating.flirtify.R;
-import com.dating.flirtify.Fragments.RegisterStep1Fragment;
-import com.dating.flirtify.Fragments.RegisterStep2Fragment;
-import com.dating.flirtify.Adapters.ViewPagerAdapter;
-import com.dating.flirtify.Fragments.RegisterStep3Fragment;
-import com.dating.flirtify.Fragments.RegisterStep4Fragment;
-import com.dating.flirtify.Fragments.RegisterStep5Fragment;
+import com.dating.flirtify.UI.Fragment.RegisterSearchOptionsFragment;
+import com.dating.flirtify.UI.Fragment.RegisterStep1Fragment;
+import com.dating.flirtify.UI.Fragment.RegisterStep2Fragment;
+import com.dating.flirtify.Adapter.ViewPagerAdapter;
+import com.dating.flirtify.Model.RegisterData;
+import com.dating.flirtify.UI.Fragment.RegisterStep3Fragment;
+import com.dating.flirtify.UI.Fragment.RegisterStep4Fragment;
+import com.dating.flirtify.UI.Fragment.RegisterStep5Fragment;
+import com.dating.flirtify.UI.Fragment.RegisterWantToSeeFragment;
 
 public class RegisterActivity extends AppCompatActivity {
     private ViewPager2 viewPager;
@@ -90,9 +93,18 @@ public class RegisterActivity extends AppCompatActivity {
                         break;
                     case 4:
                         RegisterStep5Fragment step5Fragment = (RegisterStep5Fragment) adapter.getFragment(currentItem);
-                        // Xử lý logic cho bước 5 nếu cần
+                        nextButton.setText("Tiếp theo");
+                        viewPager.setCurrentItem(currentItem + 1);
                         break;
-                    // Thêm các trường hợp khác nếu cần
+                    case 5:
+                        RegisterWantToSeeFragment wantToSeeFragment = (RegisterWantToSeeFragment) adapter.getFragment(currentItem);
+                        viewPager.setCurrentItem(currentItem + 1);
+                        break;
+                    case 6:
+//                        RegisterSearchOptionsFragment registerSearchOptionsFragment = (RegisterSearchOptionsFragment)
+                                adapter.getFragment(currentItem);
+                        viewPager.setCurrentItem(currentItem + 1);
+                        break;
                 }
             }
         });

@@ -56,6 +56,13 @@ dependencies {
     // Library UI Android
     implementation("com.makeramen:roundedimageview:2.3.0")
 
+    // Firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+    implementation("com.google.firebase:firebase-storage")
+
+
+
+
     // JavaMail
     implementation("com.sun.mail:android-mail:1.6.7")
     implementation("com.sun.mail:android-activation:1.6.7")

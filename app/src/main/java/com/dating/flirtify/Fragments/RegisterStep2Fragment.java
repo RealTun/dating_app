@@ -24,14 +24,13 @@ import com.dating.flirtify.Services.GmailSender;
 import com.dating.flirtify.Services.OTPGenerators;
 
 public class RegisterStep2Fragment extends Fragment {
-    private EditText etNum1, etNum2, etNum3, etNum4;
+    private EditText etNum1, etNum2, etNum3, etNum4, etNum5, etNum6;
     private TextView tvEmail, tvCountdownTime, tvResendOTP;
     private boolean allowResendOTP = false;
     private String generatedOTP;
     private RegisterActivity _registerActivity;
     private static final String TAG = RegisterStep2Fragment.class.getSimpleName();
     private CountdownTimerHelper countdownTimer;
-    private boolean isCountdownFinished = false;
     private String USER_EMAIL;
 
     @Override
@@ -43,7 +42,7 @@ public class RegisterStep2Fragment extends Fragment {
 //        }
 //        USER_EMAIL = _registerActivity.getEmail();
         generatedOTP = OTPGenerators.generateOTP();
-        // sendOTPEmail(USER_EMAIL, generatedOTP); // Bỏ cmt để gửi OTP
+        sendOTPEmail(USER_EMAIL, generatedOTP); // Bỏ cmt để gửi OTP
     }
 
     @Override
@@ -69,6 +68,8 @@ public class RegisterStep2Fragment extends Fragment {
         etNum2 = view.findViewById(R.id.etNum2);
         etNum3 = view.findViewById(R.id.etNum3);
         etNum4 = view.findViewById(R.id.etNum4);
+        etNum5 = view.findViewById(R.id.etNum5);
+        etNum6 = view.findViewById(R.id.etNum6);
         tvEmail = view.findViewById(R.id.tvEmail);
         tvCountdownTime = view.findViewById(R.id.tvCountdownTime);
         tvResendOTP = view.findViewById(R.id.tvResendOTP);
@@ -79,7 +80,9 @@ public class RegisterStep2Fragment extends Fragment {
         addTextWatcher(null, etNum1, etNum2);
         addTextWatcher(etNum1, etNum2, etNum3);
         addTextWatcher(etNum2, etNum3, etNum4);
-        addTextWatcher(etNum3, etNum4, null);
+        addTextWatcher(etNum3, etNum4, etNum5);
+        addTextWatcher(etNum4, etNum5, etNum6);
+        addTextWatcher(etNum5, etNum6, null);
     }
 
     public void addTextWatcher(final EditText previousEditText, final EditText currentEditText, final EditText nextEditText) {
@@ -127,7 +130,6 @@ public class RegisterStep2Fragment extends Fragment {
             public void onCountdownFinish() {
                 tvCountdownTime.setText("00:00");
                 allowResendOTP = true;
-                isCountdownFinished = true;
                 updateResendOTPStatus();
             }
         });
@@ -142,16 +144,12 @@ public class RegisterStep2Fragment extends Fragment {
     }
 
     public boolean isOTPValid() {
-        String enteredOTP = etNum1.getText().toString() + etNum2.getText().toString() + etNum3.getText().toString() + etNum4.getText().toString();
-        if (isCountdownFinished) {
+        String enteredOTP = etNum1.getText().toString() + etNum2.getText().toString() + etNum3.getText().toString() + etNum4.getText().toString() + etNum5.getText().toString() + etNum6.getText().toString();
+        if (countdownTimer.isCountdownFinished()) {
             Toast.makeText(getContext(), "Mã OTP đã hết hạn!", Toast.LENGTH_SHORT).show();
             return false;
         }
-//        if (enteredOTP.equals(generatedOTP) == false) {
-//            Toast.makeText(_registerActivity, "OTP không đúng!", Toast.LENGTH_SHORT).show();
-//            return false;
-//        }
-        if (enteredOTP.equals("1234") == false) {
+        if (enteredOTP.equals(generatedOTP) == false) {
             Toast.makeText(_registerActivity, "OTP không đúng!", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -165,7 +163,6 @@ public class RegisterStep2Fragment extends Fragment {
         allowResendOTP = false;
         updateResendOTPStatus();
         clearOTPFields();
-        isCountdownFinished = false;
     }
 
     private void sendOTPEmail(String email, String otp) {
@@ -189,6 +186,8 @@ public class RegisterStep2Fragment extends Fragment {
         etNum2.setText("");
         etNum3.setText("");
         etNum4.setText("");
+        etNum5.setText("");
+        etNum6.setText("");
         etNum1.requestFocus();
     }
 }
