@@ -19,31 +19,44 @@ import com.dating.flirtify.R;
 
 import java.util.ArrayList;
 
-public class MatcherAdapter extends ArrayAdapter {
+public class MatcherAdapter extends RecyclerView.Adapter<MatcherAdapter.ViewHolder> {
     Activity context;
     int idLayout;
     ArrayList<Matcher> arrMatcher;
 
-    public MatcherAdapter(Activity _context, int _idLayout, ArrayList<Matcher> _arrMatcher){
-        super(_context, _idLayout, _arrMatcher);
+    public MatcherAdapter(Activity _context, int _idLayout, ArrayList<Matcher> _arrMatcher) {
         this.context = _context;
         this.idLayout = _idLayout;
         this.arrMatcher = _arrMatcher;
     }
 
-    @SuppressLint("ViewHolder")
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        LayoutInflater myFlater = context.getLayoutInflater();
-        convertView = myFlater.inflate(idLayout, null);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.matcher_items, parent, false);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Matcher matcher = arrMatcher.get(position);
-        ImageView img_matcher = convertView.findViewById(R.id.imgMatcher);
-        img_matcher.setImageURI(Uri.parse(matcher.getImage()));
+        holder.img_matcher.setImageURI(Uri.parse(matcher.getImage()));
+        holder.tv_name.setText(matcher.getName());
+    }
 
-        TextView tv_name = convertView.findViewById(R.id.tv_nameMatcher);
-        tv_name.setText(matcher.getName());
+    @Override
+    public int getItemCount() {
+        return arrMatcher.size();
+    }
 
-        return convertView;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView img_matcher;
+        TextView tv_name;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            img_matcher = itemView.findViewById(R.id.imgMatcher);
+            tv_name = itemView.findViewById(R.id.tv_nameMatcher);
+        }
     }
 }

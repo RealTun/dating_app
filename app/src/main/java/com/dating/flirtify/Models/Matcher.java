@@ -1,10 +1,14 @@
 package com.dating.flirtify.Models;
 
 public class Matcher {
-    private final int id;
+    private int id;
     private final String imageUrl;
     private final String fullname;
 
+    public Matcher(String image, String name) {
+        this.imageUrl = image;
+        this.fullname = name;
+    }
 
     public Matcher(int id, String image, String name) {
         this.id = id;

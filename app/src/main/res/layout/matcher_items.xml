@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -25,14 +25,14 @@
 
     <TextView
         android:id="@+id/tv_nameMatcher"
-        android:layout_width="111dp"
+        android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
-        android:paddingBottom="5dp"
-        android:gravity="center"
-        android:text="chim sẻ đi mưa"
         android:fontFamily="@font/montserrat_semi_bold"
+        android:gravity="center"
+        android:paddingBottom="5dp"
+        android:text="chim sẻ đi mưa"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />

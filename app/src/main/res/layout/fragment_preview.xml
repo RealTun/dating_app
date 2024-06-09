@@ -111,6 +111,7 @@
                     android:contentDescription="matchesArrowUp"
                     android:scaleType="centerInside"
                     android:src="@drawable/arrow_up"
+
                     app:layout_constraintBottom_toBottomOf="@id/infoWrapper"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/infoWrapper" />
@@ -437,8 +438,6 @@
                     </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
             </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
