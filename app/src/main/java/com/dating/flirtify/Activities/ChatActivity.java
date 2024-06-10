@@ -55,7 +55,7 @@ public class ChatActivity extends AppCompatActivity {
                     if (etMessage.getCompoundDrawables()[DRAWABLE_END] != null) {
                         int drawableWidth = etMessage.getCompoundDrawables()[DRAWABLE_END].getBounds().width();
                         if (event.getRawX() >= (etMessage.getRight() - drawableWidth - etMessage.getPaddingEnd())) {
-                            getDetailsUser();
+                            //
                             return true;
                         }
                     }
@@ -67,29 +67,6 @@ public class ChatActivity extends AppCompatActivity {
         // back to matcher display
         btn_back.setOnClickListener(v -> {
             finish();
-        });
-    }
-
-    private void getDetailsUser(){
-        String accessToken = "Bearer " + "2|xB7YKMGNrtVe8JqhpPQYc28ymFNav2kqWglXW61d55e976a5";
-
-        Call<User> call = apiService.getUser(accessToken);
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if(response.code() == 200){
-                    User user = response.body();
-                    Log.d("UserResponse", user.getFullname());
-                }
-                else if (response.code() == 401) {
-                    Log.d("UserResponse", response.message());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(ChatActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
-            }
         });
     }
 }

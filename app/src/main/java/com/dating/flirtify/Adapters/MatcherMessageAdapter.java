@@ -1,26 +1,24 @@
 package com.dating.flirtify.Adapters;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dating.flirtify.Models.Matcher;
+import com.bumptech.glide.Glide;
+import com.dating.flirtify.Models.Responses.MatcherResponse;
 import com.dating.flirtify.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MatcherMessageAdapter extends BaseAdapter {
     private final Context context;
     private final int layout;
-    private final ArrayList<Matcher> matchers;
+    private final ArrayList<MatcherResponse> matchers;
 
-    public MatcherMessageAdapter(Context context, int layout, ArrayList<Matcher> matchers) {
+    public MatcherMessageAdapter(Context context, int layout, ArrayList<MatcherResponse> matchers) {
         this.context = context;
         this.layout = layout;
         this.matchers = matchers;
@@ -54,14 +52,18 @@ public class MatcherMessageAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.ivMatcher = convertView.findViewById(R.id.imageView3);
             holder.tvName = convertView.findViewById(R.id.tv_name);
+            holder.tvMessage = convertView.findViewById(R.id.tv_message);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Matcher matcher = matchers.get(position);
-        holder.ivMatcher.setImageURI(Uri.parse(matcher.getImage()));
-        holder.tvName.setText(matcher.getName());
+        MatcherResponse matcher = matchers.get(position);
+        Glide.with(context)
+                .load(matcher.getImageUrl())
+                .into(holder.ivMatcher);
+        holder.tvName.setText(matcher.getFullname());
+        holder.tvMessage.setText(matcher.getLast_message());
         return convertView;
     }
 }

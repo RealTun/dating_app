@@ -1,20 +1,17 @@
 package com.dating.flirtify.Adapters;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.dating.flirtify.Models.Matcher;
+import com.bumptech.glide.Glide;
+import com.dating.flirtify.Models.Responses.MatcherResponse;
 import com.dating.flirtify.R;
 
 import java.util.ArrayList;
@@ -22,9 +19,9 @@ import java.util.ArrayList;
 public class MatcherAdapter extends RecyclerView.Adapter<MatcherAdapter.ViewHolder> {
     Activity context;
     int idLayout;
-    ArrayList<Matcher> arrMatcher;
+    ArrayList<MatcherResponse> arrMatcher;
 
-    public MatcherAdapter(Activity _context, int _idLayout, ArrayList<Matcher> _arrMatcher) {
+    public MatcherAdapter(Activity _context, int _idLayout, ArrayList<MatcherResponse> _arrMatcher) {
         this.context = _context;
         this.idLayout = _idLayout;
         this.arrMatcher = _arrMatcher;
@@ -39,9 +36,11 @@ public class MatcherAdapter extends RecyclerView.Adapter<MatcherAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Matcher matcher = arrMatcher.get(position);
-        holder.img_matcher.setImageURI(Uri.parse(matcher.getImage()));
-        holder.tv_name.setText(matcher.getName());
+        MatcherResponse matcher = arrMatcher.get(position);
+        Glide.with(context)
+                .load(matcher.getImageUrl())
+                .into(holder.img_matcher);
+        holder.tv_name.setText(matcher.getFullname());
     }
 
     @Override

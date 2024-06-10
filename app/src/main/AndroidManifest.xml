@@ -62,16 +62,9 @@
             </intent-filter>
         </activity>-->
 
-        <!--        <activity-->
-        <!--            android:name=".Activities.ChatActivity"-->
-        <!--            android:exported="true">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="android.intent.action.MAIN" />-->
-
-        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-        <!--            </intent-filter>-->
-        <!--        </activity>-->
-
+        <activity
+            android:name=".Activities.ChatActivity"
+            android:exported="false" />
         <activity
             android:name=".Activities.RegisterActivity"
             android:exported="false" />
