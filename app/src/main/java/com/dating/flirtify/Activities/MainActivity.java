@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         tvPhoneLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoginPhoneActivity.class);
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent); // Khởi chạy PhoneLoginActivity
             }
         });
