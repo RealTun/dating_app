@@ -6,119 +6,127 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.RegisterStep4Fragment">
 
-    <EditText
-        android:id="@+id/etName"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/config_edittext_bg"
-        android:ems="10"
-        android:fontFamily="@font/montserrat_medium"
-        android:hint="Họ tên"
-        android:inputType="text"
-        android:paddingVertical="10dp"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
-        tools:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/tvCountdownTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
-        android:fontFamily="@font/montserrat_medium"
-        android:text="Thông tin cơ bản"
-        android:textColor="@color/black"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/montserrat_medium"
-        android:text="Nhập họ tên, giới tính và tuổi của bạn"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCountdownTime" />
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="350dp"
         android:layout_height="10dp"
         android:layout_marginTop="20dp"
-        android:src="@drawable/register_step4"
+        android:src="@drawable/register_step_4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Spinner
-        android:id="@+id/gender_spinner"
-        android:layout_width="250dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/config_edittext_bg"
-        android:dropDownVerticalOffset="55dp"
-        android:paddingVertical="10dp"
-        android:textAlignment="center"
+        android:padding="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etName" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView">
 
-    <LinearLayout
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        android:weightSum="6"
-        android:dropDownVerticalOffset="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gender_spinner">
-
-        <Spinner
-            android:id="@+id/spinner_day"
+        <TextView
+            android:id="@+id/tvCountdownTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_marginTop="50dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="Thông tin cơ bản"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/etName"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:background="@drawable/config_edittext_bg"
-            android:dropDownWidth="match_parent"
-            android:dropDownHeight="300dp"
+            android:ems="10"
+            android:fontFamily="@font/montserrat_medium"
+            android:hint="Họ tên"
+            android:inputType="text"
+            android:paddingVertical="10dp"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6"
+            tools:textSize="20sp" />
+
+        <Spinner
+            android:id="@+id/gender_spinner"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/config_edittext_bg"
             android:dropDownVerticalOffset="55dp"
             android:paddingVertical="10dp"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etName" />
 
-        <Spinner
-            android:id="@+id/spinner_month"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:layout_weight="3"
-            android:background="@drawable/config_edittext_bg"
-            android:dropDownHeight="300dp"
-            android:dropDownVerticalOffset="55dp"
-            android:paddingVertical="10dp" />
+            android:layout_marginTop="10dp"
+            android:dropDownVerticalOffset="10dp"
+            android:orientation="horizontal"
+            android:weightSum="6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gender_spinner">
 
-        <Spinner
-            android:id="@+id/spinner_year"
-            android:layout_width="wrap_content"
+            <Spinner
+                android:id="@+id/spinner_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/config_edittext_bg"
+                android:dropDownWidth="match_parent"
+                android:dropDownHeight="300dp"
+                android:dropDownVerticalOffset="55dp"
+                android:paddingVertical="10dp"
+                android:textAlignment="center" />
+
+            <Spinner
+                android:id="@+id/spinner_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:layout_weight="3"
+                android:background="@drawable/config_edittext_bg"
+                android:dropDownHeight="300dp"
+                android:dropDownVerticalOffset="55dp"
+                android:paddingVertical="10dp" />
+
+            <Spinner
+                android:id="@+id/spinner_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:background="@drawable/config_edittext_bg"
+                android:dropDownHeight="100dp"
+                android:dropDownHorizontalOffset="15dp"
+                android:dropDownVerticalOffset="55dp"
+                android:paddingVertical="10dp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:background="@drawable/config_edittext_bg"
-            android:dropDownHeight="100dp"
-            android:dropDownVerticalOffset="55dp"
-            android:dropDownHorizontalOffset="15dp"
-            android:paddingVertical="10dp" />
-    </LinearLayout>
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="Nhập họ tên, giới tính và tuổi của bạn"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCountdownTime" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

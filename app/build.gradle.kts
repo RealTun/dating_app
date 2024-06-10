@@ -57,8 +57,8 @@ dependencies {
     implementation("com.makeramen:roundedimageview:2.3.0")
 
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
-    implementation("com.google.firebase:firebase-storage")
+//    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+//    implementation("com.google.firebase:firebase-storage")
 
     // Glide load image online
     implementation("com.github.bumptech.glide:glide:4.12.0")

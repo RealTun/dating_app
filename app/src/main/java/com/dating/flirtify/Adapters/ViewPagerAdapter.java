@@ -79,6 +79,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 
+import com.dating.flirtify.Fragments.ProcessingFragment;
 import com.dating.flirtify.Fragments.RegisterSearchOptionsFragment;
 import com.dating.flirtify.Fragments.RegisterStep1Fragment;
 import com.dating.flirtify.Fragments.RegisterStep2Fragment;
@@ -92,7 +93,7 @@ import java.util.Map;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
 
-    private static final int TOTAL_PAGES = 7;
+    private static final int TOTAL_PAGES = 8;
     private final Map<Integer, Fragment> fragmentMap = new HashMap<>();
 
     public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
@@ -129,6 +130,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
         fragmentMap.put(4, new RegisterStep5Fragment());
         fragmentMap.put(5, new RegisterWantToSeeFragment());
         fragmentMap.put(6, new RegisterSearchOptionsFragment());
+        fragmentMap.put(7, new ProcessingFragment());
 
         // Log each fragment to check if it's initialized correctly
         for (int i = 0; i < TOTAL_PAGES; i++) {

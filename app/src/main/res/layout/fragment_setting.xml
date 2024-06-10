@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="20dp"
     tools:context=".Fragments.SettingFragment">
 
     <TextView
@@ -111,12 +112,13 @@
             </androidx.cardview.widget.CardView>
         </LinearLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/config_button"
             android:fontFamily="@font/montserrat_bold"
             android:text="Đăng xuất"
+            android:textColor="@color/white"
             android:textAllCaps="false"
             android:textSize="19sp" />
     </LinearLayout>

@@ -13,6 +13,4 @@
     <color name="transparent">#00000000</color>
     <color name="unchecked_color">#eee</color>
     <color name="checked_color">#ccc</color>
-
-
-</resources>
+ </resources>

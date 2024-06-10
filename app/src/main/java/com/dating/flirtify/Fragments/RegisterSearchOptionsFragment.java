@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+
 import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
@@ -19,6 +21,8 @@ public class RegisterSearchOptionsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register_search_options, container, false);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
 
         // Khởi tạo CardView
         cvLover = view.findViewById(R.id.cvLover);
@@ -40,10 +44,10 @@ public class RegisterSearchOptionsFragment extends Fragment {
     private void setupListeners() {
         GradientDrawable backgroundChecked = new GradientDrawable();
         backgroundChecked.setColor(ResourcesCompat.getColor(getResources(), R.color.white, null));
-//        backgroundChecked.setCornerRadius(20);
+        backgroundChecked.setCornerRadius(20);
         GradientDrawable backgroundUnChecked = new GradientDrawable();
         backgroundUnChecked.setColor(ResourcesCompat.getColor(getResources(), R.color.unchecked_color, null));
-//        backgroundUnChecked.setCornerRadius(20);
+        backgroundUnChecked.setCornerRadius(20);
 
         CardView[] cardViews = {cvLover, cvLongTerm, cvAnything, cvNoStringsAttached, cvNewFriends, cvNotSure};
 

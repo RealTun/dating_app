@@ -1,6 +1,7 @@
 package com.dating.flirtify.Fragments;
 
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -26,10 +27,13 @@ public class RegisterStep4Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register_step4, container, false);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
 
         initializeViews(view);
         setupSpinners();
         addSpinnerListeners();
+
 
         return view;
     }

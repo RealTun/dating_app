@@ -1,5 +1,6 @@
 package com.dating.flirtify.Activities;
 
+import android.content.Intent;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.dating.flirtify.Fragments.RegisterStep3Fragment;
@@ -32,7 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         TextView tvAppName = findViewById(R.id.tvAppName);
-        setColorGradient(tvAppName, getResources().getColor(R.color.gradient_top), getResources().getColor(R.color.gradient_center), getResources().getColor(R.color.gradient_bottom));
+        setColorGradient(tvAppName, ResourcesCompat.getColor(getResources(), R.color.gradient_top, null), ResourcesCompat.getColor(getResources(), R.color.gradient_center, null), ResourcesCompat.getColor(getResources(), R.color.gradient_bottom, null));
 
         viewPager = findViewById(R.id.viewPager2);
         nextButton = findViewById(R.id.nextButton);
@@ -103,6 +105,13 @@ public class RegisterActivity extends AppCompatActivity {
 //                        RegisterSearchOptionsFragment registerSearchOptionsFragment = (RegisterSearchOptionsFragment)
                                 adapter.getFragment(currentItem);
                         viewPager.setCurrentItem(currentItem + 1);
+//                        Intent intent = new Intent(RegisterActivity.this, PreviewActivity.class);
+//                        startActivity(intent);
+                        break;
+                    case 7:
+//                        RegisterSearchOptionsFragment registerSearchOptionsFragment = (RegisterSearchOptionsFragment)
+                        adapter.getFragment(currentItem);
+//                        viewPager.setCurrentItem(currentItem + 1);
                         break;
                 }
             }

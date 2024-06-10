@@ -28,7 +28,7 @@
         android:id="@+id/tvCountdownTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="100dp"
         android:fontFamily="@font/montserrat_medium"
         android:text="Đặt mật khẩu của bạn"
         android:textColor="@color/black"
@@ -57,7 +57,7 @@
         android:layout_height="10dp"
         android:layout_marginTop="20dp"
         android:inputType="textPassword"
-        android:src="@drawable/register_step3"
+        android:src="@drawable/register_step_3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

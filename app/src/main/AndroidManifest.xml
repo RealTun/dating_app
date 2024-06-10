@@ -31,6 +31,10 @@
         android:theme="@style/Theme.Flirtify"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".Activities.ProcessBarActivity"
+            android:exported="false" />
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -62,18 +66,15 @@
             android:exported="false" />
         <activity
             android:name=".Activities.ChatActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".Activities.FacebookLoginActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".Activities.RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activities.PreviewActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -81,6 +82,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Activities.PreviewActivity"
+            android:exported="true"></activity>
     </application>
 
 </manifest>

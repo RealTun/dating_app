@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.dating.flirtify.R;
@@ -19,7 +20,7 @@ public class RegisterWantToSeeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register_want_to_see, container, false);
-
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         // Khởi tạo các thành phần giao diện
         tvMale = view.findViewById(R.id.tvMale);
         tvFemale = view.findViewById(R.id.tvFemale);

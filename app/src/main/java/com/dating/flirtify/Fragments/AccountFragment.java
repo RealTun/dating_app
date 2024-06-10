@@ -33,6 +33,13 @@ public class AccountFragment extends Fragment {
     }
 
     private void eventHandler() {
+        btnAccount.setOnClickListener(v -> {
+            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+            SettingProfileFragment settingFragment = new SettingProfileFragment();
+            HeaderFragment headerFragment = (HeaderFragment) fragmentManager.findFragmentById(R.id.fragment_header);
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, settingFragment).addToBackStack(null).commit();
+            headerFragment.setHeaderType(4);
+        });
         btnSetting.setOnClickListener(v -> {
             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
             SettingFragment settingFragment = new SettingFragment();
