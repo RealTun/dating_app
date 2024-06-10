@@ -1,5 +1,6 @@
 package com.dating.flirtify.Fragments;
 
+import android.content.Intent;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.dating.flirtify.Activities.PreviewActivity;
 import com.dating.flirtify.Activities.RegisterActivity;
 import com.dating.flirtify.R;
 
@@ -30,6 +32,8 @@ public class ProcessingFragment extends Fragment {
         getActivity().getWindow().findViewById(R.id.nextButton).setVisibility(View.GONE);
         getActivity().getWindow().findViewById(R.id.tvAppName).setVisibility(View.GONE);
 
+//        Intent intent = new Intent(RegisterActivity.this, PreviewActivity.class);
+//        startActivity(intent);
 
         ProgressBar progressBar = view.findViewById((R.id.progressBar));
         progressBar.getIndeterminateDrawable().setColorFilter(

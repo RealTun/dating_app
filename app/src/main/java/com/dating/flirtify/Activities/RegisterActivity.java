@@ -105,13 +105,10 @@ public class RegisterActivity extends AppCompatActivity {
 //                        RegisterSearchOptionsFragment registerSearchOptionsFragment = (RegisterSearchOptionsFragment)
                                 adapter.getFragment(currentItem);
                         viewPager.setCurrentItem(currentItem + 1);
-//                        Intent intent = new Intent(RegisterActivity.this, PreviewActivity.class);
-//                        startActivity(intent);
                         break;
                     case 7:
 //                        RegisterSearchOptionsFragment registerSearchOptionsFragment = (RegisterSearchOptionsFragment)
                         adapter.getFragment(currentItem);
-//                        viewPager.setCurrentItem(currentItem + 1);
                         break;
                 }
             }
