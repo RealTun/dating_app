@@ -18,14 +18,6 @@ public interface ApiService {
     Call<User> register(@Body User user);
 
     @POST("login")
-    Call<User> login(@Body User user);
-
-    @POST("logout")
-    Call<User> logout(@Header("Authorization") String accessToken);
-
-    @GET("user")
-    Call<User> getUser(@Header("Authorization") String accessToken);
-
     // interest
 //    @GET("interest-type")
 //    Call<List<InterestType>> getInterestTypes(@Header("Authorization") String accessToken);

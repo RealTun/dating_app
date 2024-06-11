@@ -73,6 +73,9 @@ public class MatcherFragment extends Fragment {
                         Log.d("dcmm", "vl2");
                     }
                 }
+                if(response.code() == 200){
+
+                }
             }
 
             @Override
