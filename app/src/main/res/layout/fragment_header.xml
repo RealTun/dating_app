@@ -33,10 +33,12 @@
 
         <LinearLayout
             android:id="@+id/ln_wrapper"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
             <TextView
+                android:id="@+id/tv_fullname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -47,6 +49,7 @@
                 android:textSize="24sp" />
 
             <TextView
+                android:id="@+id/tv_age"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -63,9 +66,9 @@
         android:id="@+id/ib_filter"
         android:layout_width="50dp"
         android:layout_height="match_parent"
+        android:backgroundTint="@android:color/transparent"
         android:contentDescription="headerFilter"
         android:padding="4dp"
-        android:backgroundTint="@android:color/transparent"
         android:src="@drawable/filter" />
 
     <ImageButton

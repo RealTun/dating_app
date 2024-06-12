@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,17 +18,19 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.dating.flirtify.Adapters.CardStackAdapter;
 import com.dating.flirtify.Fragments.HeaderFragment;
 import com.dating.flirtify.Fragments.MatcherFragment;
 import com.dating.flirtify.Fragments.PreviewFragment;
 import com.dating.flirtify.Fragments.AccountFragment;
 import com.dating.flirtify.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 
 public class PreviewActivity extends AppCompatActivity {
 
     private BottomNavigationView footerWrapper;
-    private ImageButton ibArrowDown, ibArrowUp;
+    private ImageButton ibArrowDown;
     private ConstraintLayout headerWrapper, mConstraintLayout;
     private LinearLayout bottomCardWrapper, layoutSpacer;
 
@@ -65,13 +68,22 @@ public class PreviewActivity extends AppCompatActivity {
         HeaderFragment headerFragment = (HeaderFragment) fragmentManager.findFragmentById(R.id.fragment_header);
         headerFragment.setHeaderType(1);
 
-        ibArrowDown.setOnClickListener(v -> {
-            ibArrowUp = findViewById(R.id.ib_arrow_up);
 
-            ibArrowUp.setVisibility(View.VISIBLE);
+        ibArrowDown.setOnClickListener(v -> {
             footerWrapper.setVisibility(View.VISIBLE);
             headerWrapper.setVisibility(View.VISIBLE);
 
+            CardStackLayoutManager manager = previewFragment.getManager();
+            manager.setCanScrollHorizontal(true);
+            manager.setCanScrollVertical(true);
+
+            CardStackAdapter adapter = previewFragment.getCardStackAdapter();
+            CardStackAdapter.ViewHolder currentViewHolder = previewFragment.getCurrentViewHolder();
+            if (currentViewHolder != null) {
+                currentViewHolder.ibArrowUp.setVisibility(View.VISIBLE);
+                currentViewHolder.infoWrapper.setVisibility(View.VISIBLE);
+                adapter.notifyItemChanged(currentViewHolder.getAdapterPosition());
+            }
 
             ObjectAnimator animator = ObjectAnimator.ofFloat(bottomCardWrapper, "translationY", 125f, 0f);
             animator.setDuration(300);

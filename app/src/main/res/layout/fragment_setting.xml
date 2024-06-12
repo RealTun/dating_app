@@ -51,7 +51,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_edit"
-                android:inputType="textPassword" />
+                android:inputType="numberPassword"
+                android:maxLength="4" />
         </LinearLayout>
 
         <LinearLayout
@@ -95,7 +96,7 @@
                 android:textColor="@color/text_color"
                 android:textSize="22sp" />
 
-            <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
@@ -118,8 +119,8 @@
             android:background="@drawable/config_button"
             android:fontFamily="@font/montserrat_bold"
             android:text="Đăng xuất"
-            android:textColor="@color/white"
             android:textAllCaps="false"
+            android:textColor="@color/white"
             android:textSize="19sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

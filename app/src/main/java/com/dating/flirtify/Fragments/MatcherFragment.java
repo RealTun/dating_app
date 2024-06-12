@@ -34,7 +34,7 @@ public class MatcherFragment extends Fragment {
     private ListView listView;
     private MatcherAdapter matcherAdapter;
     private MatcherMessageAdapter messageAdapter;
-    private ArrayList<MatcherResponse> matchers = new ArrayList<>();
+    private final ArrayList<MatcherResponse> matchers = new ArrayList<>();
     private ProgressBar processBar1, processBar2;
 
     @Override
@@ -56,7 +56,7 @@ public class MatcherFragment extends Fragment {
         return view;
     }
 
-    private void getMatchers(){
+    private void getMatchers() {
         String accessToken = "Bearer " + "2|xB7YKMGNrtVe8JqhpPQYc28ymFNav2kqWglXW61d55e976a5";
         apiService = ApiClient.getClient();
         Call<ArrayList<MatcherResponse>> call = apiService.getMatchers(accessToken);
@@ -65,12 +65,9 @@ public class MatcherFragment extends Fragment {
             public void onResponse(Call<ArrayList<MatcherResponse>> call, Response<ArrayList<MatcherResponse>> response) {
                 if (response.isSuccessful()) {
                     ArrayList<MatcherResponse> arrMatcher = response.body();
-                    if(arrMatcher != null){
+                    if (arrMatcher != null) {
                         matchers.addAll(arrMatcher);
                         updateUIWithMatchers(matchers);
-                    }
-                    else {
-                        Log.d("dcmm", "vl2");
                     }
                 }
             }
@@ -87,7 +84,7 @@ public class MatcherFragment extends Fragment {
         messageAdapter = new MatcherMessageAdapter(getActivity(), R.layout.message_items, matchers);
         recyclerView.setAdapter(matcherAdapter);
         listView.setAdapter(messageAdapter);
-        if(matchers.size() >= 7){
+        if (matchers.size() >= 7) {
             listView.setTranscriptMode(0);
         }
         processBar1.setVisibility(View.GONE);

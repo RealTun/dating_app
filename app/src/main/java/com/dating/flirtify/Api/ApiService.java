@@ -1,9 +1,11 @@
 package com.dating.flirtify.Api;
 
 import com.dating.flirtify.Models.Responses.MatcherResponse;
+import com.dating.flirtify.Models.Responses.UserResponse;
 import com.dating.flirtify.Models.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -53,8 +55,8 @@ public interface ApiService {
 //    Call<Void> deleteUserRelationship(@Header("Authorization") String accessToken, @Path("id") int id);
 
     // Connect routes
-//    @GET("users-connect")
-//    Call<List<User>> getUserToConnect(@Header("Authorization") String accessToken);
+    @GET("users-connect-no")
+    Call<ArrayList<UserResponse>> getUserToConnect(@Header("Authorization") String accessToken);
 
     // Matcher routes
     @GET("matchers")
