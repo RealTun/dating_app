@@ -13,7 +13,6 @@ import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -31,7 +30,7 @@ public class ProcessingFragment extends Fragment {
         TextView tvAppName = view.findViewById(R.id.tvAppName);
         setColorGradient(tvAppName, getResources().getColor(R.color.gradient_top), getResources().getColor(R.color.gradient_center), getResources().getColor(R.color.gradient_bottom));
 
-        getActivity().getWindow().findViewById(R.id.nextButton).setVisibility(View.GONE);
+        getActivity().getWindow().findViewById(R.id.btnLogin).setVisibility(View.GONE);
         getActivity().getWindow().findViewById(R.id.tvAppName).setVisibility(View.GONE);
 
 //        Intent intent = new Intent(RegisterActivity.this, PreviewActivity.class);

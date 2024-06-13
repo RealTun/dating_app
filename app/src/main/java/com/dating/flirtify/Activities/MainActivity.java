@@ -17,6 +17,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.dating.flirtify.R;
+import com.dating.flirtify.Services.SessionManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +35,17 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Kiểm tra xem có phiên đăng nhập hay không
+        SessionManager sessionManager = new SessionManager(this);
+        String accessToken = sessionManager.getAccessToken();
+
+        if (accessToken != null && !accessToken.isEmpty()) {
+            // Nếu có access token, chuyển đến màn hình chính
+            Intent intent = new Intent(MainActivity.this, PreviewActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         TextView tvAppName = findViewById(R.id.tvAppName);
         setColorGradient(tvAppName, getResources().getColor(R.color.gradient_top), getResources().getColor(R.color.gradient_center), getResources().getColor(R.color.gradient_bottom));

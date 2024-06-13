@@ -1,6 +1,5 @@
 package com.dating.flirtify.Activities;
 
-import android.content.Intent;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
 import android.os.Bundle;
@@ -18,7 +17,6 @@ import com.dating.flirtify.Fragments.RegisterStep4Fragment;
 import com.dating.flirtify.Fragments.RegisterStep5Fragment;
 import com.dating.flirtify.Fragments.RegisterWantToSeeFragment;
 import com.dating.flirtify.R;
-import com.dating.flirtify.Fragments.RegisterSearchOptionsFragment;
 import com.dating.flirtify.Fragments.RegisterStep1Fragment;
 import com.dating.flirtify.Fragments.RegisterStep2Fragment;
 import com.dating.flirtify.Adapters.ViewPagerAdapter;
@@ -37,7 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
         setColorGradient(tvAppName, ResourcesCompat.getColor(getResources(), R.color.gradient_top, null), ResourcesCompat.getColor(getResources(), R.color.gradient_center, null), ResourcesCompat.getColor(getResources(), R.color.gradient_bottom, null));
 
         viewPager = findViewById(R.id.viewPager2);
-        nextButton = findViewById(R.id.nextButton);
+        nextButton = findViewById(R.id.btnLogin);
         adapter = new ViewPagerAdapter(this);
         viewPager.setAdapter(adapter);
         viewPager.setUserInputEnabled(false);

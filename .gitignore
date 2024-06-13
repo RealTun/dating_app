@@ -31,3 +31,6 @@ app/google-services.json
 
 # Android Profiling
 *.hprof
+
+#java file
+app/src/main/java/com/dating/flirtify/Api/ApiClient.java
