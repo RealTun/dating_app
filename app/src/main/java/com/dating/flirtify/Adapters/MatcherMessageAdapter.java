@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.dating.flirtify.Models.Responses.MatcherResponse;
 import com.dating.flirtify.R;
 
@@ -61,6 +62,7 @@ public class MatcherMessageAdapter extends BaseAdapter {
         MatcherResponse matcher = matchers.get(position);
         Glide.with(context)
                 .load(matcher.getImageUrl())
+                .apply(RequestOptions.circleCropTransform())
                 .into(holder.ivMatcher);
         holder.tvName.setText(matcher.getFullname());
         holder.tvMessage.setText(matcher.getLast_message());

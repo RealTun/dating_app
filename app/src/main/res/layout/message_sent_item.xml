@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="end"
+    android:orientation="horizontal"
+    android:layout_marginTop="5dp"
+    android:padding="5dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="5dp"
+            android:background="@drawable/rounded_background"
+            android:fontFamily="@font/montserrat_regular"
+            android:textSize="15sp"
+            android:layout_gravity="center_vertical"
+            android:maxWidth="300dp"
+            android:text="Hello, how are you?" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="5dp">
+
+            <TextView
+                android:id="@+id/text_timesent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/darker_gray"
+                android:fontFamily="@font/montserrat_regular"
+                android:paddingStart="5dp"
+                android:textSize="11sp"
+                android:layout_gravity="end|bottom"
+                android:text="Monday 19'15" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

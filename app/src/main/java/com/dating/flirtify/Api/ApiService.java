@@ -1,6 +1,8 @@
 package com.dating.flirtify.Api;
 
+import com.dating.flirtify.Models.Requests.MessageRequest;
 import com.dating.flirtify.Models.Responses.MatcherResponse;
+import com.dating.flirtify.Models.Responses.MessageResponse;
 import com.dating.flirtify.Models.User;
 
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface ApiService {
     // auth
@@ -71,5 +74,13 @@ public interface ApiService {
 //    Call<Void> storeUserPhotos(@Header("Authorization") String accessToken, @Body Photo photo);
 
     // Chat routes
+//    @GET("/chat")
+//    Call<List<Message>> getChats();
+
+    @GET("chat/messages/{receiver_id}")
+    Call<ArrayList<MessageResponse>> getMessages(@Header("Authorization") String accessToken, @Path("receiver_id") int receiverId);
+
+    @POST("chat/send")
+    Call<MessageResponse> sendMessage(@Header("Authorization") String accessToken, @Body MessageRequest messageRequest);
 }
 

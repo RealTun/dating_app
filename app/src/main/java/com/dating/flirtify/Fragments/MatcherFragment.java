@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -50,6 +51,7 @@ public class MatcherFragment extends Fragment {
 
         listView.setOnItemClickListener((parent, view1, position, id) -> {
             Intent intent = new Intent(getActivity(), ChatActivity.class);
+            intent.putExtra("matcher", matchers.get(position));
             startActivity(intent);
         });
 
@@ -57,7 +59,7 @@ public class MatcherFragment extends Fragment {
     }
 
     private void getMatchers(){
-        String accessToken = "Bearer " + "2|xB7YKMGNrtVe8JqhpPQYc28ymFNav2kqWglXW61d55e976a5";
+        String accessToken = "Bearer " + "4|NafQWwMlpEvjiuvoNXxoZLy4rv4qKM5RSKvGV0vme622f716";
         apiService = ApiClient.getClient();
         Call<ArrayList<MatcherResponse>> call = apiService.getMatchers(accessToken);
         call.enqueue(new Callback<ArrayList<MatcherResponse>>() {
@@ -72,6 +74,9 @@ public class MatcherFragment extends Fragment {
                     else {
                         Log.d("dcmm", "vl2");
                     }
+                }
+                else if (response.code() == 401) {
+                    Toast.makeText(getActivity(),response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -92,5 +97,6 @@ public class MatcherFragment extends Fragment {
         }
         processBar1.setVisibility(View.GONE);
         processBar2.setVisibility(View.GONE);
+        this.matchers = matchers;
     }
 }

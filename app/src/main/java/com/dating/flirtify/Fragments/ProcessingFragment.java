@@ -7,6 +7,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +42,17 @@ public class ProcessingFragment extends Fragment {
                 getResources().getColor(R.color.gradient_bottom),
                 android.graphics.PorterDuff.Mode.SRC_IN
         );
+
+        // Create a Handler to hide the ProgressBar after 3000ms
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Hide the ProgressBar
+                progressBar.setVisibility(View.GONE);
+                Intent intent = new Intent(getActivity(), PreviewActivity.class);
+                startActivity(intent);
+            }
+        }, 2000);
 
         return view;
     }

@@ -64,6 +64,8 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
 
+    // pusher event
+    implementation("com.pusher:pusher-java-client:2.4.2")
 
     // JavaMail
     implementation("com.sun.mail:android-mail:1.6.7")

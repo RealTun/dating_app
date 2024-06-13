@@ -1,6 +1,8 @@
 package com.dating.flirtify.Models.Responses;
 
-public class MatcherResponse {
+import java.io.Serializable;
+
+public class MatcherResponse implements Serializable {
     private int matcher_id;
     private int match_id;
     private String fullname;
