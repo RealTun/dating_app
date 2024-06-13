@@ -113,13 +113,14 @@
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnLogout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/config_button"
             android:fontFamily="@font/montserrat_bold"
             android:text="Đăng xuất"
-            android:textColor="@color/white"
             android:textAllCaps="false"
+            android:textColor="@color/white"
             android:textSize="19sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

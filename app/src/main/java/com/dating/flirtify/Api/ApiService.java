@@ -1,5 +1,7 @@
 package com.dating.flirtify.Api;
 
+import com.dating.flirtify.Models.Requests.LoginRequest;
+import com.dating.flirtify.Models.Responses.LoginResponse;
 import com.dating.flirtify.Models.Responses.MatcherResponse;
 import com.dating.flirtify.Models.User;
 
@@ -18,10 +20,15 @@ public interface ApiService {
     Call<User> register(@Body User user);
 
     @POST("login")
+    Call<LoginResponse> login(@Body LoginRequest loginRequest);
+
+    @POST("logout")
+    Call<Void> logout(@Header("Authorization") String accessToken);
+
     // interest
 //    @GET("interest-type")
 //    Call<List<InterestType>> getInterestTypes(@Header("Authorization") String accessToken);
-
+//
 //    @GET("interest-type/user")
 //    Call<List<UserInterest>> getInterestByUser(@Header("Authorization") String accessToken);
 
