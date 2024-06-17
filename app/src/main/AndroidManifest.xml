@@ -2,92 +2,97 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <!-- Thêm các quyền cần thiết -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" /> <!-- Cập nhật quyền lưu trữ cho Android 14+ -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Cho phép ứng dụng truy cập Internet -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" /> <!-- Cho phép truy cập hình ảnh -->
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" /> <!-- Cho phép truy cập âm thanh -->
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" /> <!-- Cho phép truy cập video -->
+    <!-- Cập nhật quyền lưu trữ cho Android 14+ -->
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" /> <!-- Các tính năng và quyền khác -->
+        android:maxSdkVersion="32" /> <!-- Quyền truy cập bộ nhớ ngoài, dành cho Android 32 trở xuống -->
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" /> <!-- Cho phép truy cập thông tin vị trí của tệp phương tiện -->
+    <!-- Các tính năng và quyền khác -->
     <uses-feature
         android:name="android.hardware.telephony"
-        android:required="false" />
+        android:required="false" /> <!-- Xác định rằng ứng dụng không yêu cầu thiết bị có chức năng điện thoại -->
 
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
+    <queries>
+        <package android:name="com.facebook.katana" /> <!-- Cho phép truy vấn ứng dụng Facebook -->
+    </queries>
 
     <application
         android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/logo"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/logo"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.Flirtify"
-        android:usesCleartextTraffic="true"
-        tools:targetApi="31">
+    android:dataExtractionRules="@xml/data_extraction_rules"
+    android:fullBackupContent="@xml/backup_rules"
+    android:icon="@mipmap/logo"
+    android:label="@string/app_name"
+    android:roundIcon="@mipmap/logo"
+    android:supportsRtl="true"
+    android:theme="@style/Theme.Flirtify"
+    android:usesCleartextTraffic="true"
+    tools:targetApi="31">
 
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-        <meta-data
-            android:name="com.facebook.sdk.ClientToken"
-            android:value="@string/facebook_client_token" />
+    <!-- Cấu hình Facebook SDK -->
+    <meta-data
+        android:name="com.facebook.sdk.ApplicationId"
+        android:value="@string/facebook_app_id" /> <!-- ID ứng dụng Facebook -->
+    <meta-data
+        android:name="com.facebook.sdk.ClientToken"
+        android:value="@string/facebook_client_token" /> <!-- Token khách hàng Facebook -->
 
-        <!-- Facebook Login-->
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name" />
-        <activity
-            android:name="com.facebook.CustomTabActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+    <!-- Facebook Login Activity -->
+    <activity
+        android:name="com.facebook.FacebookActivity"
+        android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+        android:label="@string/app_name" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+    <!-- Facebook Custom Tab Activity -->
+    <activity
+        android:name="com.facebook.CustomTabActivity"
+        android:exported="true">
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="@string/fb_login_protocol_scheme" /> <!-- Scheme cho Facebook login -->
+        </intent-filter>
+    </activity>
 
-                <data android:scheme="@string/fb_login_protocol_scheme" />
-            </intent-filter>
-        </activity>
+    <!-- MainActivity -->
+    <activity
+        android:name=".Activities.MainActivity"
+        android:exported="true">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" /> <!-- Định nghĩa MainActivity là activity khởi động -->
+        </intent-filter>
+    </activity>
 
+    <!-- LoginActivity -->
+    <activity
+        android:name=".Activities.LoginActivity"
+        android:exported="false" /> <!-- LoginActivity không được phép xuất bản -->
 
+    <!-- ChatActivity -->
+    <activity
+        android:name=".Activities.ChatActivity"
+        android:exported="false" /> <!-- ChatActivity không được phép xuất bản -->
 
-        <activity
-            android:name=".Activities.MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+    <!-- FacebookLoginActivity -->
+    <activity
+        android:name=".Activities.FacebookLoginActivity"
+        android:exported="false" /> <!-- FacebookLoginActivity không được phép xuất bản -->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+    <!-- RegisterActivity -->
+    <activity
+        android:name=".Activities.RegisterActivity"
+        android:exported="false" /> <!-- RegisterActivity không được phép xuất bản -->
 
-        <activity
-            android:name=".Activities.LoginActivity"
-            android:exported="false" />
+    <!-- PreviewActivity -->
+    <activity
+        android:name=".Activities.PreviewActivity"
+        android:exported="true" /> <!-- PreviewActivity được phép xuất bản -->
 
-        <activity
-            android:name=".Activities.ChatActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".Activities.FacebookLoginActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".Activities.RegisterActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".Activities.PreviewActivity"
-            android:exported="true" />
-    </application>
+</application>
 
 </manifest>

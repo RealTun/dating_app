@@ -56,10 +56,6 @@ dependencies {
     // Library UI Android
     implementation("com.makeramen:roundedimageview:2.3.0")
 
-    // Firebase
-//    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
-//    implementation("com.google.firebase:firebase-storage")
-
     // Glide load image online
     implementation("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
@@ -70,8 +66,9 @@ dependencies {
     implementation("com.sun.mail:android-activation:1.6.7")
 
     // Facebook login
+    implementation ("com.facebook.android:facebook-android-sdk:[8,9)")
     implementation("com.facebook.android:facebook-login:latest.release")
-    implementation("com.facebook.android:facebook-android-sdk:latest.release")
+//    implementation("com.facebook.android:facebook-android-sdk:latest.release")
 
     // api
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

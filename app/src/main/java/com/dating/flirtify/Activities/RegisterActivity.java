@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.TextPaint;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +26,7 @@ public class RegisterActivity extends AppCompatActivity {
     private ViewPager2 viewPager;
     private Button nextButton;
     private ViewPagerAdapter adapter;
+    ImageView ivStep;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         viewPager = findViewById(R.id.viewPager2);
         nextButton = findViewById(R.id.btnLogin);
+        ivStep = findViewById(R.id.ivStep);
         adapter = new ViewPagerAdapter(this);
         viewPager.setAdapter(adapter);
         viewPager.setUserInputEnabled(false);
@@ -46,6 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
                 int currentItem = viewPager.getCurrentItem();
                 switch (currentItem) {
                     case 0:
+                        ivStep.setImageResource(R.drawable.register_step_2);
                         RegisterStep1Fragment step1Fragment = (RegisterStep1Fragment) adapter.getFragment(currentItem);
 //                        if (step1Fragment != null) {
 //                            String email = step1Fragment.getEmail();
@@ -58,6 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
                         nextButton.setText("Xác nhận");
                         break;
                     case 1:
+                        ivStep.setImageResource(R.drawable.register_step_3);
                         RegisterStep2Fragment step2Fragment = (RegisterStep2Fragment) adapter.getFragment(currentItem);
 //                        if (step2Fragment != null) {
 //                            if (step2Fragment.isOTPValid()) {
@@ -68,6 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
                         nextButton.setText("Tiếp tục");
                         break;
                     case 2:
+                        ivStep.setImageResource(R.drawable.register_step_4);
                         RegisterStep3Fragment step3Fragment = (RegisterStep3Fragment) adapter.getFragment(currentItem);
 //                        if (step3Fragment != null) {
 //                            if (step3Fragment.areFieldsValid()) {
@@ -76,9 +82,9 @@ public class RegisterActivity extends AppCompatActivity {
 //                            }
 //                        }
                         viewPager.setCurrentItem(currentItem + 1);
-
                         break;
                     case 3:
+                        ivStep.setImageResource(R.drawable.register_step_5);
                         RegisterStep4Fragment step4Fragment = (RegisterStep4Fragment) adapter.getFragment(currentItem);
 //                        if (step4Fragment != null) {
 //                            if (step4Fragment.validateFields()) {
@@ -91,20 +97,24 @@ public class RegisterActivity extends AppCompatActivity {
                         viewPager.setCurrentItem(currentItem + 1);
                         break;
                     case 4:
-                        RegisterStep5Fragment step5Fragment = (RegisterStep5Fragment) adapter.getFragment(currentItem);
-                        nextButton.setText("Tiếp theo");
-                        viewPager.setCurrentItem(currentItem + 1);
-                        break;
-                    case 5:
+                        ivStep.setImageResource(R.drawable.register_step_6);
+
                         RegisterWantToSeeFragment wantToSeeFragment = (RegisterWantToSeeFragment) adapter.getFragment(currentItem);
                         viewPager.setCurrentItem(currentItem + 1);
                         break;
-                    case 6:
+                    case 5:
+                        ivStep.setImageResource(R.drawable.register_step_7);
+
 //                        RegisterSearchOptionsFragment registerSearchOptionsFragment = (RegisterSearchOptionsFragment)
-                                adapter.getFragment(currentItem);
+                        adapter.getFragment(currentItem);
                         viewPager.setCurrentItem(currentItem + 1);
 //                        Intent intent = new Intent(RegisterActivity.this, PreviewActivity.class);
 //                        startActivity(intent);
+                        break;
+                    case 6:
+                        RegisterStep5Fragment step5Fragment = (RegisterStep5Fragment) adapter.getFragment(currentItem);
+                        nextButton.setText("Tiếp theo");
+                        viewPager.setCurrentItem(currentItem + 1);
                         break;
                     case 7:
 //                        RegisterSearchOptionsFragment registerSearchOptionsFragment = (RegisterSearchOptionsFragment)

@@ -1,6 +1,5 @@
 package com.dating.flirtify.Activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,7 +7,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -19,13 +17,13 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.facebook.FacebookSdk;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
@@ -34,129 +32,112 @@ public class FacebookLoginActivity extends AppCompatActivity {
 
     private static final String TAG = "FacebookLoginActivity";
     private CallbackManager callbackManager;
+    private static final String FIELDS = "id,name,email,birthday,friends,picture.type(large),location";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        setupEdgeToEdgeMode();
         setContentView(R.layout.activity_facebook_login);
+        setupWindowInsets();
 
-        // Khởi tạo Facebook SDK
-        try {
-            FacebookSdk.sdkInitialize(getApplicationContext());
-        } catch (Exception e) {
-            showErrorDialog("Error", e.getMessage());
-        }
+        // Initialize Facebook SDK
+        FacebookSdk.setApplicationId(getString(R.string.facebook_app_id));
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
 
+        // Đăng nhập với các quyền cần thiết
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email", "user_birthday", "user_friends", "user_photos", "user_location"));
 
+        // Callback registration
+        registerFacebookCallback();
+    }
+
+    private void setupEdgeToEdgeMode() {
+        EdgeToEdge.enable(this);
+    }
+
+    private void setupWindowInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
 
-        callbackManager = CallbackManager.Factory.create();
-
-        // Yêu cầu quyền đọc từ Facebook
-        try{
-            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
-
-//            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email", "public_profile"));
-        } catch (Exception e) {
-            showErrorDialog("Error", e.getMessage());
-        }
-
-        // Đăng ký callback cho quá trình đăng nhập Facebook
+    private void registerFacebookCallback() {
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                // Xử lý thành công đăng nhập
-//                AccessToken accessToken = loginResult.getAccessToken();
-//                // Gọi phương thức để xử lý access token hoặc chuyển đến màn hình tiếp theo
-//                handleFacebookAccessToken(accessToken);
+                Log.d(TAG, "Facebook Login Success");
+                GraphRequest request = new GraphRequest(
+                        loginResult.getAccessToken(),
+                        "/me?fields=" + FIELDS,
+                        null,
+                        HttpMethod.GET,
+                        response -> {
+                            if (response.getError() == null) {
+                                JSONObject userInfo = response.getJSONObject();
+                                String userName = userInfo.optString("name");
+                                String userEmail = userInfo.optString("email");
+                                String userBirthday = userInfo.optString("birthday");
+                                JSONObject friends = userInfo.optJSONObject("friends");
+                                String userLocation = userInfo.optString("location");
+                                String profilePictureUrl = userInfo.optJSONObject("picture").optJSONObject("data").optString("url");
 
-                Toast.makeText(FacebookLoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                AccessToken accessToken = loginResult.getAccessToken();
-                getUserProfileAndShowDialog(accessToken);
+                                // Tiến hành xử lý các thông tin thu thập được
+                                Log.d(TAG, "User Name: " + userName);
+                                Log.d(TAG, "User Email: " + userEmail);
+                                Log.d(TAG, "User Birthday: " + userBirthday);
+                                Log.d(TAG, "User Location: " + userLocation);
+                                Log.d(TAG, "Profile Picture URL: " + profilePictureUrl);
 
+                                // Xử lý dữ liệu bạn muốn, ví dụ chuyển sang Activity khác
+                                Intent intent = new Intent(FacebookLoginActivity.this, PreviewActivity.class);
+                                intent.putExtra("userName", userName);
+                                intent.putExtra("userEmail", userEmail);
+                                intent.putExtra("userBirthday", userBirthday);
+                                if (friends != null) {
+                                    intent.putExtra("userFriends", friends.toString());
+                                }
+                                intent.putExtra("userLocation", userLocation);
+                                intent.putExtra("profilePictureUrl", profilePictureUrl);
+                                startActivity(intent);
+                            } else {
+                                Log.e(TAG, "Graph Request Error: " + response.getError().getErrorMessage());
+                                // Xử lý lỗi khi tải dữ liệu
+                                runOnUiThread(() -> Toast.makeText(FacebookLoginActivity.this, "Failed to fetch user data", Toast.LENGTH_SHORT).show());
+                            }
+                        }
+                );
+
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", FIELDS);
+                request.setParameters(parameters);
+                request.executeAsync();
             }
 
             @Override
             public void onCancel() {
-                // Xử lý khi người dùng huỷ đăng nhập
-                Toast.makeText(FacebookLoginActivity.this, "Fail", Toast.LENGTH_SHORT).show();
-
+                Log.d(TAG, "Facebook Login Canceled");
+                runOnUiThread(() -> Toast.makeText(FacebookLoginActivity.this, "Login Canceled", Toast.LENGTH_SHORT).show());
+                Intent intent = new Intent(FacebookLoginActivity.this, MainActivity.class);
+                startActivity(intent);
             }
 
             @Override
             public void onError(FacebookException exception) {
-                // Xử lý khi có lỗi xảy ra trong quá trình đăng nhập
-                Toast.makeText(FacebookLoginActivity.this, "Bug", Toast.LENGTH_SHORT).show();
-
+                Log.e(TAG, "Facebook Login Error: " + exception.getMessage());
+                runOnUiThread(() -> Toast.makeText(FacebookLoginActivity.this, "Login Error", Toast.LENGTH_SHORT).show());
+                Intent intent = new Intent(FacebookLoginActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
     }
 
-    private void showErrorDialog(String title, String message) {
-        new AlertDialog.Builder(this)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
-                .show();
-    }
-
-    // Phương thức onActivityResult để nhận kết quả từ quá trình đăng nhập Facebook
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
-
-    // Phương thức xử lý access token hoặc chuyển đến màn hình tiếp theo
-    private void handleFacebookAccessToken(AccessToken accessToken) {
-        // Xử lý access token, ví dụ: gửi access token cho server để xác thực
-        Log.d(TAG, "handleFacebookAccessToken:" + accessToken);
-
-        // Chuyển đến màn hình chính của ứng dụng
-        Intent intent = new Intent(FacebookLoginActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish(); // Kết thúc activity hiện tại
-    }
-
-    private void getUserProfileAndShowDialog(AccessToken accessToken) {
-        GraphRequest request = GraphRequest.newMeRequest(
-                accessToken,
-                new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
-                        // Xử lý kết quả JSON chứa thông tin người dùng
-                        try {
-                            String userId = object.getString("id");
-                            String userName = object.getString("name");
-                            // Hiển thị thông tin người dùng trong dialog
-                            showDialogWithUserInfo(userId, userName);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name"); // Thêm các trường thông tin cần lấy
-        request.setParameters(parameters);
-        request.executeAsync();
-    }
-
-    private void showDialogWithUserInfo(String userId, String userName) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("User Info");
-        builder.setMessage("User ID: " + userId + "\nUser Name: " + userName);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.show();
-    }
-
 }
