@@ -50,4 +50,16 @@ public class RegisterWantToSeeFragment extends Fragment {
         tvFemale.setBackground(ResourcesCompat.getDrawable(getResources(), femaleSelected ? R.drawable.config_checked_button : R.drawable.config_unchecked_button, null));
         tvPeople.setBackground(ResourcesCompat.getDrawable(getResources(), peopleSelected ? R.drawable.config_checked_button : R.drawable.config_unchecked_button, null));
     }
+
+    public int getLookingFor() {
+        if (isMale) {
+            return 0;
+        } else if (isFemale) {
+            return 1;
+        } else if (isPeople) {
+            return 2;
+        } else {
+            return -1;
+        }
+    }
 }

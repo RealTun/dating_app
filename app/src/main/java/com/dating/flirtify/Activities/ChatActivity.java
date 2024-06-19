@@ -3,12 +3,10 @@ package com.dating.flirtify.Activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,12 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.dating.flirtify.Api.ApiClient;
 import com.dating.flirtify.Api.ApiService;
-import com.dating.flirtify.Models.User;
 import com.dating.flirtify.R;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ChatActivity extends AppCompatActivity {
     EditText etMessage;

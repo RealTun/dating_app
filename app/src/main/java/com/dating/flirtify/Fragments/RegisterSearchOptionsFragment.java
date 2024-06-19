@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+
 import com.dating.flirtify.R;
 
 public class RegisterSearchOptionsFragment extends Fragment {
@@ -88,5 +89,23 @@ public class RegisterSearchOptionsFragment extends Fragment {
 
     private void resetStates() {
         isLover = isLongTerm = isAnything = isNoStringsAttached = isNewFriends = isNotSure = false;
+    }
+
+    public int getRelationshipType() {
+        if (isLover) {
+            return 1;
+        } else if (isNewFriends) {
+            return 2;
+        } else if (isLongTerm) {
+            return 6;
+        } else if (isAnything) {
+            return 3;
+        } else if (isNoStringsAttached) {
+            return 5;
+        } else if (isNotSure) {
+            return 4;
+        } else {
+            return 0;
+        }
     }
 }

@@ -1,6 +1,8 @@
-package com.dating.flirtify.Models;
+package com.dating.flirtify.Models.Requests;
 
-public class User {
+import java.util.Date;
+
+public class RegisterRequest {
     private String email;
     private String pw;
     private String fullname;
@@ -11,7 +13,7 @@ public class User {
     private int relationship_type;
     private String location;
 
-    public User() {
+    public RegisterRequest() {
     }
 
     public String getEmail() {

@@ -211,9 +211,9 @@ public class RegisterStep4Fragment extends Fragment {
         return name;
     }
 
-    public String getGender() {
-        String gender = genderSpinner.getSelectedItem().toString();
-        return gender;
+    public int getGender() {
+        String selectedItem = genderSpinner.getSelectedItem().toString();
+        return (selectedItem.equals("Nam")) ? 1 : 0;
     }
 
     public Date getDateOfBirth() {

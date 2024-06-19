@@ -5,7 +5,6 @@
     <string-array name="genders">
         <item>Nam</item>
         <item>Nữ</item>
-        <item>Khác</item>
     </string-array>
     <string-array name="months">
         <item>Tháng 1</item>

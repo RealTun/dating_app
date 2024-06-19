@@ -18,12 +18,8 @@ import com.dating.flirtify.Api.ApiClient;
 import com.dating.flirtify.Api.ApiService;
 import com.dating.flirtify.Models.Requests.LoginRequest;
 import com.dating.flirtify.Models.Responses.LoginResponse;
-import com.dating.flirtify.Models.User;
 import com.dating.flirtify.R;
 import com.dating.flirtify.Services.SessionManager;
-import com.google.gson.Gson;
-
-import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
