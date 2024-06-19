@@ -64,36 +64,37 @@
     <activity
         android:name=".Activities.MainActivity"
         android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" /> <!-- Định nghĩa MainActivity là activity khởi động -->
-        </intent-filter>
     </activity>
 
     <!-- LoginActivity -->
     <activity
         android:name=".Activities.LoginActivity"
-        android:exported="false" /> <!-- LoginActivity không được phép xuất bản -->
+        android:exported="false" />
 
     <!-- ChatActivity -->
     <activity
         android:name=".Activities.ChatActivity"
-        android:exported="false" /> <!-- ChatActivity không được phép xuất bản -->
+        android:exported="false" />
 
     <!-- FacebookLoginActivity -->
     <activity
         android:name=".Activities.FacebookLoginActivity"
-        android:exported="false" /> <!-- FacebookLoginActivity không được phép xuất bản -->
+        android:exported="false" />
 
     <!-- RegisterActivity -->
     <activity
         android:name=".Activities.RegisterActivity"
-        android:exported="false" /> <!-- RegisterActivity không được phép xuất bản -->
+        android:exported="false" />
 
     <!-- PreviewActivity -->
     <activity
         android:name=".Activities.PreviewActivity"
-        android:exported="true" /> <!-- PreviewActivity được phép xuất bản -->
+        android:exported="true" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
 
 </application>
 
