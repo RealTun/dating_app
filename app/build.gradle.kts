@@ -64,6 +64,11 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
 
+    // notification
+//    implementation("com.android.support:appcompat-v7:28.0.0")
+//    implementation("com.android.support:support-compat:28.0.0")
+
+
     // pusher event
     implementation("com.pusher:pusher-java-client:2.4.2")
 

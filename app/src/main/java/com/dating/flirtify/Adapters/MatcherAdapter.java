@@ -20,6 +20,7 @@ public class MatcherAdapter extends RecyclerView.Adapter<MatcherAdapter.ViewHold
     Activity context;
     int idLayout;
     ArrayList<MatcherResponse> arrMatcher;
+    OnItemClickListener listener;
 
     public MatcherAdapter(Activity _context, int _idLayout, ArrayList<MatcherResponse> _arrMatcher) {
         this.context = _context;
@@ -27,10 +28,17 @@ public class MatcherAdapter extends RecyclerView.Adapter<MatcherAdapter.ViewHold
         this.arrMatcher = _arrMatcher;
     }
 
+    public MatcherAdapter(Activity _context, int _idLayout, ArrayList<MatcherResponse> _arrMatcher, OnItemClickListener _listener) {
+        this.context = _context;
+        this.idLayout = _idLayout;
+        this.arrMatcher = _arrMatcher;
+        this.listener = _listener;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.matcher_items, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(idLayout, parent, false);
         return new ViewHolder(view);
     }
 
@@ -41,6 +49,13 @@ public class MatcherAdapter extends RecyclerView.Adapter<MatcherAdapter.ViewHold
                 .load(matcher.getImageUrl())
                 .into(holder.img_matcher);
         holder.tv_name.setText(matcher.getFullname());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onItemClick(matcher);
+            }
+        });
     }
 
     @Override
@@ -57,5 +72,9 @@ public class MatcherAdapter extends RecyclerView.Adapter<MatcherAdapter.ViewHold
             img_matcher = itemView.findViewById(R.id.imgMatcher);
             tv_name = itemView.findViewById(R.id.tv_nameMatcher);
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(MatcherResponse matcher);
     }
 }
