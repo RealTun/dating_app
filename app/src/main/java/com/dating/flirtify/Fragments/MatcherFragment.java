@@ -75,12 +75,9 @@ public class MatcherFragment extends Fragment {
             public void onResponse(Call<ArrayList<MatcherResponse>> call, Response<ArrayList<MatcherResponse>> response) {
                 if (response.isSuccessful()) {
                     ArrayList<MatcherResponse> arrMatcher = response.body();
-                    if(arrMatcher != null){
+                    if (arrMatcher != null) {
                         matchers.addAll(arrMatcher);
                         updateUIWithMatchers(matchers);
-                    }
-                    else {
-                        Log.d("dcmm", "vl2");
                     }
                 }
                 else if (response.code() == 401) {

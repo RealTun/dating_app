@@ -21,13 +21,18 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_image"
-                android:layout_width="130dp"
-                android:layout_height="130dp"
-                android:src="@drawable/avatar_dung"
-                app:civ_border_color="@color/gradient_bottom"
-                app:civ_border_width="4dp" />
+            <FrameLayout
+                android:id="@+id/fl_avatar_wrapper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:src="@drawable/avatar_dung" />
+            </FrameLayout>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"

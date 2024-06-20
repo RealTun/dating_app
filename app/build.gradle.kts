@@ -57,8 +57,8 @@ dependencies {
     implementation("com.makeramen:roundedimageview:2.3.0")
 
     // Firebase
-//    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
-//    implementation("com.google.firebase:firebase-storage")
+    //    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+    //    implementation("com.google.firebase:firebase-storage")
 
     // Glide load image online
     implementation("com.github.bumptech.glide:glide:4.12.0")
@@ -93,4 +93,5 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation(libs.flexbox)
     implementation("de.hdodenhof:circleimageview:3.1.0")
+    implementation("com.yuyakaido.android:card-stack-view:2.3.4")
 }

@@ -31,6 +31,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dating.flirtify.Models.Responses.UserResponse;
+import com.dating.flirtify.Models.User;
 import com.dating.flirtify.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -41,8 +43,7 @@ import java.util.List;
 
 public class HeaderFragment extends Fragment {
     private ImageView ivLogo;
-    private TextView tvAppName, rangeAge;
-    private LinearLayout lnWrapper;
+    private TextView tvAppName, tvFullname, tvAge, rangeAge;
     private ImageButton ibFilter, ibBack, ibArrowDown;
     private BottomSheetDialog bottomSheetDialog;
     private RangeSlider rangeSlider;
@@ -64,7 +65,8 @@ public class HeaderFragment extends Fragment {
     private void initViews(View view) {
         ivLogo = view.findViewById(R.id.iv_logo);
         tvAppName = view.findViewById(R.id.tv_app_name);
-        lnWrapper = view.findViewById(R.id.ln_wrapper);
+        tvFullname = view.findViewById(R.id.tv_fullname);
+        tvAge = view.findViewById(R.id.tv_age);
         ibFilter = view.findViewById(R.id.ib_filter);
         ibBack = view.findViewById(R.id.ib_back);
         ibArrowDown = view.findViewById(R.id.ib_arrow_down);
@@ -102,7 +104,8 @@ public class HeaderFragment extends Fragment {
             case 1:
                 ivLogo.setVisibility(View.VISIBLE);
                 tvAppName.setVisibility(View.VISIBLE);
-                lnWrapper.setVisibility(View.GONE);
+                tvFullname.setVisibility(View.GONE);
+                tvAge.setVisibility(View.GONE);
                 ibFilter.setVisibility(View.VISIBLE);
                 ibBack.setVisibility(View.GONE);
                 ibArrowDown.setVisibility(View.GONE);
@@ -110,7 +113,8 @@ public class HeaderFragment extends Fragment {
             case 2:
                 ivLogo.setVisibility(View.GONE);
                 tvAppName.setVisibility(View.GONE);
-                lnWrapper.setVisibility(View.VISIBLE);
+                tvFullname.setVisibility(View.VISIBLE);
+                tvAge.setVisibility(View.VISIBLE);
                 ibFilter.setVisibility(View.GONE);
                 ibBack.setVisibility(View.GONE);
                 ibArrowDown.setVisibility(View.VISIBLE);
@@ -118,7 +122,8 @@ public class HeaderFragment extends Fragment {
             case 3:
                 ivLogo.setVisibility(View.VISIBLE);
                 tvAppName.setVisibility(View.VISIBLE);
-                lnWrapper.setVisibility(View.GONE);
+                tvFullname.setVisibility(View.GONE);
+                tvAge.setVisibility(View.GONE);
                 ibFilter.setVisibility(View.GONE);
                 ibBack.setVisibility(View.GONE);
                 ibArrowDown.setVisibility(View.GONE);
@@ -126,7 +131,8 @@ public class HeaderFragment extends Fragment {
             case 4:
                 ivLogo.setVisibility(View.VISIBLE);
                 tvAppName.setVisibility(View.VISIBLE);
-                lnWrapper.setVisibility(View.GONE);
+                tvFullname.setVisibility(View.GONE);
+                tvAge.setVisibility(View.GONE);
                 ibFilter.setVisibility(View.GONE);
                 ibBack.setVisibility(View.VISIBLE);
                 ibArrowDown.setVisibility(View.GONE);
@@ -142,5 +148,10 @@ public class HeaderFragment extends Fragment {
 
         tv.getPaint().setShader(textShader);
         tv.setTextColor(color[0]);
+    }
+
+    public void setCurrentUser(UserResponse user) {
+        tvFullname.setText(user.getFullname());
+        tvAge.setText(String.valueOf(user.getAge()));
     }
 }
