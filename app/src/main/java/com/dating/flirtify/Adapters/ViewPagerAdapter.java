@@ -127,9 +127,9 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
         fragmentMap.put(1, new RegisterStep2Fragment());
         fragmentMap.put(2, new RegisterStep3Fragment());
         fragmentMap.put(3, new RegisterStep4Fragment());
-        fragmentMap.put(4, new RegisterStep5Fragment());
-        fragmentMap.put(5, new RegisterWantToSeeFragment());
-        fragmentMap.put(6, new RegisterSearchOptionsFragment());
+        fragmentMap.put(4, new RegisterWantToSeeFragment());
+        fragmentMap.put(5, new RegisterSearchOptionsFragment());
+        fragmentMap.put(6, new RegisterStep5Fragment());
         fragmentMap.put(7, new ProcessingFragment());
 
         // Log each fragment to check if it's initialized correctly

@@ -2,6 +2,7 @@ package com.dating.flirtify.Api;
 
 import com.dating.flirtify.Models.Requests.MessageRequest;
 import com.dating.flirtify.Models.Requests.LoginRequest;
+import com.dating.flirtify.Models.Requests.RegisterRequest;
 import com.dating.flirtify.Models.Responses.LoginResponse;
 import com.dating.flirtify.Models.Responses.MatcherResponse;
 import com.dating.flirtify.Models.Responses.MessageResponse;
@@ -13,7 +14,6 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -22,7 +22,7 @@ import retrofit2.http.Path;
 public interface ApiService {
     // auth
     @POST("register")
-    Call<User> register(@Body User user);
+    Call<LoginResponse> register(@Body RegisterRequest registerRequest);
 
     @POST("login")
     Call<LoginResponse> login(@Body LoginRequest loginRequest);

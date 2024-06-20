@@ -29,7 +29,6 @@ public class RegisterStep2Fragment extends Fragment {
     private TextView tvEmail, tvCountdownTime, tvResendOTP;
     private boolean allowResendOTP = false;
     private String generatedOTP;
-    private RegisterActivity _registerActivity;
     private static final String TAG = RegisterStep2Fragment.class.getSimpleName();
     private CountdownTimerHelper countdownTimer;
     private String USER_EMAIL;
@@ -37,13 +36,11 @@ public class RegisterStep2Fragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        _registerActivity = (RegisterActivity) getActivity();
-//        if (phoneNumber.startsWith("0")) {
-//            phoneNumber = "+84" + phoneNumber.substring(1);
-//        }
-//        USER_EMAIL = _registerActivity.getEmail();
         generatedOTP = OTPGenerators.generateOTP();
-        sendOTPEmail(USER_EMAIL, generatedOTP); // Bỏ cmt để gửi OTP
+        RegisterActivity context = (RegisterActivity) getActivity();
+        USER_EMAIL = context.getEmail();
+
+        sendOTPEmail(USER_EMAIL, generatedOTP);
     }
 
     @Override
@@ -64,6 +61,7 @@ public class RegisterStep2Fragment extends Fragment {
         return view;
     }
 
+
     private void initializeViews(View view) {
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         etNum1 = view.findViewById(R.id.etNum1);
@@ -76,6 +74,7 @@ public class RegisterStep2Fragment extends Fragment {
         tvCountdownTime = view.findViewById(R.id.tvCountdownTime);
         tvResendOTP = view.findViewById(R.id.tvResendOTP);
         tvEmail.setText(USER_EMAIL);
+
     }
 
     private void setupOTPInputListeners() {
@@ -152,7 +151,7 @@ public class RegisterStep2Fragment extends Fragment {
             return false;
         }
         if (enteredOTP.equals(generatedOTP) == false) {
-            Toast.makeText(_registerActivity, "OTP không đúng!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "OTP không đúng!", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

@@ -5,7 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
     tools:context=".Activities.MainActivity">
 
     <TextView
@@ -34,7 +33,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvAppName" />
-
 
 
     <androidx.appcompat.widget.AppCompatButton
@@ -79,7 +77,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvPhoneLogin" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/tvPrivacyPolicy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Chính sách bảo mật"
@@ -114,13 +112,13 @@
             app:riv_tile_mode="clamp" />
 
         <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/imageView_apple"
+            android:id="@+id/ivLoginApple"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:scaleType="centerCrop"
             android:src="@drawable/icon_apple"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageView_google"
+            app:layout_constraintEnd_toStartOf="@+id/ivLoginGG"
             app:layout_constraintStart_toEndOf="@+id/ivLoginFB"
             app:layout_constraintTop_toTopOf="parent"
             app:riv_border_color="#0000"
@@ -131,7 +129,7 @@
             app:riv_tile_mode="clamp" />
 
         <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/imageView_google"
+            android:id="@+id/ivLoginGG"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:scaleType="centerCrop"

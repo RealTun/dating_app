@@ -4,7 +4,6 @@ import com.dating.flirtify.Models.User;
 import com.google.gson.annotations.SerializedName;
 
 public class LoginResponse {
-
     @SerializedName("user")
     private User user;
 

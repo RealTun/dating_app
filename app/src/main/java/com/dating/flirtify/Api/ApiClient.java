@@ -16,7 +16,11 @@ public class ApiClient {
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             httpClient.addInterceptor(loggingInterceptor);
 
-            retrofit = new Retrofit.Builder().baseUrl("http://192.168.1.6:8000/api/v1/").addConverterFactory(GsonConverterFactory.create()).client(httpClient.build()).build();
+            retrofit = new Retrofit.Builder()
+                    .baseUrl("http://192.168.1.35:8000/api/v1/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(httpClient.build())
+                    .build();
         }
         return retrofit.create(ApiService.class);
     }

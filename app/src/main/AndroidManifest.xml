@@ -3,24 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools">
     <!-- Thêm các quyền cần thiết -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" /> <!-- Cập nhật quyền lưu trữ cho Android 14+ -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Cho phép ứng dụng truy cập Internet -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" /> <!-- Cho phép truy cập hình ảnh -->
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" /> <!-- Cho phép truy cập âm thanh -->
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" /> <!-- Cho phép truy cập video -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- Quyền truy cập vị trí chính xác (GPS) -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Quyền truy cập vị trí gần đúng -->
+    <!-- Cập nhật quyền lưu trữ cho Android 14+ -->
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" /> <!-- Các tính năng và quyền khác -->
+        android:maxSdkVersion="32" /> <!-- Quyền truy cập bộ nhớ ngoài, dành cho Android 32 trở xuống -->
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" /> <!-- Cho phép truy cập thông tin vị trí của tệp phương tiện -->
+    <!-- Các tính năng và quyền khác -->
     <uses-feature
         android:name="android.hardware.telephony"
-        android:required="false" />
+        android:required="false" /> <!-- Xác định rằng ứng dụng không yêu cầu thiết bị có chức năng điện thoại -->
 
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
+    <queries>
+        <package android:name="com.facebook.katana" /> <!-- Cho phép truy vấn ứng dụng Facebook -->
+    </queries>
 
     <application
         android:allowBackup="true"
@@ -60,17 +61,8 @@
         <activity
             android:name=".Activities.MainActivity"
             android:exported="true">
-
-        </activity>
-        <activity
-            android:name=".Activities.TestActivity"
-            android:exported="true"></activity>
-        <activity
-            android:name=".Activities.PreviewActivity"
-            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
