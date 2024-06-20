@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="16dp"
     app:cardCornerRadius="8dp">
 
     <androidx.viewpager2.widget.ViewPager2
@@ -14,6 +13,41 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="64dp"
+        android:background="@drawable/label_like"
+        android:fontFamily="@font/montserrat_bold"
+        android:paddingHorizontal="16dp"
+        android:rotation="-45"
+        android:text="LIKE"
+        android:textColor="#22BB33"
+        android:textSize="36sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/vp_card"
+        app:layout_constraintTop_toTopOf="@id/vp_card" />
+
+
+    <TextView
+        android:id="@+id/tv_dislike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="64dp"
+        android:background="@drawable/label_dislike"
+        android:fontFamily="@font/montserrat_bold"
+        android:paddingHorizontal="16dp"
+        android:rotation="45"
+        android:text="NOPE"
+        android:textColor="#bb2124"
+        android:textSize="36sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/vp_card"
+        app:layout_constraintTop_toTopOf="@id/vp_card" />
 
     <LinearLayout
         android:id="@+id/ll_indicator"
@@ -95,7 +129,6 @@
         android:contentDescription="matchesArrowUp"
         android:scaleType="centerInside"
         android:src="@drawable/arrow_up"
-
         app:layout_constraintBottom_toBottomOf="@id/ll_info_wrapper"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/ll_info_wrapper" />

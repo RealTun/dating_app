@@ -130,10 +130,11 @@ public class CardStackAdapter extends RecyclerView.Adapter<CardStackAdapter.View
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvAge;
-        public ImageButton ibArrowUp;
         ViewPager2 viewPager;
-        public LinearLayout infoWrapper;
         LinearLayout indicatorLayout;
+        public ImageButton ibArrowUp;
+        public LinearLayout infoWrapper;
+        public TextView tvLike, tvDislike;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -143,6 +144,8 @@ public class CardStackAdapter extends RecyclerView.Adapter<CardStackAdapter.View
             infoWrapper = itemView.findViewById(R.id.ll_info_wrapper);
             viewPager = itemView.findViewById(R.id.vp_card);
             indicatorLayout = itemView.findViewById(R.id.ll_indicator);
+            tvLike = itemView.findViewById(R.id.tv_like);
+            tvDislike = itemView.findViewById(R.id.tv_dislike);
         }
     }
 }

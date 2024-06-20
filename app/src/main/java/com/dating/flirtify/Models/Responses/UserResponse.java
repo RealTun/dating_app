@@ -10,7 +10,7 @@ public class UserResponse {
     private int locking_for;
     private String location;
     private List<String> interests;
-    private List<String> relationships;
+    private String relationship;
     private List<String> photos;
 
     public int getId() {
@@ -69,12 +69,12 @@ public class UserResponse {
         this.interests = interests;
     }
 
-    public List<String> getRelationships() {
-        return relationships;
+    public String getRelationship() {
+        return relationship;
     }
 
-    public void setRelationships(List<String> relationships) {
-        this.relationships = relationships;
+    public void setRelationships(String relationship) {
+        this.relationship = relationship;
     }
 
     public List<String> getPhotos() {
@@ -83,6 +83,9 @@ public class UserResponse {
 
     public void setPhotos(List<String> photos) {
         this.photos = photos;
+    }
+    public String getAvatar() {
+        return photos.get(0);
     }
 }
 
