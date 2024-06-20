@@ -1,6 +1,8 @@
 package com.dating.flirtify.Fragments;
 
 import android.graphics.drawable.GradientDrawable;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -11,15 +13,25 @@ import androidx.fragment.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
-import android.widget.Spinner;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.dating.flirtify.Api.ApiClient;
+import com.dating.flirtify.Api.ApiService;
+import com.dating.flirtify.Models.Responses.UserResponse;
 import com.dating.flirtify.R;
+import com.dating.flirtify.Services.SessionManager;
+
+import retrofit2.Call;
 
 public class AccountFragment extends Fragment {
-    CardView btnAccount, btnSecurity, btnNotification, btnSetting;
-    FrameLayout avatarWrapper;
+    private ApiService apiService;
+    private CardView btnAccount, btnSecurity, btnNotification, btnSetting;
+    private FrameLayout avatarWrapper;
+    private TextView tvFullname, tvAge;
+    private ImageView ivProfile;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
@@ -35,6 +47,29 @@ public class AccountFragment extends Fragment {
         btnSecurity = view.findViewById(R.id.btn_security);
         avatarWrapper = view.findViewById(R.id.fl_avatar_wrapper);
         btnNotification = view.findViewById(R.id.btn_notification);
+        tvFullname = view.findViewById(R.id.tv_fullname);
+        tvAge = view.findViewById(R.id.tv_age);
+        ivProfile = view.findViewById(R.id.profile_image);
+        apiService = ApiClient.getClient();
+
+        String accessToken = SessionManager.getToken();
+        Call<UserResponse> call = apiService.getUser(accessToken);
+        call.enqueue(new retrofit2.Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, retrofit2.Response<UserResponse> response) {
+                if (response.isSuccessful()) {
+                    UserResponse userResponse = response.body();
+                    tvFullname.setText(userResponse.getFullname());
+                    tvAge.setText(String.valueOf(userResponse.getAge()));
+                    Glide.with(getActivity()).load(userResponse.getAvatar()).circleCrop().into(ivProfile);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
 
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.OVAL);

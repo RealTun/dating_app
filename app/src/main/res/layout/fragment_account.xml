@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -27,11 +28,10 @@
                 android:layout_height="wrap_content"
                 android:padding="4dp">
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <ImageView
                     android:id="@+id/profile_image"
                     android:layout_width="130dp"
-                    android:layout_height="130dp"
-                    android:src="@drawable/avatar_dung" />
+                    android:layout_height="130dp" />
             </FrameLayout>
 
             <androidx.cardview.widget.CardView
@@ -59,29 +59,26 @@
             android:layout_marginVertical="16dp">
 
             <TextView
+                android:id="@+id/tv_fullname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:fontFamily="@font/montserrat_medium"
-                android:text="Tuấn"
                 android:textColor="@color/text_color"
                 android:textSize="24sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:fontFamily="@font/montserrat_medium"
-                android:text=","
+                android:text=", "
                 android:textColor="@color/text_color"
                 android:textSize="24sp" />
 
             <TextView
+                android:id="@+id/tv_age"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:fontFamily="@font/montserrat_medium"
-                android:text=" 20"
                 android:textColor="@color/text_color"
                 android:textSize="24sp" />
 

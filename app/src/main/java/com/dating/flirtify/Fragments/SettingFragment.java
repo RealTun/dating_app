@@ -61,50 +61,50 @@ public class SettingFragment extends Fragment {
     }
 
     private void logout() {
-//        // Lấy instance của ApiService thông qua ApiClient
-//        ApiService apiService = ApiClient.getClient();
+        // Lấy instance của ApiService thông qua ApiClient
+        ApiService apiService = ApiClient.getClient();
+
+        // Gửi yêu cầu đăng nhập
+        Call<Void> call = apiService.logout(SessionManager.getToken());
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.code() == 200) {
+                    SessionManager.clearSession();
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    if (getActivity() != null) {
+                        getActivity().finish();
+                    }
+                } else if (response.code() == 401) {
+                    return;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("Error Logout", t.getMessage());
+            }
+        });
+
+
+//        // Đăng xuất khỏi Facebook
+//        LoginManager.getInstance().logOut();
 //
-//        // Gửi yêu cầu đăng nhập
-//        Call<Void> call = apiService.logout(SessionManager.getToken());
-//        call.enqueue(new Callback<Void>() {
-//            @Override
-//            public void onResponse(Call<Void> call, Response<Void> response) {
-//                if (response.code() == 200) {
-//                    SessionManager.clearSession();
-//                    Intent intent = new Intent(getContext(), MainActivity.class);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                    startActivity(intent);
-//                    if (getActivity() != null) {
-//                        getActivity().finish();
-//                    }
-//                } else if (response.code() == 401) {
-//                    return;
-//                }
-//            }
+//        // Xóa thông tin khỏi SharedPreferences
+//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+//        SharedPreferences.Editor editor = preferences.edit();
+//        editor.clear();
+//        editor.apply();
 //
-//            @Override
-//            public void onFailure(Call<Void> call, Throwable t) {
-//                Log.e("Error Logout", t.getMessage());
-//            }
-//        });
-
-
-        // Đăng xuất khỏi Facebook
-        LoginManager.getInstance().logOut();
-
-        // Xóa thông tin khỏi SharedPreferences
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.clear();
-        editor.apply();
-
-        // Thông báo đăng xuất thành công
-        Toast.makeText(getActivity(), "Logged out successfully", Toast.LENGTH_SHORT).show();
-
-        // Chuyển về màn hình đăng nhập hoặc màn hình chính
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        startActivity(intent);
-//        finish();
+//        // Thông báo đăng xuất thành công
+//        Toast.makeText(getActivity(), "Logged out successfully", Toast.LENGTH_SHORT).show();
+//
+//        // Chuyển về màn hình đăng nhập hoặc màn hình chính
+//        Intent intent = new Intent(getActivity(), MainActivity.class);
+//        startActivity(intent);
+////        finish();
 
     }
 }
