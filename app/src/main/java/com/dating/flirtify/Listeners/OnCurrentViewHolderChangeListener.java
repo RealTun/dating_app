@@ -1,4 +1,4 @@
-package com.dating.flirtify.Interfaces;
+package com.dating.flirtify.Listeners;
 
 import com.dating.flirtify.Adapters.CardStackAdapter;
 

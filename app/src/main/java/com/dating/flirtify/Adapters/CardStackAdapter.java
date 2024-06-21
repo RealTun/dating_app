@@ -1,8 +1,6 @@
 package com.dating.flirtify.Adapters;
 
 import android.annotation.SuppressLint;
-import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,8 +14,8 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.dating.flirtify.Interfaces.OnCardActionListener;
-import com.dating.flirtify.Interfaces.OnCurrentViewHolderChangeListener;
+import com.dating.flirtify.Listeners.OnCardActionListener;
+import com.dating.flirtify.Listeners.OnCurrentViewHolderChangeListener;
 import com.dating.flirtify.Models.Responses.UserResponse;
 import com.dating.flirtify.R;
 

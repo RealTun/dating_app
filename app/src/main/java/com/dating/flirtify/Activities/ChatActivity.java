@@ -64,6 +64,8 @@ public class ChatActivity extends AppCompatActivity {
     ApiService apiService;
     MessageListAdapter messageListAdapter;
     ArrayList<MessageResponse> messageResponses = new ArrayList<>();
+    Intent intent;
+    MatcherResponse matcher;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -77,26 +79,14 @@ public class ChatActivity extends AppCompatActivity {
             return insets;
         });
 
-        // mapping ui control
-        etMessage = findViewById(R.id.etMessage);
-        tv_name = findViewById(R.id.tv_nameReceiver);
-        img_avt = findViewById(R.id.imgview_receiver);
-        btn_back = findViewById(R.id.imgbtn_back);
-        progressBar = findViewById(R.id.progressBar);
-        recyclerViewChat = findViewById(R.id.recyclerViewChat);
-        apiService = ApiClient.getClient();
+        init();
 
-        Intent intent = getIntent();
-        MatcherResponse matcher = (MatcherResponse) intent.getSerializableExtra("matcher");
+        matcher = (MatcherResponse) intent.getSerializableExtra("matcher");
+        setData();
 
-        tv_name.setText(matcher.getFullname());
-        Glide.with(this)
-                .load(matcher.getImageUrl())
-                .apply(RequestOptions.circleCropTransform())
-                .into(img_avt);
-
-//        Log.d("ChatActivity", String.valueOf(receiver_id));
         getMessages(matcher.getMatcher_id());
+
+        handleEvent();
 
         // pusher realtime event
         Pusher pusher = new Pusher("7797270065e276fe4342", new PusherOptions().setCluster("ap1"));
@@ -115,8 +105,8 @@ public class ChatActivity extends AppCompatActivity {
                     messageResponses.add(message);
                     runOnUiThread(() -> {
                         updateUIWithMessage(messageResponses);
-                        showNotification(getApplicationContext(), matcher);
-//                        NotificationHelper.showNotification(getApplicationContext(), matcher);
+//                        showNotification(getApplicationContext(), matcher);
+                        NotificationHelper.showNotification(getApplicationContext(), matcher);
                     });
                 }
             }
@@ -124,7 +114,29 @@ public class ChatActivity extends AppCompatActivity {
 
         pusher.disconnect();
         pusher.connect();
+    }
 
+    private void init(){
+        etMessage = findViewById(R.id.etMessage);
+        tv_name = findViewById(R.id.tv_nameReceiver);
+        img_avt = findViewById(R.id.imgview_receiver);
+        btn_back = findViewById(R.id.imgbtn_back);
+        progressBar = findViewById(R.id.progressBar);
+        recyclerViewChat = findViewById(R.id.recyclerViewChat);
+        apiService = ApiClient.getClient();
+        intent = getIntent();
+    }
+
+    private void setData(){
+        tv_name.setText(matcher.getFullname());
+        Glide.with(this)
+                .load(matcher.getImageUrl())
+                .apply(RequestOptions.circleCropTransform())
+                .into(img_avt);
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void handleEvent(){
         etMessage.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -218,46 +230,5 @@ public class ChatActivity extends AppCompatActivity {
         }
         progressBar.setVisibility(View.GONE);
         recyclerViewChat.scrollToPosition(messages.size() - 1);
-    }
-
-    public void showNotification(Context context, MatcherResponse matcher) {
-        String channelId = "flirtify_channel_id";
-        String channelName = "Flirtify Notifications";
-
-        Intent intent = new Intent(this, ChatActivity.class);
-        intent.putExtra("matcher", matcher);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-
-        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // Create the notification channel if the API level is 26+
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT);
-            manager.createNotificationChannel(channel);
-        }
-
-        Notification.Builder builder = new Notification.Builder(context)
-                .setSmallIcon(R.drawable.logo)
-                .setContentTitle("Flirtify")
-                .setContentText(matcher.getFullname() + " sent you a new message.")
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
-
-        // Use the appropriate notification builder for API level
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            builder.setChannelId(channelId);
-        }
-
-        Notification notification = builder.build();
-
-        if (manager != null) {
-            manager.notify(getNotificationId(), notification);
-            Log.d("Notification", "not null");
-        }
-    }
-
-    private int getNotificationId() {
-        return (int) System.currentTimeMillis();
     }
 }

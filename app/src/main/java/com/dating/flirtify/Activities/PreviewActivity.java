@@ -33,7 +33,6 @@ public class PreviewActivity extends AppCompatActivity {
     private ImageButton ibArrowDown;
     private ConstraintLayout headerWrapper, mConstraintLayout;
     private LinearLayout bottomCardWrapper, layoutSpacer;
-
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {

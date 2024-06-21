@@ -23,7 +23,7 @@ import com.dating.flirtify.Adapters.CardStackAdapter;
 import com.dating.flirtify.Adapters.InterestAdapter;
 import com.dating.flirtify.Api.ApiClient;
 import com.dating.flirtify.Api.ApiService;
-import com.dating.flirtify.Interfaces.OnCardActionListener;
+import com.dating.flirtify.Listeners.OnCardActionListener;
 import com.dating.flirtify.Models.Responses.UserResponse;
 import com.dating.flirtify.R;
 import com.google.android.flexbox.FlexboxLayoutManager;
