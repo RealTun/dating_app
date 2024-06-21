@@ -216,15 +216,19 @@ public class RegisterStep4Fragment extends Fragment {
         return (selectedItem.equals("Nam")) ? 1 : 0;
     }
 
-    public Date getDateOfBirth() {
+    public int getDateOfBirth() {
 
         int day = (int) daySpinner.getSelectedItem();
         int month = monthSpinner.getSelectedItemPosition(); // Tháng bắt đầu từ 0
         int year = (int) yearSpinner.getSelectedItem();
 
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+
+
+
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, day);
 
-        return calendar.getTime();
+        return currentYear - year;
     }
 }
