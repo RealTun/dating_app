@@ -1,11 +1,13 @@
 package com.dating.flirtify.Api;
 
+import com.dating.flirtify.Models.Requests.LikeRequest;
 import com.dating.flirtify.Models.Requests.MessageRequest;
 import com.dating.flirtify.Models.Requests.LoginRequest;
 import com.dating.flirtify.Models.Requests.RegisterRequest;
 import com.dating.flirtify.Models.Responses.LoginResponse;
 import com.dating.flirtify.Models.Responses.MatcherResponse;
 import com.dating.flirtify.Models.Responses.MessageResponse;
+import com.dating.flirtify.Models.Responses.RelationshipResponse;
 import com.dating.flirtify.Models.Responses.UserResponse;
 import com.dating.flirtify.Models.User;
 
@@ -30,6 +32,9 @@ public interface ApiService {
     @POST("logout")
     Call<Void> logout(@Header("Authorization") String accessToken);
 
+    @GET("user")
+    Call<UserResponse> getUser(@Header("Authorization") String accessToken);
+
     // interest
 //    @GET("interest-type")
 //    Call<List<InterestType>> getInterestTypes(@Header("Authorization") String accessToken);
@@ -44,8 +49,8 @@ public interface ApiService {
 //    Call<Void> deleteUserInterest(@Header("Authorization") String accessToken, @Path("id") int id);
 
     // Relationship routes
-//    @GET("relationship-type")
-//    Call<List<RelationshipType>> getRelationships(@Header("Authorization") String accessToken);
+    @GET("relationship-type")
+    Call<ArrayList<RelationshipResponse>> getRelationships();
 
 //    @GET("relationship-type/user")
 //    Call<List<UserRelationship>> getRelationshipByUser(@Header("Authorization") String accessToken);
@@ -57,15 +62,15 @@ public interface ApiService {
 //    Call<Void> deleteUserRelationship(@Header("Authorization") String accessToken, @Path("id") int id);
 
     // Connect routes
-    @GET("users-connect-no")
+    @GET("users-connect")
     Call<ArrayList<UserResponse>> getUserToConnect(@Header("Authorization") String accessToken);
 
     // Matcher routes
     @GET("matchers")
     Call<ArrayList<MatcherResponse>> getMatchers(@Header("Authorization") String accessToken);
 
-//    @POST("matchers")
-//    Call<Void> storeUserLike(@Header("Authorization") String accessToken, @Body LikeRequest likeRequest);
+    @POST("matchers")
+    Call<Void> storeUserLike(@Header("Authorization") String accessToken, @Body LikeRequest likeRequest);
 
     // Photo routes
 //    @GET("user-photos")

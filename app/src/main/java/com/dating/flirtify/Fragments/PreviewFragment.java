@@ -1,6 +1,9 @@
 package com.dating.flirtify.Fragments;
 
 import android.animation.ObjectAnimator;
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -18,14 +21,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dating.flirtify.Adapters.CardStackAdapter;
 import com.dating.flirtify.Adapters.InterestAdapter;
 import com.dating.flirtify.Api.ApiClient;
 import com.dating.flirtify.Api.ApiService;
-import com.dating.flirtify.Listeners.OnCardActionListener;
+import com.dating.flirtify.Interfaces.OnCardActionListener;
+import com.dating.flirtify.Models.Requests.LikeRequest;
 import com.dating.flirtify.Models.Responses.UserResponse;
 import com.dating.flirtify.R;
+import com.dating.flirtify.Services.SessionManager;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -37,6 +43,11 @@ import com.yuyakaido.android.cardstackview.Duration;
 import com.yuyakaido.android.cardstackview.StackFrom;
 import com.yuyakaido.android.cardstackview.SwipeAnimationSetting;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +68,8 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
     private CardStackView cardStackView;
     private CardStackAdapter adapter;
     private CardStackLayoutManager manager;
-    private TextView tvBio;
+    private TextView tvBio, tvRelationShip;
+    private String accessToken;
 
     @Nullable
     @Override
@@ -89,6 +101,7 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
         mConstraintSet.applyTo(mConstraintLayout);
 
         tvBio.setText(user.getBio());
+        tvRelationShip.setText(user.getRelationship());
         List<String> listInterests = user.getInterests();
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(requireContext());
         rvInterests.setLayoutManager(layoutManager);
@@ -100,15 +113,12 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
     }
 
     private void getUsers() {
-        String accessToken = "Bearer " + "2|xB7YKMGNrtVe8JqhpPQYc28ymFNav2kqWglXW61d55e976a5";
-        apiService = ApiClient.getClient();
         Call<ArrayList<UserResponse>> call = apiService.getUserToConnect(accessToken);
         call.enqueue(new Callback<ArrayList<UserResponse>>() {
             @Override
             public void onResponse(Call<ArrayList<UserResponse>> call, Response<ArrayList<UserResponse>> response) {
                 if (response.isSuccessful()) {
                     ArrayList<UserResponse> arrMatcher = response.body();
-                    Log.i("Matches", String.valueOf(response.body()));
                     if (arrMatcher != null) {
                         itemsResponse.addAll(arrMatcher);
                         adapter.notifyDataSetChanged();
@@ -135,28 +145,29 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
         fabLike = requireActivity().findViewById(R.id.fab_like);
         fabDislike = requireActivity().findViewById(R.id.fab_dislike);
         tvBio = view.findViewById(R.id.tv_bio);
+        tvRelationShip = view.findViewById(R.id.tv_relationship);
         rvInterests = view.findViewById(R.id.rv_interests);
 
+        accessToken = SessionManager.getToken();
+        apiService = ApiClient.getClient();
         itemsResponse = new ArrayList<>();
         adapter = new CardStackAdapter(itemsResponse, this);
         manager = new CardStackLayoutManager(view.getContext(), new CardStackListener() {
             @Override
             public void onCardDragging(Direction direction, float ratio) {
-                // Xử lý khi thẻ bị kéo
+                CardStackAdapter.ViewHolder currentViewHolder = getCurrentViewHolder();
+                if (direction == Direction.Right) {
+                    currentViewHolder.tvLike.setVisibility(View.VISIBLE);
+                    currentViewHolder.tvDislike.setVisibility(View.GONE);
+                } else if (direction == Direction.Left) {
+                    currentViewHolder.tvLike.setVisibility(View.GONE);
+                    currentViewHolder.tvDislike.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
             public void onCardSwiped(Direction direction) {
-                // Xử lý khi thẻ bị quẹt
-                if (direction == Direction.Right) {
-                    // Người dùng thích
-                } else if (direction == Direction.Left) {
-                    // Người dùng không thích
-                }
-                // Xử lý khi hết thẻ
-                if (manager.getTopPosition() == adapter.getItemCount()) {
-                    // Load thêm dữ liệu nếu cần
-                }
+                handleCardSwipe(direction);
             }
 
             @Override
@@ -166,7 +177,9 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
 
             @Override
             public void onCardCanceled() {
-                // Xử lý khi hành động thẻ bị hủy
+                CardStackAdapter.ViewHolder currentViewHolder = getCurrentViewHolder();
+                currentViewHolder.tvLike.setVisibility(View.GONE);
+                currentViewHolder.tvDislike.setVisibility(View.GONE);
             }
 
             @Override
@@ -182,20 +195,78 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
 
         manager.setStackFrom(StackFrom.None);
         manager.setVisibleCount(3);
-        manager.setTranslationInterval(8.0f);
-        manager.setScaleInterval(0.95f);
+        manager.setTranslationInterval(12.0f);
         manager.setSwipeThreshold(0.3f);
-        manager.setMaxDegree(20.0f);
+        manager.setMaxDegree(45.0f);
         manager.setDirections(Direction.HORIZONTAL);
+        manager.setCanScrollHorizontal(true);
+        manager.setCanScrollVertical(true);
 
         cardStackView.setLayoutManager(manager);
         cardStackView.setAdapter(adapter);
         cardStackView.setItemAnimator(new DefaultItemAnimator());
     }
 
+    private void handleCardSwipe(Direction direction) {
+        if (direction == Direction.Right) {
+            UserResponse currentUser = itemsResponse.get(manager.getTopPosition() - 1);
+            LikeRequest likeRequest = new LikeRequest(currentUser.getId(), 1);
+
+            String accessToken = SessionManager.getToken();
+            Call<Void> call = apiService.storeUserLike(accessToken, likeRequest);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        if (response.code() == 200) {
+                            Dialog dialogMatched = new Dialog(getContext());
+                            dialogMatched.setContentView(R.layout.dialog_matched);
+                            dialogMatched.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                            TextView tvName = dialogMatched.findViewById(R.id.dialog_tv_name);
+                            tvName.setText("Bạn đã tương hợp với " + currentUser.getFullname());
+                            dialogMatched.show();
+                        }
+                    } else {
+                        Log.e("API Error", "Request failed: " + response.message());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.e("API Error", "Request failed: " + t.getMessage());
+                }
+            });
+        } else if (direction == Direction.Left) {
+            UserResponse currentUser = itemsResponse.get(manager.getTopPosition() - 1);
+            LikeRequest likeRequest = new LikeRequest(currentUser.getId(), 0);
+
+            String accessToken = SessionManager.getToken();
+            Call<Void> call = apiService.storeUserLike(accessToken, likeRequest);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (!response.isSuccessful()) {
+                        Log.e("API Error", "Request failed: " + response.message());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.e("API Error", "Request failed: " + t.getMessage());
+                }
+            });
+        }
+    }
+
     private void handlerEvent() {
-        fabLike.setOnClickListener(v -> swipeCard(Direction.Right));
-        fabDislike.setOnClickListener(v -> swipeCard(Direction.Left));
+        fabLike.setOnClickListener(v -> {
+            swipeCard(Direction.Right);
+            handleCardSwipe(Direction.Right);
+        });
+        fabDislike.setOnClickListener(v -> {
+            swipeCard(Direction.Left);
+            handleCardSwipe(Direction.Left);
+        });
     }
 
     private void swipeCard(Direction direction) {
