@@ -236,17 +236,16 @@
                     android:textColor="@color/text_color"
                     android:textSize="23sp" />
 
-                <com.google.android.flexbox.FlexboxLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="12dp"
-                    app:flexWrap="wrap">
+                    android:gravity="center_vertical">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="12dp"
-
                         android:background="@drawable/circle_button"
                         android:backgroundTint="#E94057"
                         android:gravity="center"
@@ -255,10 +254,11 @@
                         android:paddingVertical="4dp">
 
                         <TextView
+                            android:id="@+id/tv_relationship"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/montserrat_regular"
-                            android:text="Người yêu"
+                            android:text=""
                             android:textColor="@color/white"
                             android:textSize="19sp"
                             app:layout_flexShrink="1" />
@@ -275,85 +275,22 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="12dp"
-
-                        android:background="@drawable/circle_button"
-                        android:backgroundTint="#2C6FF2"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/montserrat_regular"
-                            android:text="Chưa rõ lắm"
-                            android:textColor="@color/white"
-                            android:textSize="19sp"
-                            app:layout_flexShrink="1" />
-
-                        <ImageButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="8dp"
-                            android:background="@android:color/transparent"
-                            android:src="@drawable/close_white" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-
-                        android:background="@drawable/circle_button"
-                        android:backgroundTint="#14DC4C"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/montserrat_regular"
-                            android:text="Nguời nói chuyện"
-                            android:textColor="@color/white"
-                            android:textSize="19sp"
-                            app:layout_flexShrink="1" />
-
-                        <ImageButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="8dp"
-                            android:background="@android:color/transparent"
-                            android:src="@drawable/close_white" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginTop="12dp"
-
                         android:background="@drawable/circle_button"
                         android:backgroundTint="#1C1C1C"
                         android:gravity="center"
                         android:orientation="horizontal"
-                        android:padding="10dp">
+                        android:padding="7dp">
 
                         <ImageButton
+                            android:id="@+id/ib_shuffle"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="center_vertical"
                             android:background="@android:color/transparent"
-                            android:src="@drawable/ic_add" />
+                            android:src="@drawable/ic_shuffle" />
                     </LinearLayout>
 
-
-                </com.google.android.flexbox.FlexboxLayout>
+                </LinearLayout>
 
             </LinearLayout>
 

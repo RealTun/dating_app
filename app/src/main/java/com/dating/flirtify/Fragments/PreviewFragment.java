@@ -68,7 +68,7 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
     private CardStackView cardStackView;
     private CardStackAdapter adapter;
     private CardStackLayoutManager manager;
-    private TextView tvBio;
+    private TextView tvBio, tvRelationShip;
     private String accessToken;
 
     @Nullable
@@ -101,6 +101,7 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
         mConstraintSet.applyTo(mConstraintLayout);
 
         tvBio.setText(user.getBio());
+        tvRelationShip.setText(user.getRelationship());
         List<String> listInterests = user.getInterests();
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(requireContext());
         rvInterests.setLayoutManager(layoutManager);
@@ -132,7 +133,6 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
                 Log.e("Matches", "Request failed: " + t.getMessage());
             }
         });
-        Log.i("Matches", "Get users: " + itemsResponse.toString());
     }
 
     private void initViews(View view) {
@@ -145,6 +145,7 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
         fabLike = requireActivity().findViewById(R.id.fab_like);
         fabDislike = requireActivity().findViewById(R.id.fab_dislike);
         tvBio = view.findViewById(R.id.tv_bio);
+        tvRelationShip = view.findViewById(R.id.tv_relationship);
         rvInterests = view.findViewById(R.id.rv_interests);
 
         accessToken = SessionManager.getToken();
@@ -166,58 +167,7 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
 
             @Override
             public void onCardSwiped(Direction direction) {
-                if (direction == Direction.Right) {
-                    Toast.makeText(getContext(), "Like", Toast.LENGTH_SHORT).show();
-                    UserResponse currentUser = itemsResponse.get(manager.getTopPosition() - 1);
-                    LikeRequest likeRequest = new LikeRequest(currentUser.getId(), 1);
-
-                    String accessToken = SessionManager.getToken();
-                    Call<Void> call = apiService.storeUserLike(accessToken, likeRequest);
-                    call.enqueue(new Callback<Void>() {
-                        @Override
-                        public void onResponse(Call<Void> call, Response<Void> response) {
-                            if (response.isSuccessful()) {
-                                if (response.code() == 200) {
-                                    Dialog dialogMatched = new Dialog(getContext());
-                                    dialogMatched.setContentView(R.layout.dialog_matched);
-                                    dialogMatched.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                                    TextView tvName = dialogMatched.findViewById(R.id.dialog_tv_name);
-                                    tvName.setText("Bạn đã tương hợp với " + currentUser.getFullname());
-                                    dialogMatched.show();
-                                } else if (response.code() == 201) {
-                                    Toast.makeText(getContext(), "Like", Toast.LENGTH_SHORT).show();
-                                }
-                            } else {
-                                Log.e("API Error", "Request failed: " + response.message());
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Void> call, Throwable t) {
-                            Log.e("API Error", "Request failed: " + t.getMessage());
-                        }
-                    });
-                } else if (direction == Direction.Left) {
-                    Toast.makeText(getContext(), "Dislike", Toast.LENGTH_SHORT).show();
-                    UserResponse currentUser = itemsResponse.get(manager.getTopPosition() - 1);
-                    LikeRequest likeRequest = new LikeRequest(currentUser.getId(), 0);
-
-                    String accessToken = SessionManager.getToken();
-                    Call<Void> call = apiService.storeUserLike(accessToken, likeRequest);
-                    call.enqueue(new Callback<Void>() {
-                        @Override
-                        public void onResponse(Call<Void> call, Response<Void> response) {
-                            if (!response.isSuccessful()) {
-                                Log.e("API Error", "Request failed: " + response.message());
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Void> call, Throwable t) {
-                            Log.e("API Error", "Request failed: " + t.getMessage());
-                        }
-                    });
-                }
+                handleCardSwipe(direction);
             }
 
             @Override
@@ -257,9 +207,66 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
         cardStackView.setItemAnimator(new DefaultItemAnimator());
     }
 
+    private void handleCardSwipe(Direction direction) {
+        if (direction == Direction.Right) {
+            UserResponse currentUser = itemsResponse.get(manager.getTopPosition() - 1);
+            LikeRequest likeRequest = new LikeRequest(currentUser.getId(), 1);
+
+            String accessToken = SessionManager.getToken();
+            Call<Void> call = apiService.storeUserLike(accessToken, likeRequest);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        if (response.code() == 200) {
+                            Dialog dialogMatched = new Dialog(getContext());
+                            dialogMatched.setContentView(R.layout.dialog_matched);
+                            dialogMatched.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                            TextView tvName = dialogMatched.findViewById(R.id.dialog_tv_name);
+                            tvName.setText("Bạn đã tương hợp với " + currentUser.getFullname());
+                            dialogMatched.show();
+                        }
+                    } else {
+                        Log.e("API Error", "Request failed: " + response.message());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.e("API Error", "Request failed: " + t.getMessage());
+                }
+            });
+        } else if (direction == Direction.Left) {
+            UserResponse currentUser = itemsResponse.get(manager.getTopPosition() - 1);
+            LikeRequest likeRequest = new LikeRequest(currentUser.getId(), 0);
+
+            String accessToken = SessionManager.getToken();
+            Call<Void> call = apiService.storeUserLike(accessToken, likeRequest);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (!response.isSuccessful()) {
+                        Log.e("API Error", "Request failed: " + response.message());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.e("API Error", "Request failed: " + t.getMessage());
+                }
+            });
+        }
+    }
+
     private void handlerEvent() {
-        fabLike.setOnClickListener(v -> swipeCard(Direction.Right));
-        fabDislike.setOnClickListener(v -> swipeCard(Direction.Left));
+        fabLike.setOnClickListener(v -> {
+            swipeCard(Direction.Right);
+            handleCardSwipe(Direction.Right);
+        });
+        fabDislike.setOnClickListener(v -> {
+            swipeCard(Direction.Left);
+            handleCardSwipe(Direction.Left);
+        });
     }
 
     private void swipeCard(Direction direction) {

@@ -39,8 +39,8 @@ public class MatcherFragment extends Fragment {
     private MatcherAdapter matcherAdapter;
     private MatcherMessageAdapter messageAdapter;
     private ArrayList<MatcherResponse> matchers = new ArrayList<>();
-    private ArrayList<MatcherResponse> matchersNew = new ArrayList<>();
-    private ArrayList<MatcherResponse> matchersOld = new ArrayList<>();
+    private final ArrayList<MatcherResponse> matchersNew = new ArrayList<>();
+    private final ArrayList<MatcherResponse> matchersOld = new ArrayList<>();
     private ProgressBar processBar1, processBar2;
 
     @Override
@@ -63,7 +63,7 @@ public class MatcherFragment extends Fragment {
         return view;
     }
 
-    private void getMatchers(){
+    private void getMatchers() {
         matchers.clear();
         matchersNew.clear();
         matchersOld.clear();
@@ -79,9 +79,8 @@ public class MatcherFragment extends Fragment {
                         matchers.addAll(arrMatcher);
                         updateUIWithMatchers(matchers);
                     }
-                }
-                else if (response.code() == 401) {
-                    Toast.makeText(getActivity(),response.message(), Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 401) {
+                    Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -94,11 +93,10 @@ public class MatcherFragment extends Fragment {
 
     private void updateUIWithMatchers(ArrayList<MatcherResponse> matchers) {
         matchers.forEach(matcherResponse -> {
-            if(matcherResponse.getLast_message() != null){
+            if (matcherResponse.getLast_message() != null) {
                 matchersOld.add(matcherResponse);
                 Log.d("matchersOld", matcherResponse.getFullname());
-            }
-            else{
+            } else {
                 matchersNew.add(matcherResponse);
                 Log.d("matchersNew", matcherResponse.getFullname());
             }
@@ -113,7 +111,7 @@ public class MatcherFragment extends Fragment {
 
         listViewMatcher.setAdapter(matcherAdapter);
         listViewMatcherMesage.setAdapter(messageAdapter);
-        if(matchers.size() >= 7){
+        if (matchers.size() >= 7) {
             listViewMatcherMesage.setTranscriptMode(0);
         }
         processBar1.setVisibility(View.GONE);
@@ -121,11 +119,9 @@ public class MatcherFragment extends Fragment {
         this.matchers = matchers;
     }
 
-    private final ActivityResultLauncher<Intent> chatActivityLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    getMatchers();
-                }
-            });
+    private final ActivityResultLauncher<Intent> chatActivityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            getMatchers();
+        }
+    });
 }

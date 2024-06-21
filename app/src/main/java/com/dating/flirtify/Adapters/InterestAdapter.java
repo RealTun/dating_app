@@ -41,16 +41,8 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.ViewHo
         int right = holder.textView.getPaddingRight();
         int bottom = holder.textView.getPaddingBottom();
 
-
-        // Áp dụng màu nền dựa trên dòng
-        if (rowIndex % 2 == 0) {
-            holder.textView.setBackgroundResource(R.drawable.circle_button_gradient);
-            holder.textView.setPadding(left, top, right, bottom);
-        } else {
-            holder.textView.setBackgroundResource(R.drawable.circle_button);
-            holder.textView.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
-            holder.textView.setPadding(left, top, right, bottom);
-        }
+        holder.textView.setBackgroundResource(R.drawable.circle_button_gradient);
+        holder.textView.setPadding(left, top, right, bottom);
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.dating.flirtify.Models.Requests.RegisterRequest;
 import com.dating.flirtify.Models.Responses.LoginResponse;
 import com.dating.flirtify.Models.Responses.MatcherResponse;
 import com.dating.flirtify.Models.Responses.MessageResponse;
+import com.dating.flirtify.Models.Responses.RelationshipResponse;
 import com.dating.flirtify.Models.Responses.UserResponse;
 import com.dating.flirtify.Models.User;
 
@@ -48,8 +49,8 @@ public interface ApiService {
 //    Call<Void> deleteUserInterest(@Header("Authorization") String accessToken, @Path("id") int id);
 
     // Relationship routes
-//    @GET("relationship-type")
-//    Call<List<RelationshipType>> getRelationships(@Header("Authorization") String accessToken);
+    @GET("relationship-type")
+    Call<ArrayList<RelationshipResponse>> getRelationships();
 
 //    @GET("relationship-type/user")
 //    Call<List<UserRelationship>> getRelationshipByUser(@Header("Authorization") String accessToken);

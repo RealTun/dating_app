@@ -84,6 +84,7 @@ public class UserResponse {
     public void setPhotos(List<String> photos) {
         this.photos = photos;
     }
+
     public String getAvatar() {
         return photos.get(0);
     }
