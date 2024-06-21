@@ -12,11 +12,14 @@ import com.dating.flirtify.Models.User;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface ApiService {
@@ -29,6 +32,11 @@ public interface ApiService {
 
     @POST("logout")
     Call<Void> logout(@Header("Authorization") String accessToken);
+
+    @Multipart
+    @POST("user-photos/upload")
+    Call<Void> storeUserPhotos(@Header("Authorization") String accessToken, @Part MultipartBody.Part photo);
+
 
     // interest
 //    @GET("interest-type")
@@ -71,8 +79,6 @@ public interface ApiService {
 //    @GET("user-photos")
 //    Call<List<Photo>> getUserPhotos(@Header("Authorization") String accessToken);
 //
-//    @POST("user-photos/upload")
-//    Call<Void> storeUserPhotos(@Header("Authorization") String accessToken, @Body Photo photo);
 
     // Chat routes
 //    @GET("/chat")

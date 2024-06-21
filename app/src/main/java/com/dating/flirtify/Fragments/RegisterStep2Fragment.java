@@ -62,7 +62,7 @@ public class RegisterStep2Fragment extends Fragment {
     }
 
 
-    private void initializeViews(View view) {
+    public void initializeViews(View view) {
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         etNum1 = view.findViewById(R.id.etNum1);
         etNum2 = view.findViewById(R.id.etNum2);
