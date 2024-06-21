@@ -7,26 +7,49 @@
     android:layout_margin="8dp">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cv_outer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardBackgroundColor="@color/unchecked_color"
+        app:cardBackgroundColor="#ffa400"
         app:cardCornerRadius="10dp"
-        app:contentPadding="8dp">
+        app:contentPadding="2dp">
 
-        <LinearLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_inner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="vertical">
+            app:cardBackgroundColor="@color/unchecked_color"
+            app:cardCornerRadius="10dp"
+            app:contentPadding="8dp">
 
-            <TextView
-                android:id="@+id/tv_relationship"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_medium"
-                android:textAlignment="center"
-                android:textColor="@color/text_color" />
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/tv_relationship_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color" />
+
+                <TextView
+                    android:id="@+id/tv_relationship_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

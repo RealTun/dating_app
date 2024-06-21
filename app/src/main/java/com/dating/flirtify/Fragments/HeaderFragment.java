@@ -18,10 +18,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.dating.flirtify.Adapters.RelationshipAdapter;
 import com.dating.flirtify.Api.ApiClient;
 import com.dating.flirtify.Api.ApiService;
+import com.dating.flirtify.Interfaces.OnFilterClickListener;
+import com.dating.flirtify.Models.Requests.RelationshipRequest;
 import com.dating.flirtify.Models.Responses.RelationshipResponse;
 import com.dating.flirtify.Models.Responses.UserResponse;
 import com.dating.flirtify.R;
@@ -39,7 +40,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HeaderFragment extends Fragment {
+public class HeaderFragment extends Fragment implements OnFilterClickListener {
     private ApiService apiService;
     private FragmentManager fragmentManager;
     private ImageView ivLogo;
@@ -52,6 +53,9 @@ public class HeaderFragment extends Fragment {
     private final ArrayList<RelationshipResponse> relationshipItems = new ArrayList<>();
     private RelationshipAdapter relationshipAdapter;
     private RecyclerView rvRelationship;
+    private String textRelationship = "";
+    private String accessToken;
+
 
     @Nullable
     @Override
@@ -63,6 +67,32 @@ public class HeaderFragment extends Fragment {
         getUser();
 
         return view;
+    }
+
+    @Override
+    public void onItemClick(RelationshipResponse relationship) {
+        accessToken = SessionManager.getToken();
+        RelationshipRequest relationshipRequest = new RelationshipRequest(relationship.getId());
+        Call<Void> call = apiService.updateRelationshipType(accessToken, relationshipRequest);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        getUser();
+                        bottomRelationship.dismiss();
+                    }
+
+                } else {
+                    Log.e("API Error", "Request failed: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("API Error", "Request failed: " + t.getMessage());
+            }
+        });
     }
 
     private void fetchRelationships() {
@@ -77,19 +107,19 @@ public class HeaderFragment extends Fragment {
                         updateUI(relationshipItems);
                     }
                 } else {
-                    Log.e("Relationship Response:", "Response not successful: " + response.message());
+                    Log.e("API Error:", "Response not successful: " + response.message());
                 }
             }
 
             @Override
             public void onFailure(Call<ArrayList<RelationshipResponse>> call, Throwable t) {
-                Log.e("Relationship Response:", "Request failed: " + t.getMessage());
+                Log.e("API Error:", "Request failed: " + t.getMessage());
             }
         });
     }
 
     private void getUser() {
-        String accessToken = SessionManager.getToken();
+        accessToken = SessionManager.getToken();
         Call<UserResponse> call = apiService.getUser(accessToken);
         call.enqueue(new retrofit2.Callback<UserResponse>() {
             @Override
@@ -98,6 +128,7 @@ public class HeaderFragment extends Fragment {
                     UserResponse userResponse = response.body();
                     TextView tvRelationship = bottomSheetView.findViewById(R.id.tv_relationship);
                     tvRelationship.setText(userResponse.getRelationship());
+                    textRelationship = userResponse.getRelationship();
                 }
             }
 
@@ -167,9 +198,10 @@ public class HeaderFragment extends Fragment {
         layoutManager.setFlexWrap(FlexWrap.WRAP);
         layoutManager.setJustifyContent(JustifyContent.SPACE_BETWEEN);
         rvRelationship.setLayoutManager(layoutManager);
-        relationshipAdapter = new RelationshipAdapter(getContext(), relationshipItems);
+        relationshipAdapter = new RelationshipAdapter(getContext(), relationshipItems, textRelationship, this);
         rvRelationship.setAdapter(relationshipAdapter);
     }
+
 
     public void setHeaderType(int type) {
         switch (type) {

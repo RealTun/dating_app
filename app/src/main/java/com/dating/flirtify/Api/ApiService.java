@@ -4,6 +4,7 @@ import com.dating.flirtify.Models.Requests.LikeRequest;
 import com.dating.flirtify.Models.Requests.MessageRequest;
 import com.dating.flirtify.Models.Requests.LoginRequest;
 import com.dating.flirtify.Models.Requests.RegisterRequest;
+import com.dating.flirtify.Models.Requests.RelationshipRequest;
 import com.dating.flirtify.Models.Responses.LoginResponse;
 import com.dating.flirtify.Models.Responses.MatcherResponse;
 import com.dating.flirtify.Models.Responses.MessageResponse;
@@ -18,6 +19,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -51,6 +53,9 @@ public interface ApiService {
     // Relationship routes
     @GET("relationship-type")
     Call<ArrayList<RelationshipResponse>> getRelationships();
+
+    @PATCH("relationship-type/user")
+    Call<Void> updateRelationshipType(@Header("Authorization") String accessToken, @Body RelationshipRequest relationshipRequest);
 
 //    @GET("relationship-type/user")
 //    Call<List<UserRelationship>> getRelationshipByUser(@Header("Authorization") String accessToken);
