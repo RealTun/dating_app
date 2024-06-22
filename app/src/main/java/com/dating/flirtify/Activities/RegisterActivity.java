@@ -67,7 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         initializeView();
 
-        showFragment(step1Fragment);
+        showFragment(step5Fragment);
 
         eventHandler();
     }
@@ -97,8 +97,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void eventHandler() {
-
-
         nextButton.setOnClickListener(v -> {
             switch (currentStep) {
                 case 0:

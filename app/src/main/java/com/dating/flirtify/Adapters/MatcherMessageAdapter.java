@@ -51,7 +51,7 @@ public class MatcherMessageAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = View.inflate(context, layout, null);
             holder = new ViewHolder();
-            holder.ivMatcher = convertView.findViewById(R.id.imageView3);
+            holder.ivMatcher = convertView.findViewById(R.id.im3);
             holder.tvName = convertView.findViewById(R.id.tv_name);
             holder.tvMessage = convertView.findViewById(R.id.tv_message);
             convertView.setTag(holder);

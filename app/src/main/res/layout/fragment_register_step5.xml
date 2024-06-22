@@ -34,7 +34,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvCountdownTime" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="300dp"
+        android:layout_width="320dp"
         android:layout_height="500dp"
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,11 +42,13 @@
         app:layout_constraintTop_toBottomOf="@+id/textView6">
 
         <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/im1"
             android:layout_width="140dp"
             android:layout_height="140dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:background="#ccc"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon_camera_gradient"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:riv_border_color="#0000"
@@ -57,11 +59,13 @@
             app:riv_tile_mode="clamp" />
 
         <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/im2"
             android:layout_width="140dp"
             android:layout_height="140dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:background="#ccc"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon_camera"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:riv_border_color="#0000"
@@ -72,14 +76,15 @@
             app:riv_tile_mode="clamp" />
 
         <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/im3"
             android:layout_width="140dp"
             android:layout_height="140dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
+            android:background="#ccc"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon_camera"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView1"
+            app:layout_constraintTop_toBottomOf="@+id/im1"
             app:riv_border_color="#0000"
             app:riv_border_width="1dip"
             app:riv_corner_radius="20dp"
@@ -88,14 +93,15 @@
             app:riv_tile_mode="clamp" />
 
         <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/im4"
             android:layout_width="140dp"
             android:layout_height="140dp"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:background="#ccc"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon_camera"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2"
+            app:layout_constraintTop_toBottomOf="@+id/im2"
             app:riv_border_color="#0000"
             app:riv_border_width="1dip"
             app:riv_corner_radius="20dp"
@@ -104,14 +110,15 @@
             app:riv_tile_mode="clamp" />
 
         <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/imageView5"
+            android:id="@+id/im5"
             android:layout_width="140dp"
             android:layout_height="140dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
+            android:background="#ccc"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon_camera"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3"
+            app:layout_constraintTop_toBottomOf="@+id/im3"
             app:riv_border_color="#0000"
             app:riv_border_width="1dip"
             app:riv_corner_radius="20dp"
@@ -120,20 +127,81 @@
             app:riv_tile_mode="clamp" />
 
         <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/im6"
             android:layout_width="140dp"
             android:layout_height="140dp"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:background="#ccc"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon_camera"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView4"
+            app:layout_constraintTop_toBottomOf="@+id/im4"
             app:riv_border_color="#0000"
             app:riv_border_width="1dip"
             app:riv_corner_radius="20dp"
             app:riv_mutate_background="true"
             app:riv_oval="false"
             app:riv_tile_mode="clamp" />
+
+        <ImageView
+            android:id="@+id/imClose1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/close"
+            app:layout_constraintEnd_toEndOf="@+id/im1"
+            app:layout_constraintTop_toTopOf="@+id/im1" />
+
+        <ImageView
+            android:id="@+id/imClose2"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/close"
+            app:layout_constraintEnd_toEndOf="@+id/im2"
+            app:layout_constraintTop_toTopOf="@+id/im2" />
+
+        <ImageView
+            android:id="@+id/imClose3"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/close"
+            app:layout_constraintEnd_toEndOf="@+id/im3"
+            app:layout_constraintTop_toTopOf="@+id/im3" />
+
+        <ImageView
+            android:id="@+id/imClose4"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/close"
+            app:layout_constraintEnd_toEndOf="@+id/im4"
+            app:layout_constraintTop_toTopOf="@+id/im4" />
+
+        <ImageView
+            android:id="@+id/imClose5"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/close"
+            app:layout_constraintEnd_toEndOf="@+id/im5"
+            app:layout_constraintTop_toTopOf="@+id/im5" />
+
+        <ImageView
+            android:id="@+id/imClose6"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/close"
+            app:layout_constraintEnd_toEndOf="@+id/im6"
+            app:layout_constraintTop_toTopOf="@+id/im6" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
