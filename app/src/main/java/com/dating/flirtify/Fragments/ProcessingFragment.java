@@ -33,8 +33,6 @@ public class ProcessingFragment extends Fragment {
         getActivity().getWindow().findViewById(R.id.btnLogin).setVisibility(View.GONE);
         getActivity().getWindow().findViewById(R.id.tvAppName).setVisibility(View.GONE);
 
-//        Intent intent = new Intent(RegisterActivity.this, PreviewActivity.class);
-//        startActivity(intent);
 
         ProgressBar progressBar = view.findViewById((R.id.progressBar));
         progressBar.getIndeterminateDrawable().setColorFilter(
@@ -48,10 +46,8 @@ public class ProcessingFragment extends Fragment {
             public void run() {
                 // Hide the ProgressBar
                 progressBar.setVisibility(View.GONE);
-                Intent intent = new Intent(getActivity(), PreviewActivity.class);
-                startActivity(intent);
             }
-        }, 2000);
+        }, 5000);
 
         return view;
     }

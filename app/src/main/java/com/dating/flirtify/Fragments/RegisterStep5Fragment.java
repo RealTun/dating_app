@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -29,9 +28,7 @@ import com.dating.flirtify.Services.RealPathUtil;
 import com.dating.flirtify.Services.SessionManager;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import okhttp3.MediaType;
@@ -47,13 +44,14 @@ public class RegisterStep5Fragment extends Fragment {
     private static final int PERMISSION_REQUEST_READ_FOLDERS = 101;
 //    private static final int PERMISSION_REQUEST_READ_EXTERNAL_STORAGE = 100;
     private static final int PERMISSION_REQUEST_READ_IMAGES = 100;
+    private static final int MAX_IMAGES = 6;
 
     private Map<Integer, Uri> imagesURIs = new HashMap<>();
-    private int imageCount = 0; // Track number of images uploaded
-    private int selectedImageIndex; // Vị trí của ImageView đang được chọn
+    private int selectedImageIndex = -1; // Vị trí của ImageView đang được chọn
     private ImageView[] imageViews; // Mảng chứa các ImageView
+    private ImageView[] imageViewsCloses; // Mảng chứa các ImageViewClose
     private ApiService apiService;
-    Context context;
+    private Context context;
 
     public RegisterStep5Fragment(Context context) {
         this.context = context;
@@ -66,52 +64,103 @@ public class RegisterStep5Fragment extends Fragment {
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         // Khởi tạo các ImageView từ layout.
-        imageViews = new ImageView[6];
-        for (int i = 0; i < 6; i++) {
-            imageViews[i] = view.findViewById(getResources().getIdentifier("imageView" + (i + 1), "id", getActivity().getPackageName()));
-            final int index = i; // Create a final variable to use in the listener
+        imageViews = new ImageView[MAX_IMAGES];
+        imageViewsCloses = new ImageView[MAX_IMAGES];
+        for (int i = 0; i < MAX_IMAGES; i++) {
+            imageViews[i] = view.findViewById(getResources().getIdentifier("im" + (i + 1), "id", getActivity().getPackageName()));
+            imageViewsCloses[i] = view.findViewById(getResources().getIdentifier("imClose" + (i + 1), "id", getActivity().getPackageName()));
+            final int index = i; // Tạo biến final để sử dụng trong listener
             imageViews[i].setOnClickListener(v -> selectImage(index));
+            imageViewsCloses[i].setOnClickListener(v -> removeSelectImage(index)); // Set click listener for close icon
         }
 
         // Khởi tạo map với key từ 1 đến 6, và giá trị ban đầu là null
-        for (int i = 1; i <= 6; i++) {
+        for (int i = 1; i <= MAX_IMAGES; i++) {
             imagesURIs.put(i, null);
         }
 
+        // Ban đầu, chỉ kích hoạt ImageView đầu tiên
+        selectedImageIndex = 0;
+        updateImageViews();
 
         return view;
     }
 
     private void selectImage(int index) {
-        // Check if already 6 images are selected
-        if (imageCount >= 6) {
-            Toast.makeText(getContext(), "Bạn đã chọn đủ 6 hình ảnh", Toast.LENGTH_SHORT).show();
+        // Kiểm tra nếu vị trí hiện tại đã có ảnh được chọn thì không làm gì cả
+        if (imagesURIs.get(index + 1) != null) {
             return;
         }
-        selectedImageIndex = index; // Ghi nhớ vị trí của ImageView
-        // Tạo intent chọn hình từ bộ nhớ ngoài.
-//        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//        intent.setType("image/*");
 
-        // Kiểm tra quyền đã được cấp chưa.
-//        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
-//            // Yêu cầu quyền nếu chưa được cấp.
-//            ActivityCompat.requestPermissions(requireActivity(),
-//                    new String[]{Manifest.permission.READ_MEDIA_IMAGES}, PERMISSION_REQUEST_READ_FOLDERS);
-//            startActivityForResult(intent, PICK_IMAGE_REQUEST);
-//        }
-////        else {
-////            // Quyền đã được cấp, khởi chạy intent chọn hình ảnh.
-////            startActivityForResult(intent, PICK_IMAGE_REQUEST);
-////        }
-
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(),
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_READ_IMAGES);
-        } else {
-            pickImage();
+        // Tìm vị trí đầu tiên trong imagesURIs mà có giá trị là null
+        int firstNullIndex = -1;
+        for (int i = 0; i < MAX_IMAGES; i++) {
+            if (imagesURIs.get(i + 1) == null) {
+                firstNullIndex = i + 1;
+                break;
+            }
         }
+
+        // Kiểm tra điều kiện chỉ cho phép chọn ảnh ở vị trí đầu tiên có giá trị null
+        if (firstNullIndex != -1) {
+            selectedImageIndex = firstNullIndex - 1; // Gán vị trí đã chọn là vị trí có giá trị null
+            updateImageViews(); // Cập nhật trạng thái của các ImageView
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            intent.setType("image/*");
+
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(requireActivity(),
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_READ_IMAGES);
+            }
+           else {
+               // Quyền đã được cấp, khởi chạy intent chọn hình ảnh.
+               startActivityForResult(intent, PICK_IMAGE_REQUEST);
+           }
+        } else {
+            Toast.makeText(getContext(), "Bạn đã chọn đủ " + MAX_IMAGES + " ảnh rồi", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void removeSelectImage(int index) {
+        // Xóa ảnh khỏi Map và cập nhật lại ImageView tương ứng
+        imagesURIs.remove(index + 1); // Xóa phần tử với key là index + 1
+
+        // Dồn các phần tử phía sau lên
+        for (int i = index + 1; i <= MAX_IMAGES; i++) {
+            if (imagesURIs.containsKey(i + 1)) {
+                imagesURIs.put(i, imagesURIs.get(i + 1));
+                imagesURIs.remove(i + 1);
+            } else {
+                imagesURIs.put(i, null);
+            }
+        }
+        updateImageViews();
+    }
+
+    private void updateImageViews() {
+        boolean firstNullFound = false; // Biến để xác định đã tìm thấy URI null đầu tiên chưa
+        for (int i = 0; i < imageViews.length; i++) {
+            if (imagesURIs.get(i + 1) == null && !firstNullFound) {
+                // Nếu không có ảnh được chọn và chưa tìm thấy URI null đầu tiên, hiển thị biểu tượng camera gradient
+                imageViewsCloses[i].setVisibility(View.GONE);
+                imageViews[i].setImageResource(R.drawable.icon_camera_gradient);
+                imageViews[i].setEnabled(i == selectedImageIndex); // Cho phép ImageView nếu đây là vị trí được chọn hiện tại
+                firstNullFound = true; // Đánh dấu đã tìm thấy URI null đầu tiên
+            } else if (imagesURIs.get(i + 1) == null) {
+                // Nếu không có ảnh được chọn, nhưng đã tìm thấy URI null đầu tiên, hiển thị biểu tượng camera thường
+                imageViewsCloses[i].setVisibility(View.GONE);
+                imageViews[i].setImageResource(R.drawable.icon_camera);
+                imageViews[i].setEnabled(i == selectedImageIndex); // Cho phép ImageView nếu đây là vị trí được chọn hiện tại
+            } else {
+                // Nếu có ảnh được chọn, hiển thị ảnh đã chọn và hiện ImageViewClose
+                imageViewsCloses[i].setVisibility(View.VISIBLE);
+                imageViews[i].setImageURI(imagesURIs.get(i + 1));
+                imageViews[i].setBackgroundResource(0); // Xóa nền nếu đã có ảnh được chọn
+                imageViews[i].setEnabled(true); // Cho phép ImageView
+            }
+        }
+        Log.e("imagesURIs", imagesURIs.toString());
     }
 
     private void pickImage() {
@@ -125,8 +174,10 @@ public class RegisterStep5Fragment extends Fragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSION_REQUEST_READ_FOLDERS) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Quyền đã được cấp, khởi chạy lại intent chọn hình ảnh.
-                selectImage(imageCount);
+                // Quyền đã được cấp, khởi chạy intent chọn hình ảnh.
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("image/*");
+                startActivityForResult(intent, PICK_IMAGE_REQUEST);
             } else {
                 Toast.makeText(getContext(), "Yêu cầu quyền đọc bộ nhớ để chọn hình ảnh", Toast.LENGTH_SHORT).show();
             }
@@ -142,6 +193,15 @@ public class RegisterStep5Fragment extends Fragment {
                 // Cập nhật ảnh tại vị trí được chọn trong Map
                 imagesURIs.put(selectedImageIndex + 1, selectedImageUri); // Vị trí +1 để lấy key từ 1 đến 6
                 imageViews[selectedImageIndex].setImageURI(selectedImageUri); // Hiển thị ảnh tương ứng vào ImageView
+
+                // Hiển thị ImageViewClose tương ứng
+                imageViewsCloses[selectedImageIndex].setVisibility(View.VISIBLE);
+
+                // Kích hoạt ImageView tiếp theo nếu có
+                if (selectedImageIndex < MAX_IMAGES - 1) {
+                    selectedImageIndex++;
+                    updateImageViews();
+                }
             }
             Log.d("RegisterStep5Fragment", "imagesURIs: " + imagesURIs.toString());
         }
