@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class LocationHelper {
-    private Context context;
-    private FusedLocationProviderClient fusedLocationClient;
+    private final Context context;
+    private final FusedLocationProviderClient fusedLocationClient;
     private LocationResultListener locationResultListener;
 
     public LocationHelper(Context context) {
@@ -31,6 +31,7 @@ public class LocationHelper {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
     }
 
+    // Yêu cầu quyền truy cập vị trí từ người dùng
     public void requestLocationPermission() {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -45,26 +46,24 @@ public class LocationHelper {
     }
 
     @SuppressLint("MissingPermission")
+    // Lấy vị trí hiện tại của người dùng
     public void getCurrentLocation() {
         fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null && locationResultListener != null) {
-                            String district = getDistrictFromLocation(location);
-                            locationResultListener.onLocationReceived(location, district);
-                        }
+                .addOnSuccessListener(location -> {
+                    if (location != null && locationResultListener != null) {
+                        String addressLine = getAddressLineFromLocation(location);
+                        locationResultListener.onLocationReceived(location, addressLine);
                     }
                 });
     }
 
-    private String getDistrictFromLocation(Location location) {
+    // Lấy địa chỉ cụ thể từ vị trí được cung cấp
+    public String getAddressLineFromLocation(Location location) {
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            if (addresses != null && addresses.size() > 0) {
-                Address address = addresses.get(0);
-                return address.getSubAdminArea(); // This gets the district (quận/huyện)
+            if (addresses != null && !addresses.isEmpty()) {
+                return addresses.get(0).getAddressLine(0);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -72,45 +71,13 @@ public class LocationHelper {
         return null;
     }
 
+    // Thiết lập listener để nhận kết quả vị trí
     public void setLocationResultListener(LocationResultListener listener) {
         this.locationResultListener = listener;
     }
 
-    public List<String> findAdjacentDistricts(Location location, double radiusInKm) {
-        List<String> adjacentDistricts = new ArrayList<>();
-
-        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            if (addresses != null && addresses.size() > 0) {
-                Address address = addresses.get(0);
-                String currentDistrict = address.getSubAdminArea();
-
-                // Find nearby addresses within the specified radius
-                List<Address> nearbyAddresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 10);
-                for (Address nearbyAddress : nearbyAddresses) {
-                    String nearbyDistrict = nearbyAddress.getSubAdminArea();
-                    if (nearbyDistrict != null && !nearbyDistrict.equals(currentDistrict)) {
-                        // Calculate distance between current location and nearby location
-                        float[] results = new float[1];
-                        Location.distanceBetween(location.getLatitude(), location.getLongitude(),
-                                nearbyAddress.getLatitude(), nearbyAddress.getLongitude(), results);
-                        double distanceInKm = results[0]; // Convert to kilometers
-                        if (distanceInKm <= radiusInKm) {
-                            adjacentDistricts.add(nearbyDistrict);
-                        }
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return adjacentDistricts;
-    }
-
-
+    // Listener để nhận kết quả vị trí
     public interface LocationResultListener {
-        void onLocationReceived(Location location, String district);
+        void onLocationReceived(Location location, String addressLine);
     }
 }

@@ -58,12 +58,12 @@ dependencies {
     implementation("com.makeramen:roundedimageview:2.3.0")
 
     // Firebase
-    //    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
-    //    implementation("com.google.firebase:firebase-storage")
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+    implementation("com.google.firebase:firebase-storage")
 
     // Glide load image online
-    implementation("com.github.bumptech.glide:glide:4.12.0")
     implementation(libs.firebase.storage)
+    implementation("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
 
     // notification
@@ -88,7 +88,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
 
     // Google Service Location
-    implementation ("com.google.android.gms:play-services-location:21.0.1")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 
     // Unit Testing
     testImplementation(libs.junit)
