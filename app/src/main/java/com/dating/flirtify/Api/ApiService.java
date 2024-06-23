@@ -7,6 +7,7 @@ import com.dating.flirtify.Models.Requests.MessageRequest;
 import com.dating.flirtify.Models.Requests.LoginRequest;
 import com.dating.flirtify.Models.Requests.RegisterRequest;
 import com.dating.flirtify.Models.Requests.RelationshipRequest;
+import com.dating.flirtify.Models.Requests.UserRequest;
 import com.dating.flirtify.Models.Responses.InterestResponse;
 import com.dating.flirtify.Models.Responses.LoginResponse;
 import com.dating.flirtify.Models.Responses.MatcherResponse;
@@ -43,6 +44,8 @@ public interface ApiService {
 
     @GET("user")
     Call<UserResponse> getUser(@Header("Authorization") String accessToken);
+    @PATCH("userTu")
+    Call<Void> updateUser(@Header("Authorization") String accessToken, @Body UserRequest user);
     @Multipart
     @POST("user-photos/upload")
     Call<Void> storeUserPhotos(@Header("Authorization") String accessToken, @Part MultipartBody.Part photo);

@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,24 +15,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.dating.flirtify.Adapters.RelationshipAdapter;
 import com.dating.flirtify.Api.ApiClient;
 import com.dating.flirtify.Api.ApiService;
-import com.dating.flirtify.Interfaces.OnFilterClickListener;
-import com.dating.flirtify.Models.Requests.RelationshipRequest;
-import com.dating.flirtify.Models.Responses.RelationshipResponse;
 import com.dating.flirtify.Models.Responses.UserResponse;
 import com.dating.flirtify.R;
 import com.dating.flirtify.Services.SessionManager;
-import com.google.android.flexbox.FlexWrap;
-import com.google.android.flexbox.FlexboxLayoutManager;
-import com.google.android.flexbox.JustifyContent;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.slider.RangeSlider;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -45,11 +38,12 @@ public class HeaderFragment extends Fragment {
     private ImageView ivLogo;
     private TextView tvAppName, tvFullname, tvAge, rangeAge;
     private ImageButton ibFilter, ibBack, ibArrowDown;
+    private RadioButton rbMale, rbFemale, rbOther;
     private BottomSheetDialog bottomSheetDialog;
     private View bottomSheetView;
     private RangeSlider rangeSlider;
     private PreviewFragment previewFragment;
-
+    private UserResponse user;
 
     @Nullable
     @Override
@@ -74,6 +68,9 @@ public class HeaderFragment extends Fragment {
             fragmentManager.beginTransaction().replace(R.id.fragment_container, accountFragment).commit();
             setHeaderType(3);
         });
+        bottomSheetDialog.setOnDismissListener(dialog -> {
+            Toast.makeText(requireActivity(), "Dismissed", Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void initViews(@NonNull View view) {
@@ -94,6 +91,8 @@ public class HeaderFragment extends Fragment {
         bottomSheetDialog = new BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme);
         bottomSheetView = getLayoutInflater().inflate(R.layout.bottom_sheet_filter, null);
         bottomSheetDialog.setContentView(bottomSheetView);
+
+        getCurrentUser();
 
         rangeSlider = bottomSheetDialog.findViewById(R.id.rangeSlider);
         rangeAge = bottomSheetDialog.findViewById(R.id.tv_range_age);
@@ -153,5 +152,43 @@ public class HeaderFragment extends Fragment {
     public void setCurrentUser(UserResponse user) {
         tvFullname.setText(user.getFullname());
         tvAge.setText(String.valueOf(user.getAge()));
+    }
+
+    public void getCurrentUser() {
+        ApiService apiService = ApiClient.getClient();
+        String accessToken = SessionManager.getToken();
+        Call<UserResponse> call = apiService.getUser(accessToken);
+        call.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                if (response.isSuccessful()) {
+                    user = response.body();
+                    int gender = user.getLooking_for();
+                    rbMale = bottomSheetDialog.findViewById(R.id.rb_male);
+                    rbFemale = bottomSheetDialog.findViewById(R.id.rb_female);
+                    rbOther = bottomSheetDialog.findViewById(R.id.rb_other);
+                    if (gender == 0) {
+                        rbMale.setChecked(true);
+                        rbFemale.setChecked(false);
+                        rbOther.setChecked(false);
+                    } else if (gender == 1) {
+                        rbMale.setChecked(false);
+                        rbFemale.setChecked(true);
+                        rbOther.setChecked(false);
+                    } else {
+                        rbMale.setChecked(false);
+                        rbFemale.setChecked(false);
+                        rbOther.setChecked(true);
+                    }
+                } else {
+                    Log.e("getUser", response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                Log.e("Error", t.getMessage());
+            }
+        });
     }
 }
