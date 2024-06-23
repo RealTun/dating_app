@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.dating.flirtify.Api.ApiClient;
@@ -44,6 +45,8 @@ public class RegisterStep5Fragment extends Fragment {
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int PERMISSION_REQUEST_READ_FOLDERS = 101;
+//    private static final int PERMISSION_REQUEST_READ_EXTERNAL_STORAGE = 100;
+    private static final int PERMISSION_REQUEST_READ_IMAGES = 100;
 
     private Map<Integer, Uri> imagesURIs = new HashMap<>();
     private int imageCount = 0; // Track number of images uploaded
@@ -87,18 +90,34 @@ public class RegisterStep5Fragment extends Fragment {
         }
         selectedImageIndex = index; // Ghi nhớ vị trí của ImageView
         // Tạo intent chọn hình từ bộ nhớ ngoài.
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/*");
+//        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//        intent.setType("image/*");
 
         // Kiểm tra quyền đã được cấp chưa.
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
-            // Yêu cầu quyền nếu chưa được cấp.
+//        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
+//            // Yêu cầu quyền nếu chưa được cấp.
+//            ActivityCompat.requestPermissions(requireActivity(),
+//                    new String[]{Manifest.permission.READ_MEDIA_IMAGES}, PERMISSION_REQUEST_READ_FOLDERS);
+//            startActivityForResult(intent, PICK_IMAGE_REQUEST);
+//        }
+////        else {
+////            // Quyền đã được cấp, khởi chạy intent chọn hình ảnh.
+////            startActivityForResult(intent, PICK_IMAGE_REQUEST);
+////        }
+
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(),
-                    new String[]{Manifest.permission.READ_MEDIA_IMAGES}, PERMISSION_REQUEST_READ_FOLDERS);
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_READ_IMAGES);
         } else {
-            // Quyền đã được cấp, khởi chạy intent chọn hình ảnh.
-            startActivityForResult(intent, PICK_IMAGE_REQUEST);
+            pickImage();
         }
+    }
+
+    private void pickImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
     @Override

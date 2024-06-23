@@ -21,13 +21,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dating.flirtify.Adapters.CardStackAdapter;
 import com.dating.flirtify.Adapters.InterestAdapter;
 import com.dating.flirtify.Api.ApiClient;
 import com.dating.flirtify.Api.ApiService;
-import com.dating.flirtify.Interfaces.OnCardActionListener;
+import com.dating.flirtify.Listeners.OnCardActionListener;
 import com.dating.flirtify.Models.Requests.LikeRequest;
 import com.dating.flirtify.Models.Responses.UserResponse;
 import com.dating.flirtify.R;
