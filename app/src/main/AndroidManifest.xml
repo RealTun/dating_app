@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" /> <!-- Cho phép truy cập video -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- Quyền truy cập vị trí chính xác (GPS) -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Quyền truy cập vị trí gần đúng -->
+
     <!-- Cập nhật quyền lưu trữ cho Android 14+ -->
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
@@ -85,7 +86,7 @@
 
         <activity
             android:name=".Activities.PreviewActivity"
-            android:exported="false">
+            android:exported="true">
         </activity>
     </application>
 

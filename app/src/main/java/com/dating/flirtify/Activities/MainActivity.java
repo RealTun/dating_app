@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupRegisterButton() {
-        btnRegister = findViewById(R.id.btnRegister);
+        btnRegister = findViewById(R.id.btnDeleteAccount);
         btnRegister.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
             startActivity(intent);

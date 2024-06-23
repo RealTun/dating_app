@@ -15,6 +15,7 @@ import java.util.List;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
@@ -37,6 +38,8 @@ public interface ApiService {
     @POST("user-photos/upload")
     Call<Void> storeUserPhotos(@Header("Authorization") String accessToken, @Part MultipartBody.Part photo);
 
+    @DELETE("interest-type/user/{id}")
+    Call<Void> deleteUserInterest(@Header("Authorization") String accessToken, @Path("id") int id);
 
     // interest
 //    @GET("interest-type")
@@ -48,8 +51,6 @@ public interface ApiService {
 //    @POST("interest-type/user")
 //    Call<Void> storeInterestUser(@Header("Authorization") String accessToken, @Body InterestType interestType);
 
-//    @DELETE("interest-type/user/{id}")
-//    Call<Void> deleteUserInterest(@Header("Authorization") String accessToken, @Path("id") int id);
 
     // Relationship routes
 //    @GET("relationship-type")

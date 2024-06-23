@@ -1,6 +1,7 @@
 package com.dating.flirtify.Fragments;
 
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dating.flirtify.Activities.FacebookLoginActivity;
@@ -27,6 +29,7 @@ import com.dating.flirtify.Models.Responses.LoginResponse;
 import com.dating.flirtify.R;
 import com.dating.flirtify.Services.SessionManager;
 import com.facebook.login.LoginManager;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,7 +47,7 @@ public class SettingFragment extends Fragment {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logout();
+                showLogoutConfirmationDialog();
             }
         });
         return view;
@@ -107,4 +110,33 @@ public class SettingFragment extends Fragment {
 ////        finish();
 
     }
+
+    private void showLogoutConfirmationDialog() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.TransparentBottomSheetDialog);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_confirm_logout, null);
+        bottomSheetDialog.setContentView(dialogView);
+
+        Button btnCancel = dialogView.findViewById(R.id.btnCancel);
+        Button btnLogout = dialogView.findViewById(R.id.btnLogout);
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+                logout();
+            }
+        });
+
+        bottomSheetDialog.show();
+    }
+
+
 }

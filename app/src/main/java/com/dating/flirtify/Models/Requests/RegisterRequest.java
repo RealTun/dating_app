@@ -87,4 +87,5 @@ public class RegisterRequest {
     public void setLocation(String location) {
         this.location = location;
     }
+
 }

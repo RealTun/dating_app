@@ -77,14 +77,16 @@ dependencies {
     implementation("com.sun.mail:android-activation:1.6.7")
 
     // Facebook login
-    implementation ("com.facebook.android:facebook-android-sdk:[8,9)")
     implementation("com.facebook.android:facebook-login:latest.release")
-//    implementation("com.facebook.android:facebook-android-sdk:latest.release")
+    implementation("com.facebook.android:facebook-android-sdk:latest.release")
 
-    // api
+    // API
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
+
+    // Google Service Location
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
 
     // Unit Testing
     testImplementation(libs.junit)

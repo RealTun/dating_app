@@ -84,6 +84,11 @@ public class RegisterStep5Fragment extends Fragment {
     }
 
     private void selectImage(int index) {
+        // Kiểm tra nếu vị trí hiện tại đã có ảnh được chọn thì không làm gì cả
+        if (imagesURIs.get(index + 1) != null) {
+            return;
+        }
+
         // Tìm vị trí đầu tiên trong imagesURIs mà có giá trị là null
         int firstNullIndex = -1;
         for (int i = 0; i < MAX_IMAGES; i++) {
@@ -125,7 +130,7 @@ public class RegisterStep5Fragment extends Fragment {
                 imagesURIs.put(i, null);
             }
         }
-        updateImageViews(); // Cập nhật lại giao diện
+        updateImageViews();
     }
 
     private void updateImageViews() {
