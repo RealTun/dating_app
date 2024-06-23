@@ -32,6 +32,7 @@ import com.dating.flirtify.Fragments.RegisterWantToSeeFragment;
 import com.dating.flirtify.Models.Requests.RegisterRequest;
 import com.dating.flirtify.Models.Responses.LoginResponse;
 import com.dating.flirtify.R;
+import com.dating.flirtify.Services.DistanceCalculator;
 import com.dating.flirtify.Services.LocationHelper;
 import com.dating.flirtify.Services.SessionManager;
 
@@ -238,26 +239,16 @@ public class RegisterActivity extends AppCompatActivity implements LocationHelpe
     }
 
     @Override
-    public void onLocationReceived(Location location, String district) {
+    public void onLocationReceived(Location location, String address) {
         if (location != null) {
             // Hiển thị thông tin vị trí và quận/huyện
-            Toast.makeText(this, "Vị trí hiện tại: " + location.getLatitude() + ", " + location.getLongitude(), Toast.LENGTH_LONG).show();
-            Toast.makeText(this, "Bạn đang ở quận: " + district, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Lat: " + location.getLatitude() + ", Lon:" + location.getLongitude(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Vị trí hiện tại: " + address, Toast.LENGTH_LONG).show();
 
-            registerRequest.setLocation(district);
+            registerRequest.setLocation(address);
 
-            // Tìm các quận/huyện tiếp giáp trong bán kính 10km (ví dụ)
-            List<String> adjacentDistricts = locationHelper.findAdjacentDistricts(location, 1000);
-            if (!adjacentDistricts.isEmpty()) {
-                StringBuilder adjacentDistrictsStr = new StringBuilder("Các quận/huyện tiếp giáp: ");
-                for (String adjacentDistrict : adjacentDistricts) {
-                    adjacentDistrictsStr.append(adjacentDistrict).append(", ");
-                }
-                adjacentDistrictsStr.delete(adjacentDistrictsStr.length() - 2, adjacentDistrictsStr.length()); // Remove last comma and space
-                Toast.makeText(this, adjacentDistrictsStr.toString(), Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(this, "Không tìm thấy quận/huyện tiếp giáp", Toast.LENGTH_SHORT).show();
-            }
+            double distance = DistanceCalculator.calculateDistanceForAddress(this, address, "175 Tây Sơn, Đống Đa, Hà Nội, Việt Nam");
+            Toast.makeText(this, "Khoảng cách là: " + Double.toString(distance), Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Không thể lấy được vị trí hiện tại", Toast.LENGTH_SHORT).show();
         }
