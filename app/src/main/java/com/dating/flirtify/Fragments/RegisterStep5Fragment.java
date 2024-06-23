@@ -23,13 +23,22 @@ import androidx.fragment.app.Fragment;
 
 import com.dating.flirtify.Api.ApiClient;
 import com.dating.flirtify.Api.ApiService;
+import com.dating.flirtify.Models.Requests.PhotoRequest;
 import com.dating.flirtify.R;
 import com.dating.flirtify.Services.RealPathUtil;
 import com.dating.flirtify.Services.SessionManager;
+import com.facebook.internal.ImageRequest;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -51,6 +60,7 @@ public class RegisterStep5Fragment extends Fragment {
     private ImageView[] imageViewsCloses; // Mảng chứa các ImageViewClose
     private ApiService apiService;
     private Context context;
+    private StorageReference storageReference;
 
     public RegisterStep5Fragment(Context context) {
         this.context = context;
@@ -61,6 +71,9 @@ public class RegisterStep5Fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register_step5, container, false);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+        FirebaseApp.initializeApp(getContext());
+        storageReference = FirebaseStorage.getInstance().getReference();
 
         // Khởi tạo các ImageView từ layout.
         imageViews = new ImageView[MAX_IMAGES];
@@ -206,45 +219,61 @@ public class RegisterStep5Fragment extends Fragment {
         }
 
         for (Map.Entry<Integer, Uri> entry : imagesURIs.entrySet()) {
-            Integer key = entry.getKey();
             Uri value = entry.getValue();
             String token = SessionManager.getToken();
 
             if (value != null) {
-                System.out.println("Key: " + key + " có giá trị: " + value);
-                uploadPhoto(token, value);
+                uploadImage(token, value);
             }
         }
         return true;
     }
 
-    private void uploadPhoto(String accessToken, Uri photoUri) {
-        if (context == null) {
-            Log.e("Photo Upload Error", "Context is null");
-            return;
-        }
+    private void uploadImage(String accessToken, Uri fileUri) {
+        String uniqueFileName = "images/" + UUID.randomUUID().toString();
+        StorageReference ref = storageReference.child(uniqueFileName);
 
-        String realPath = RealPathUtil.getRealPath(context, photoUri);
-
-        File imageFile = new File(realPath);
-        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), imageFile);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("image", imageFile.getName(), requestFile);
-
-        apiService = ApiClient.getClient();
-        Call<Void> call = apiService.storeUserPhotos(accessToken, body);
-        call.enqueue(new Callback<Void>() {
+        ref.putFile(fileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Log.d("Photo Upload", response.message());
-                } else {
-                    Log.e("Photo Upload Error", "Lỗi: " + response.message());
-                }
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri downloadUri) {
+                        String downloadUrl = downloadUri.toString();
+                        Log.d("Firebase", downloadUri.toString());
+
+                        apiService = ApiClient.getClient();
+                        PhotoRequest photoRequest = new PhotoRequest(downloadUrl);
+                        Call<Void> call = apiService.storeUserPhotos(accessToken, photoRequest);
+                        call.enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if (response.isSuccessful()) {
+                                    Log.d("Photo Upload", response.message());
+                                }
+                                else {
+                                    Log.e("Photo Upload Error", "Lỗi: " + response.message());
+                                }
+                            }
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Log.e("Photo Upload Error", t.getMessage(), t);
+                            }
+                        });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Handle any errors
+                        Log.e("Firebase", e.getMessage());
+                    }
+                });
             }
-
+        }).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("Photo Upload Error", t.getMessage(), t);
+            public void onFailure(@NonNull Exception e) {
+                // Handle any errors
+                Log.e("Firebase", e.getMessage());
             }
         });
     }

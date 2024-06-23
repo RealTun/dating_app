@@ -5,6 +5,7 @@ import com.dating.flirtify.Models.Requests.InterestRequest;
 import com.dating.flirtify.Models.Requests.LikeRequest;
 import com.dating.flirtify.Models.Requests.MessageRequest;
 import com.dating.flirtify.Models.Requests.LoginRequest;
+import com.dating.flirtify.Models.Requests.PhotoRequest;
 import com.dating.flirtify.Models.Requests.RegisterRequest;
 import com.dating.flirtify.Models.Requests.RelationshipRequest;
 import com.dating.flirtify.Models.Responses.InterestResponse;
@@ -43,9 +44,9 @@ public interface ApiService {
 
     @GET("user")
     Call<UserResponse> getUser(@Header("Authorization") String accessToken);
-    @Multipart
+
     @POST("user-photos/upload")
-    Call<Void> storeUserPhotos(@Header("Authorization") String accessToken, @Part MultipartBody.Part photo);
+    Call<Void> storeUserPhotos(@Header("Authorization") String accessToken, @Body PhotoRequest photoRequest);
 
     @DELETE("interest-type/user/{id}")
     Call<Void> deleteUserInterest(@Header("Authorization") String accessToken, @Path("id") int id);

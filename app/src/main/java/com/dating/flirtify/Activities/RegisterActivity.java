@@ -184,7 +184,7 @@ public class RegisterActivity extends AppCompatActivity implements LocationHelpe
                 case 7:
                     currentStep++;
                     showFragment(processingFragment);
-//                    RegisterProcess();
+                    RegisterProcess();
                     break;
             }
         });
@@ -211,8 +211,8 @@ public class RegisterActivity extends AppCompatActivity implements LocationHelpe
 
                         if (step5Fragment.Upload()) {
                             Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(RegisterActivity.this, PreviewActivity.class);
-                            startActivity(intent);
+//                            Intent intent = new Intent(RegisterActivity.this, PreviewActivity.class);
+//                            startActivity(intent);
                         }
 
                     }
