@@ -134,8 +134,6 @@
             app:riv_mutate_background="true"
             app:riv_oval="false"
             app:riv_tile_mode="clamp" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

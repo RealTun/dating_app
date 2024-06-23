@@ -104,7 +104,7 @@ public class HeaderFragment extends Fragment implements OnFilterClickListener {
                     ArrayList<RelationshipResponse> arrRelationship = response.body();
                     if (arrRelationship != null) {
                         relationshipItems.addAll(arrRelationship);
-                        updateUI(relationshipItems);
+                        updateUI();
                     }
                 } else {
                     Log.e("API Error:", "Response not successful: " + response.message());
@@ -256,7 +256,7 @@ public class HeaderFragment extends Fragment implements OnFilterClickListener {
         tvAge.setText(String.valueOf(user.getAge()));
     }
 
-    private void updateUI(ArrayList<RelationshipResponse> relationshipItems) {
+    private void updateUI() {
         if (rvRelationship != null) {
             relationshipAdapter.notifyDataSetChanged();
         } else {

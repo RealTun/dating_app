@@ -1,5 +1,6 @@
 package com.dating.flirtify.Fragments;
 
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.media.Image;
 import android.net.Uri;
@@ -14,10 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.dating.flirtify.Activities.SettingProfileActivity;
 import com.dating.flirtify.Api.ApiClient;
 import com.dating.flirtify.Api.ApiService;
 import com.dating.flirtify.Models.Responses.UserResponse;
@@ -32,6 +35,7 @@ public class AccountFragment extends Fragment {
     private FrameLayout avatarWrapper;
     private TextView tvFullname, tvAge;
     private ImageView ivProfile;
+    private ImageButton ibEditProfile;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
@@ -50,6 +54,7 @@ public class AccountFragment extends Fragment {
         tvFullname = view.findViewById(R.id.tv_fullname);
         tvAge = view.findViewById(R.id.tv_age);
         ivProfile = view.findViewById(R.id.profile_image);
+        ibEditProfile = view.findViewById(R.id.ib_edit_profile);
         apiService = ApiClient.getClient();
 
         String accessToken = SessionManager.getToken();
@@ -100,6 +105,10 @@ public class AccountFragment extends Fragment {
             HeaderFragment headerFragment = (HeaderFragment) fragmentManager.findFragmentById(R.id.fragment_header);
             fragmentManager.beginTransaction().replace(R.id.fragment_container, settingFragment).addToBackStack(null).commit();
             headerFragment.setHeaderType(4);
+        });
+        ibEditProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), SettingProfileActivity.class);
+            startActivity(intent);
         });
     }
 }

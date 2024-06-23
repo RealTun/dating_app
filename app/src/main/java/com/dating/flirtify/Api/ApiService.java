@@ -1,10 +1,13 @@
 package com.dating.flirtify.Api;
 
+import com.dating.flirtify.Models.InterestType;
+import com.dating.flirtify.Models.Requests.InterestRequest;
 import com.dating.flirtify.Models.Requests.LikeRequest;
 import com.dating.flirtify.Models.Requests.MessageRequest;
 import com.dating.flirtify.Models.Requests.LoginRequest;
 import com.dating.flirtify.Models.Requests.RegisterRequest;
 import com.dating.flirtify.Models.Requests.RelationshipRequest;
+import com.dating.flirtify.Models.Responses.InterestResponse;
 import com.dating.flirtify.Models.Responses.LoginResponse;
 import com.dating.flirtify.Models.Responses.MatcherResponse;
 import com.dating.flirtify.Models.Responses.MessageResponse;
@@ -38,14 +41,14 @@ public interface ApiService {
     Call<UserResponse> getUser(@Header("Authorization") String accessToken);
 
     // interest
-//    @GET("interest-type")
-//    Call<List<InterestType>> getInterestTypes(@Header("Authorization") String accessToken);
-//
-//    @GET("interest-type/user")
-//    Call<List<UserInterest>> getInterestByUser(@Header("Authorization") String accessToken);
+    @GET("interest-type")
+    Call<List<InterestType>> getInterestTypes(@Header("Authorization") String accessToken);
 
-//    @POST("interest-type/user")
-//    Call<Void> storeInterestUser(@Header("Authorization") String accessToken, @Body InterestType interestType);
+    @GET("interest-type/user")
+    Call<InterestResponse> getInterestByUser(@Header("Authorization") String accessToken);
+
+    @POST("interest-type/user")
+    Call<Void> storeInterestUser(@Header("Authorization") String accessToken, @Body InterestRequest interestRequest);
 
 //    @DELETE("interest-type/user/{id}")
 //    Call<Void> deleteUserInterest(@Header("Authorization") String accessToken, @Path("id") int id);
