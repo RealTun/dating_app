@@ -42,8 +42,7 @@ public class RegisterStep5Fragment extends Fragment {
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int PERMISSION_REQUEST_READ_FOLDERS = 101;
-//    private static final int PERMISSION_REQUEST_READ_EXTERNAL_STORAGE = 100;
-    private static final int PERMISSION_REQUEST_READ_IMAGES = 100;
+    private static final int PERMISSION_REQUEST_READ_EXTERNAL_STORAGE = 100;
     private static final int MAX_IMAGES = 6;
 
     private Map<Integer, Uri> imagesURIs = new HashMap<>();
@@ -111,12 +110,11 @@ public class RegisterStep5Fragment extends Fragment {
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(requireActivity(),
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_READ_IMAGES);
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_READ_EXTERNAL_STORAGE);
+            } else {
+                // Quyền đã được cấp, khởi chạy intent chọn hình ảnh.
+                startActivityForResult(intent, PICK_IMAGE_REQUEST);
             }
-           else {
-               // Quyền đã được cấp, khởi chạy intent chọn hình ảnh.
-               startActivityForResult(intent, PICK_IMAGE_REQUEST);
-           }
         } else {
             Toast.makeText(getContext(), "Bạn đã chọn đủ " + MAX_IMAGES + " ảnh rồi", Toast.LENGTH_SHORT).show();
         }
@@ -161,12 +159,6 @@ public class RegisterStep5Fragment extends Fragment {
             }
         }
         Log.e("imagesURIs", imagesURIs.toString());
-    }
-
-    private void pickImage() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
     @Override
