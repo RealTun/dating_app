@@ -40,21 +40,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HeaderFragment extends Fragment implements OnFilterClickListener {
-    private ApiService apiService;
+public class HeaderFragment extends Fragment {
     private FragmentManager fragmentManager;
     private ImageView ivLogo;
     private TextView tvAppName, tvFullname, tvAge, rangeAge;
     private ImageButton ibFilter, ibBack, ibArrowDown;
-    private BottomSheetDialog bottomSheetDialog, bottomRelationship;
-    private View bottomSheetView, bottomRelationshipView;
+    private BottomSheetDialog bottomSheetDialog;
+    private View bottomSheetView;
     private RangeSlider rangeSlider;
     private PreviewFragment previewFragment;
-    private final ArrayList<RelationshipResponse> relationshipItems = new ArrayList<>();
-    private RelationshipAdapter relationshipAdapter;
-    private RecyclerView rvRelationship;
-    private String textRelationship = "";
-    private String accessToken;
 
 
     @Nullable
@@ -63,80 +57,7 @@ public class HeaderFragment extends Fragment implements OnFilterClickListener {
         View view = inflater.inflate(R.layout.fragment_header, container, false);
         initViews(view);
         eventHandler();
-        fetchRelationships();
-        getUser();
-
         return view;
-    }
-
-    @Override
-    public void onItemClick(RelationshipResponse relationship) {
-        accessToken = SessionManager.getToken();
-        RelationshipRequest relationshipRequest = new RelationshipRequest(relationship.getId());
-        Call<Void> call = apiService.updateRelationshipType(accessToken, relationshipRequest);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    if (response.code() == 200) {
-                        getUser();
-                        bottomRelationship.dismiss();
-                    }
-
-                } else {
-                    Log.e("API Error", "Request failed: " + response.message());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("API Error", "Request failed: " + t.getMessage());
-            }
-        });
-    }
-
-    private void fetchRelationships() {
-        Call<ArrayList<RelationshipResponse>> call = apiService.getRelationships();
-        call.enqueue(new Callback<ArrayList<RelationshipResponse>>() {
-            @Override
-            public void onResponse(Call<ArrayList<RelationshipResponse>> call, Response<ArrayList<RelationshipResponse>> response) {
-                if (response.isSuccessful()) {
-                    ArrayList<RelationshipResponse> arrRelationship = response.body();
-                    if (arrRelationship != null) {
-                        relationshipItems.addAll(arrRelationship);
-                        updateUI();
-                    }
-                } else {
-                    Log.e("API Error:", "Response not successful: " + response.message());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<RelationshipResponse>> call, Throwable t) {
-                Log.e("API Error:", "Request failed: " + t.getMessage());
-            }
-        });
-    }
-
-    private void getUser() {
-        accessToken = SessionManager.getToken();
-        Call<UserResponse> call = apiService.getUser(accessToken);
-        call.enqueue(new retrofit2.Callback<UserResponse>() {
-            @Override
-            public void onResponse(Call<UserResponse> call, retrofit2.Response<UserResponse> response) {
-                if (response.isSuccessful()) {
-                    UserResponse userResponse = response.body();
-                    TextView tvRelationship = bottomSheetView.findViewById(R.id.tv_relationship);
-                    tvRelationship.setText(userResponse.getRelationship());
-                    textRelationship = userResponse.getRelationship();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserResponse> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
     }
 
     public void eventHandler() {
@@ -164,8 +85,6 @@ public class HeaderFragment extends Fragment implements OnFilterClickListener {
         ibBack = view.findViewById(R.id.ib_back);
         ibArrowDown = view.findViewById(R.id.ib_arrow_down);
 
-        apiService = ApiClient.getClient();
-
         previewFragment = new PreviewFragment();
         fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.fragment_container, previewFragment).commit();
@@ -175,15 +94,6 @@ public class HeaderFragment extends Fragment implements OnFilterClickListener {
         bottomSheetDialog = new BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme);
         bottomSheetView = getLayoutInflater().inflate(R.layout.bottom_sheet_filter, null);
         bottomSheetDialog.setContentView(bottomSheetView);
-        bottomRelationship = new BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme);
-        bottomRelationshipView = getLayoutInflater().inflate(R.layout.bottom_relationship, null);
-
-        ImageButton llShuffle = bottomSheetDialog.findViewById(R.id.ib_shuffle);
-        llShuffle.setOnClickListener(v -> {
-            bottomRelationship.setContentView(bottomRelationshipView);
-            initRelationshipRecyclerView();
-            bottomRelationship.show();
-        });
 
         rangeSlider = bottomSheetDialog.findViewById(R.id.rangeSlider);
         rangeAge = bottomSheetDialog.findViewById(R.id.tv_range_age);
@@ -191,17 +101,6 @@ public class HeaderFragment extends Fragment implements OnFilterClickListener {
         rangeAge.setText("18 - 30");
         rangeSlider.setValues(18f, 30f);
     }
-
-    private void initRelationshipRecyclerView() {
-        rvRelationship = bottomRelationshipView.findViewById(R.id.rv_relationships);
-        FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(getContext());
-        layoutManager.setFlexWrap(FlexWrap.WRAP);
-        layoutManager.setJustifyContent(JustifyContent.SPACE_BETWEEN);
-        rvRelationship.setLayoutManager(layoutManager);
-        relationshipAdapter = new RelationshipAdapter(getContext(), relationshipItems, textRelationship, this);
-        rvRelationship.setAdapter(relationshipAdapter);
-    }
-
 
     public void setHeaderType(int type) {
         switch (type) {
@@ -254,13 +153,5 @@ public class HeaderFragment extends Fragment implements OnFilterClickListener {
     public void setCurrentUser(UserResponse user) {
         tvFullname.setText(user.getFullname());
         tvAge.setText(String.valueOf(user.getAge()));
-    }
-
-    private void updateUI() {
-        if (rvRelationship != null) {
-            relationshipAdapter.notifyDataSetChanged();
-        } else {
-            Log.e("updateUI", "rvRelationship is null");
-        }
     }
 }

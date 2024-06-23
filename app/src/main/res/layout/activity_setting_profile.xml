@@ -26,6 +26,7 @@
             android:textSize="30sp" />
 
         <TextView
+            android:id="@+id/tv_done"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:fontFamily="@font/montserrat_bold"
@@ -46,9 +47,10 @@
             android:id="@+id/ll_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
 
-            <!--<LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -167,7 +169,7 @@
                         app:riv_oval="false"
                         app:riv_tile_mode="clamp" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-            </LinearLayout>-->
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -183,7 +185,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/montserrat_bold"
                     android:gravity="center"
-                    android:text="HỌ VÀ TÊN"
+                    android:text="Họ và tên"
                     android:textColor="@color/text_color"
                     android:textSize="22sp" />
 
@@ -192,11 +194,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:background="#eee"
+                    android:fontFamily="@font/montserrat_medium"
                     android:maxLines="2"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="4dp"
                     android:textSize="18sp" />
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -212,7 +216,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/montserrat_bold"
                     android:gravity="center"
-                    android:text="GIỚI THIỆU BẢN THÂN"
+                    android:text="Giới thiệu bản thận"
                     android:textColor="@color/text_color"
                     android:textSize="22sp" />
 
@@ -221,6 +225,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:background="#eee"
+                    android:fontFamily="@font/montserrat_medium"
                     android:maxLines="2"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="4dp"
@@ -241,19 +246,85 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/montserrat_bold"
                     android:gravity="center"
-                    android:text="SỞ THÍCH"
+                    android:text="Giới tính"
                     android:textColor="@color/text_color"
                     android:textSize="22sp" />
 
                 <TextView
-                    android:id="@+id/edt_interests"
+                    android:id="@+id/tv_gender"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:background="#eee"
                     android:drawableEnd="@drawable/ic_chevron_right"
                     android:drawableTint="#777"
                     android:fontFamily="@font/montserrat_medium"
-                    android:maxLines="2"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="4dp"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:gravity="center"
+                    android:text="Sở thích"
+                    android:textColor="@color/text_color"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:id="@+id/tv_interests"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="#eee"
+                    android:drawableEnd="@drawable/ic_chevron_right"
+                    android:drawableTint="#777"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="4dp"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:gravity="center"
+                    android:text="Mục đích hẹn hò"
+                    android:textColor="@color/text_color"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:id="@+id/tv_relationships"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="#eee"
+                    android:drawableEnd="@drawable/ic_chevron_right"
+                    android:drawableTint="#777"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:gravity="center_vertical"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="4dp"
                     android:textColor="@color/text_color"
