@@ -258,14 +258,8 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
     }
 
     private void handlerEvent() {
-        fabLike.setOnClickListener(v -> {
-            swipeCard(Direction.Right);
-            handleCardSwipe(Direction.Right);
-        });
-        fabDislike.setOnClickListener(v -> {
-            swipeCard(Direction.Left);
-            handleCardSwipe(Direction.Left);
-        });
+        fabLike.setOnClickListener(v -> swipeCard(Direction.Left));
+        fabDislike.setOnClickListener(v -> swipeCard(Direction.Right));
     }
 
     private void swipeCard(Direction direction) {

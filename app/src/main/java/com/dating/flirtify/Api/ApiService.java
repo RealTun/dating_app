@@ -1,9 +1,13 @@
 package com.dating.flirtify.Api;
 
+import com.dating.flirtify.Models.InterestType;
+import com.dating.flirtify.Models.Requests.InterestRequest;
 import com.dating.flirtify.Models.Requests.LikeRequest;
 import com.dating.flirtify.Models.Requests.MessageRequest;
 import com.dating.flirtify.Models.Requests.LoginRequest;
 import com.dating.flirtify.Models.Requests.RegisterRequest;
+import com.dating.flirtify.Models.Requests.RelationshipRequest;
+import com.dating.flirtify.Models.Responses.InterestResponse;
 import com.dating.flirtify.Models.Responses.LoginResponse;
 import com.dating.flirtify.Models.Responses.MatcherResponse;
 import com.dating.flirtify.Models.Responses.MessageResponse;
@@ -21,6 +25,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
@@ -46,19 +51,22 @@ public interface ApiService {
     Call<Void> deleteUserInterest(@Header("Authorization") String accessToken, @Path("id") int id);
 
     // interest
-//    @GET("interest-type")
-//    Call<List<InterestType>> getInterestTypes(@Header("Authorization") String accessToken);
-//
-//    @GET("interest-type/user")
-//    Call<List<UserInterest>> getInterestByUser(@Header("Authorization") String accessToken);
+    @GET("interest-type")
+    Call<List<InterestType>> getInterestTypes(@Header("Authorization") String accessToken);
 
-//    @POST("interest-type/user")
-//    Call<Void> storeInterestUser(@Header("Authorization") String accessToken, @Body InterestType interestType);
+    @GET("interest-type/user")
+    Call<InterestResponse> getInterestByUser(@Header("Authorization") String accessToken);
+
+    @POST("interest-type/user")
+    Call<Void> storeInterestUser(@Header("Authorization") String accessToken, @Body InterestRequest interestRequest);
 
 
     // Relationship routes
     @GET("relationship-type")
     Call<ArrayList<RelationshipResponse>> getRelationships();
+
+    @PATCH("relationship-type/user")
+    Call<Void> updateRelationshipType(@Header("Authorization") String accessToken, @Body RelationshipRequest relationshipRequest);
 
 //    @GET("relationship-type/user")
 //    Call<List<UserRelationship>> getRelationshipByUser(@Header("Authorization") String accessToken);

@@ -142,68 +142,6 @@
             app:riv_mutate_background="true"
             app:riv_oval="false"
             app:riv_tile_mode="clamp" />
-
-        <ImageView
-            android:id="@+id/imClose1"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:src="@drawable/icon_close"
-            app:layout_constraintEnd_toEndOf="@+id/im1"
-            app:layout_constraintTop_toTopOf="@+id/im1" />
-
-        <ImageView
-            android:id="@+id/imClose2"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:src="@drawable/icon_close"
-            app:layout_constraintEnd_toEndOf="@+id/im2"
-            app:layout_constraintTop_toTopOf="@+id/im2" />
-
-        <ImageView
-            android:id="@+id/imClose3"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:src="@drawable/icon_close"
-            app:layout_constraintEnd_toEndOf="@+id/im3"
-            app:layout_constraintTop_toTopOf="@+id/im3" />
-
-        <ImageView
-            android:id="@+id/imClose4"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:src="@drawable/icon_close"
-            app:layout_constraintEnd_toEndOf="@+id/im4"
-            app:layout_constraintTop_toTopOf="@+id/im4" />
-
-        <ImageView
-            android:id="@+id/imClose5"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:src="@drawable/icon_close"
-            app:layout_constraintEnd_toEndOf="@+id/im5"
-            app:layout_constraintTop_toTopOf="@+id/im5" />
-
-        <ImageView
-            android:id="@+id/imClose6"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:src="@drawable/icon_close"
-            app:layout_constraintEnd_toEndOf="@+id/im6"
-            app:layout_constraintTop_toTopOf="@+id/im6" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

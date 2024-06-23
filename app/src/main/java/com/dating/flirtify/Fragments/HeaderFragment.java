@@ -18,10 +18,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.dating.flirtify.Adapters.RelationshipAdapter;
 import com.dating.flirtify.Api.ApiClient;
 import com.dating.flirtify.Api.ApiService;
+import com.dating.flirtify.Interfaces.OnFilterClickListener;
+import com.dating.flirtify.Models.Requests.RelationshipRequest;
 import com.dating.flirtify.Models.Responses.RelationshipResponse;
 import com.dating.flirtify.Models.Responses.UserResponse;
 import com.dating.flirtify.R;
@@ -40,18 +41,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HeaderFragment extends Fragment {
-    private ApiService apiService;
     private FragmentManager fragmentManager;
     private ImageView ivLogo;
     private TextView tvAppName, tvFullname, tvAge, rangeAge;
     private ImageButton ibFilter, ibBack, ibArrowDown;
-    private BottomSheetDialog bottomSheetDialog, bottomRelationship;
-    private View bottomSheetView, bottomRelationshipView;
+    private BottomSheetDialog bottomSheetDialog;
+    private View bottomSheetView;
     private RangeSlider rangeSlider;
     private PreviewFragment previewFragment;
-    private final ArrayList<RelationshipResponse> relationshipItems = new ArrayList<>();
-    private RelationshipAdapter relationshipAdapter;
-    private RecyclerView rvRelationship;
+
 
     @Nullable
     @Override
@@ -59,53 +57,7 @@ public class HeaderFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_header, container, false);
         initViews(view);
         eventHandler();
-        fetchRelationships();
-        getUser();
-
         return view;
-    }
-
-    private void fetchRelationships() {
-        Call<ArrayList<RelationshipResponse>> call = apiService.getRelationships();
-        call.enqueue(new Callback<ArrayList<RelationshipResponse>>() {
-            @Override
-            public void onResponse(Call<ArrayList<RelationshipResponse>> call, Response<ArrayList<RelationshipResponse>> response) {
-                if (response.isSuccessful()) {
-                    ArrayList<RelationshipResponse> arrRelationship = response.body();
-                    if (arrRelationship != null) {
-                        relationshipItems.addAll(arrRelationship);
-                        updateUI(relationshipItems);
-                    }
-                } else {
-                    Log.e("Relationship Response:", "Response not successful: " + response.message());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<RelationshipResponse>> call, Throwable t) {
-                Log.e("Relationship Response:", "Request failed: " + t.getMessage());
-            }
-        });
-    }
-
-    private void getUser() {
-        String accessToken = SessionManager.getToken();
-        Call<UserResponse> call = apiService.getUser(accessToken);
-        call.enqueue(new retrofit2.Callback<UserResponse>() {
-            @Override
-            public void onResponse(Call<UserResponse> call, retrofit2.Response<UserResponse> response) {
-                if (response.isSuccessful()) {
-                    UserResponse userResponse = response.body();
-                    TextView tvRelationship = bottomSheetView.findViewById(R.id.tv_relationship);
-                    tvRelationship.setText(userResponse.getRelationship());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserResponse> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
     }
 
     public void eventHandler() {
@@ -133,8 +85,6 @@ public class HeaderFragment extends Fragment {
         ibBack = view.findViewById(R.id.ib_back);
         ibArrowDown = view.findViewById(R.id.ib_arrow_down);
 
-        apiService = ApiClient.getClient();
-
         previewFragment = new PreviewFragment();
         fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.fragment_container, previewFragment).commit();
@@ -144,31 +94,12 @@ public class HeaderFragment extends Fragment {
         bottomSheetDialog = new BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme);
         bottomSheetView = getLayoutInflater().inflate(R.layout.bottom_sheet_filter, null);
         bottomSheetDialog.setContentView(bottomSheetView);
-        bottomRelationship = new BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme);
-        bottomRelationshipView = getLayoutInflater().inflate(R.layout.bottom_relationship, null);
-
-        ImageButton llShuffle = bottomSheetDialog.findViewById(R.id.ib_shuffle);
-        llShuffle.setOnClickListener(v -> {
-            bottomRelationship.setContentView(bottomRelationshipView);
-            initRelationshipRecyclerView();
-            bottomRelationship.show();
-        });
 
         rangeSlider = bottomSheetDialog.findViewById(R.id.rangeSlider);
         rangeAge = bottomSheetDialog.findViewById(R.id.tv_range_age);
 
         rangeAge.setText("18 - 30");
         rangeSlider.setValues(18f, 30f);
-    }
-
-    private void initRelationshipRecyclerView() {
-        rvRelationship = bottomRelationshipView.findViewById(R.id.rv_relationships);
-        FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(getContext());
-        layoutManager.setFlexWrap(FlexWrap.WRAP);
-        layoutManager.setJustifyContent(JustifyContent.SPACE_BETWEEN);
-        rvRelationship.setLayoutManager(layoutManager);
-        relationshipAdapter = new RelationshipAdapter(getContext(), relationshipItems);
-        rvRelationship.setAdapter(relationshipAdapter);
     }
 
     public void setHeaderType(int type) {
@@ -222,13 +153,5 @@ public class HeaderFragment extends Fragment {
     public void setCurrentUser(UserResponse user) {
         tvFullname.setText(user.getFullname());
         tvAge.setText(String.valueOf(user.getAge()));
-    }
-
-    private void updateUI(ArrayList<RelationshipResponse> relationshipItems) {
-        if (rvRelationship != null) {
-            relationshipAdapter.notifyDataSetChanged();
-        } else {
-            Log.e("updateUI", "rvRelationship is null");
-        }
     }
 }
