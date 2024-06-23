@@ -24,6 +24,7 @@ import com.dating.flirtify.Api.ApiClient;
 import com.dating.flirtify.Api.ApiService;
 import com.dating.flirtify.Interfaces.OnFilterClickListener;
 import com.dating.flirtify.Models.Requests.RelationshipRequest;
+import com.dating.flirtify.Models.Requests.UserRequest;
 import com.dating.flirtify.Models.Responses.RelationshipResponse;
 import com.dating.flirtify.Models.Responses.UserResponse;
 import com.dating.flirtify.R;
@@ -163,6 +164,15 @@ public class SettingProfileActivity extends AppCompatActivity implements OnFilte
                     }
                     edtFullname.setText(userResponse.getFullname());
                     edtBio.setText(userResponse.getBio());
+                    String strGender;
+                    if (userResponse.getGender() == 0) {
+                        strGender = "Nam";
+                    } else if (userResponse.getGender() == 1) {
+                        strGender = "Nữ";
+                    } else {
+                        strGender = "Khác";
+                    }
+                    tvGender.setText(strGender);
                 }
             }
 
@@ -183,7 +193,38 @@ public class SettingProfileActivity extends AppCompatActivity implements OnFilte
             initRelationshipRecyclerView();
             bottomRelationship.show();
         });
-        tvDone.setOnClickListener(v -> finish());
+        tvDone.setOnClickListener(v -> {
+            accessToken = SessionManager.getToken();
+            int gender;
+            if (tvGender.getText().toString().equals("Nam")) {
+                gender = 0;
+            } else if (tvGender.getText().toString().equals("Nữ")) {
+                gender = 1;
+            } else {
+                gender = 2;
+            }
+            UserRequest userRequest = new UserRequest(edtFullname.getText().toString(), edtBio.getText().toString(), gender);
+
+            Call<Void> call = apiService.updateUser(accessToken, userRequest);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        if (response.code() == 200) {
+                            Toast.makeText(SettingProfileActivity.this, "Cập nhật thông tin thành công", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    } else {
+                        Log.e("API Error", "Request failed: " + response.message());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.e("API Error", "Request failed: " + t.getMessage());
+                }
+            });
+        });
         tvGender.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Chọn giới tính");

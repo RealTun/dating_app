@@ -7,7 +7,8 @@ public class UserResponse {
     private String fullname;
     private String bio;
     private int age;
-    private int locking_for;
+    private int gender;
+    private int looking_for;
     private String location;
     private List<String> interests;
     private String relationship;
@@ -45,12 +46,12 @@ public class UserResponse {
         this.age = age;
     }
 
-    public int getLocking_for() {
-        return locking_for;
+    public int getLooking_for() {
+        return looking_for;
     }
 
-    public void setLocking_for(int locking_for) {
-        this.locking_for = locking_for;
+    public void setLooking_for(int looking_for) {
+        this.looking_for = looking_for;
     }
 
     public String getLocation() {
@@ -75,6 +76,14 @@ public class UserResponse {
 
     public void setRelationships(String relationship) {
         this.relationship = relationship;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
     }
 
     public List<String> getPhotos() {

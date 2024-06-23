@@ -9,10 +9,10 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:contentPaddingBottom="8dp"
+        app:contentPaddingBottom="12dp"
         app:contentPaddingLeft="12dp"
         app:contentPaddingRight="12dp"
-        app:contentPaddingTop="8dp">
+        app:contentPaddingTop="12dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -99,14 +99,13 @@
                         android:weightSum="3">
 
                         <RadioButton
-                            android:id="@+id/radioMale"
+                            android:id="@+id/rb_male"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
 
                             android:background="@drawable/radio_button_background"
                             android:button="@null"
-                            android:checked="true"
 
                             android:gravity="center"
                             android:padding="12dp"
@@ -114,7 +113,7 @@
                             android:textColor="@drawable/radio_text_selector" />
 
                         <RadioButton
-                            android:id="@+id/radioFemale"
+                            android:id="@+id/rb_female"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -128,7 +127,7 @@
                             android:textColor="@drawable/radio_text_selector" />
 
                         <RadioButton
-                            android:id="@+id/radioAll"
+                            android:id="@+id/rb_other"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
