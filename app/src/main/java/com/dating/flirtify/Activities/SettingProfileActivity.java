@@ -1,6 +1,7 @@
 package com.dating.flirtify.Activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -212,6 +213,7 @@ public class SettingProfileActivity extends AppCompatActivity implements OnFilte
                     if (response.isSuccessful()) {
                         if (response.code() == 200) {
                             Toast.makeText(SettingProfileActivity.this, "Cập nhật thông tin thành công", Toast.LENGTH_SHORT).show();
+                            setResult(Activity.RESULT_OK);
                             finish();
                         }
                     } else {

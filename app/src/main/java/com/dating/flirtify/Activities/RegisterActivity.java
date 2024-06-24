@@ -66,18 +66,12 @@ public class RegisterActivity extends AppCompatActivity implements LocationHelpe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        // Khởi tạo LocationHelper và thiết lập listener
         locationHelper = new LocationHelper(this);
         locationHelper.setLocationResultListener(this);
-
-        // Yêu cầu quyền truy cập vị trí
         locationHelper.requestLocationPermission();
 
-
         initializeView();
-
         showFragment(step1Fragment);
-
         eventHandler();
     }
 
@@ -212,8 +206,8 @@ public class RegisterActivity extends AppCompatActivity implements LocationHelpe
 
                         if (step5Fragment.Upload()) {
                             Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
-//                            Intent intent = new Intent(RegisterActivity.this, PreviewActivity.class);
-//                            startActivity(intent);
+                            Intent intent = new Intent(RegisterActivity.this, PreviewActivity.class);
+                            startActivity(intent);
                         }
 
                     }
@@ -232,9 +226,7 @@ public class RegisterActivity extends AppCompatActivity implements LocationHelpe
     }
 
     private void showFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frLayout, fragment)
-                .commitNow();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frLayout, fragment).commitNow();
         currentFragment = fragment;
     }
 
@@ -248,13 +240,12 @@ public class RegisterActivity extends AppCompatActivity implements LocationHelpe
             registerRequest.setLocation(address);
 
             double distance = DistanceCalculator.calculateDistanceForAddress(this, address, "175 Tây Sơn, Đống Đa, Hà Nội, Việt Nam");
-            Toast.makeText(this, "Khoảng cách là: " + Double.toString(distance), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Khoảng cách là: " + distance, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Không thể lấy được vị trí hiện tại", Toast.LENGTH_SHORT).show();
         }
     }
 
-    // Phương thức này được gọi khi người dùng cấp quyền hoặc không
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -280,5 +271,3 @@ public class RegisterActivity extends AppCompatActivity implements LocationHelpe
         }
     }
 }
-
-

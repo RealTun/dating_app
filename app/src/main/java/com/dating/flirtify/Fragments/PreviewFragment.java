@@ -2,10 +2,14 @@ package com.dating.flirtify.Fragments;
 
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -21,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dating.flirtify.Adapters.CardStackAdapter;
 import com.dating.flirtify.Adapters.InterestAdapter;
@@ -30,6 +35,7 @@ import com.dating.flirtify.Listeners.OnCardActionListener;
 import com.dating.flirtify.Models.Requests.LikeRequest;
 import com.dating.flirtify.Models.Responses.UserResponse;
 import com.dating.flirtify.R;
+import com.dating.flirtify.Services.LocationHelper;
 import com.dating.flirtify.Services.SessionManager;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -42,11 +48,6 @@ import com.yuyakaido.android.cardstackview.Duration;
 import com.yuyakaido.android.cardstackview.StackFrom;
 import com.yuyakaido.android.cardstackview.SwipeAnimationSetting;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,9 +75,16 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_preview, container, false);
-        initViews(view);
-        handlerEvent();
-        getUsers();
+
+        // Lấy dữ liệu từ Bundle
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String location = bundle.getString("location");
+            initViews(view);
+            initCardStackView(location);
+            handlerEvent();
+            getUsers();
+        }
         return view;
     }
 
@@ -150,8 +158,12 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
         accessToken = SessionManager.getToken();
         apiService = ApiClient.getClient();
         itemsResponse = new ArrayList<>();
-        adapter = new CardStackAdapter(itemsResponse, this);
-        manager = new CardStackLayoutManager(view.getContext(), new CardStackListener() {
+    }
+
+    private void initCardStackView(String location) {
+        itemsResponse = new ArrayList<>();
+        adapter = new CardStackAdapter(getActivity(), itemsResponse, this, location);
+        manager = new CardStackLayoutManager(getActivity(), new CardStackListener() {
             @Override
             public void onCardDragging(Direction direction, float ratio) {
                 CardStackAdapter.ViewHolder currentViewHolder = getCurrentViewHolder();

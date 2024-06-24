@@ -33,12 +33,9 @@ public class LocationHelper {
 
     // Yêu cầu quyền truy cập vị trí từ người dùng
     public void requestLocationPermission() {
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (context instanceof Activity) {
-                ActivityCompat.requestPermissions((Activity) context,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        1);
+                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             }
         } else {
             getCurrentLocation();
@@ -48,13 +45,12 @@ public class LocationHelper {
     @SuppressLint("MissingPermission")
     // Lấy vị trí hiện tại của người dùng
     public void getCurrentLocation() {
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(location -> {
-                    if (location != null && locationResultListener != null) {
-                        String addressLine = getAddressLineFromLocation(location);
-                        locationResultListener.onLocationReceived(location, addressLine);
-                    }
-                });
+        fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
+            if (location != null && locationResultListener != null) {
+                String addressLine = getAddressLineFromLocation(location);
+                locationResultListener.onLocationReceived(location, addressLine);
+            }
+        });
     }
 
     // Lấy địa chỉ cụ thể từ vị trí được cung cấp

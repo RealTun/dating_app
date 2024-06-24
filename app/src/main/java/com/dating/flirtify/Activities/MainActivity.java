@@ -23,6 +23,7 @@ import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkUserSession() {
         SessionManager sessionManager = new SessionManager(this);
-        String accessToken = sessionManager.getAccessToken();
+        String accessToken = SessionManager.getAccessToken();
 
         // FB
         AccessToken accessTokenFB = AccessToken.getCurrentAccessToken();
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         if (accessToken != null && !accessToken.isEmpty()) {
             navigateToPreviewActivity();
         } else if (isLoggedIn) {
-            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+            LoginManager.getInstance().logInWithReadPermissions(this, Collections.singletonList("public_profile"));
             navigateToPreviewActivity();
         }
     }
@@ -84,9 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupAppNameTextView() {
         TextView tvAppName = findViewById(R.id.tvAppName);
-        setColorGradient(tvAppName, getResources().getColor(R.color.gradient_top),
-                getResources().getColor(R.color.gradient_center),
-                getResources().getColor(R.color.gradient_bottom));
+        setColorGradient(tvAppName, getResources().getColor(R.color.gradient_top), getResources().getColor(R.color.gradient_center), getResources().getColor(R.color.gradient_bottom));
     }
 
     private void setupRegisterButton() {
@@ -142,10 +141,7 @@ public class MainActivity extends AppCompatActivity {
         float width = textPaint.measureText(tv.getText().toString());
         float height = tv.getTextSize();
 
-        Shader textShader = new LinearGradient(
-                0, 0, 0, height,
-                color, null, Shader.TileMode.CLAMP
-        );
+        Shader textShader = new LinearGradient(0, 0, 0, height, color, null, Shader.TileMode.CLAMP);
 
         tv.getPaint().setShader(textShader);
         tv.setTextColor(color[0]);

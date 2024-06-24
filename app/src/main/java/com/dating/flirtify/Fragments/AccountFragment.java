@@ -1,5 +1,6 @@
 package com.dating.flirtify.Fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.media.Image;
@@ -45,6 +46,16 @@ public class AccountFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Kiểm tra mã yêu cầu và mã kết quả
+        if (requestCode == 9 && resultCode == Activity.RESULT_OK) {
+            getCurrentUser();
+        }
+    }
+
     private void initView(View view) {
         btnAccount = view.findViewById(R.id.btn_account);
         btnSetting = view.findViewById(R.id.btn_setting);
@@ -57,24 +68,7 @@ public class AccountFragment extends Fragment {
         ibEditProfile = view.findViewById(R.id.ib_edit_profile);
         apiService = ApiClient.getClient();
 
-        String accessToken = SessionManager.getToken();
-        Call<UserResponse> call = apiService.getUser(accessToken);
-        call.enqueue(new retrofit2.Callback<UserResponse>() {
-            @Override
-            public void onResponse(Call<UserResponse> call, retrofit2.Response<UserResponse> response) {
-                if (response.isSuccessful()) {
-                    UserResponse userResponse = response.body();
-                    tvFullname.setText(userResponse.getFullname());
-                    tvAge.setText(String.valueOf(userResponse.getAge()));
-                    Glide.with(getActivity()).load(userResponse.getAvatar()).circleCrop().into(ivProfile);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserResponse> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
+        getCurrentUser();
 
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.OVAL);
@@ -108,7 +102,28 @@ public class AccountFragment extends Fragment {
         });
         ibEditProfile.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), SettingProfileActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, 9); // Sử dụng một mã yêu cầu tùy ý, ví dụ 1
+        });
+    }
+
+    private void getCurrentUser() {
+        String accessToken = SessionManager.getToken();
+        Call<UserResponse> call = apiService.getUser(accessToken);
+        call.enqueue(new retrofit2.Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, retrofit2.Response<UserResponse> response) {
+                if (response.isSuccessful()) {
+                    UserResponse userResponse = response.body();
+                    tvFullname.setText(userResponse.getFullname());
+                    tvAge.setText(String.valueOf(userResponse.getAge()));
+                    Glide.with(getActivity()).load(userResponse.getAvatar()).circleCrop().into(ivProfile);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
         });
     }
 }
