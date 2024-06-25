@@ -108,4 +108,10 @@ public class RegisterSearchOptionsFragment extends Fragment {
             return 0;
         }
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // Giải phóng tài nguyên nặng ở đây
+    }
 }
