@@ -27,6 +27,7 @@ import com.dating.flirtify.Models.Requests.PhotoRequest;
 import com.dating.flirtify.R;
 import com.dating.flirtify.Services.RealPathUtil;
 import com.dating.flirtify.Services.SessionManager;
+import com.dating.flirtify.Services.ShowMessage;
 import com.facebook.internal.ImageRequest;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -214,7 +215,7 @@ public class RegisterStep5Fragment extends Fragment {
 
     public Boolean Upload() {
         if (imagesURIs.size() == 0) {
-            Toast.makeText(getContext(), "Không có hình ảnh nào để upload", Toast.LENGTH_SHORT).show();
+            ShowMessage.showCustomDialog(getContext(), "Thông báo", "Bạn cần chọn tối tiểu một bức ảnh!");
             return false;
         }
 
@@ -276,5 +277,11 @@ public class RegisterStep5Fragment extends Fragment {
                 Log.e("Firebase", e.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // Giải phóng tài nguyên nặng ở đây
     }
 }

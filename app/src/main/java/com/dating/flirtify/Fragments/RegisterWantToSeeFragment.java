@@ -62,4 +62,10 @@ public class RegisterWantToSeeFragment extends Fragment {
             return -1;
         }
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // Giải phóng tài nguyên nặng ở đây
+    }
 }

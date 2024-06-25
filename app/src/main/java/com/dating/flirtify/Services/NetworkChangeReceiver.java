@@ -9,12 +9,21 @@ import android.widget.Toast;
 
 public class NetworkChangeReceiver extends BroadcastReceiver {
 
+    private boolean isConnected = true; // Ban đầu coi như đã kết nối
+
     @Override
     public void onReceive(final Context context, final Intent intent) {
         if (intent.getAction() != null && intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
             if (!isNetworkAvailable(context)) {
-                // Xử lý khi mất kết nối Internet
-                Toast.makeText(context, "Đã mất kết nối Internet", Toast.LENGTH_SHORT).show();
+                if (isConnected) {
+                    Toast.makeText(context, "Đã mất kết nối Internet", Toast.LENGTH_SHORT).show();
+                    isConnected = false; // Cập nhật trạng thái mất kết nối
+                }
+            } else {
+                if (!isConnected) {
+                    Toast.makeText(context, "Đã khôi phục kết nối Internet", Toast.LENGTH_SHORT).show();
+                    isConnected = true; // Cập nhật trạng thái đã kết nối lại
+                }
             }
         }
     }

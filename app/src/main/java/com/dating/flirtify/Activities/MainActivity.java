@@ -1,8 +1,10 @@
 package com.dating.flirtify.Activities;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextPaint;
@@ -18,6 +20,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.dating.flirtify.R;
+import com.dating.flirtify.Services.NetworkChangeReceiver;
 import com.dating.flirtify.Services.SessionManager;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
@@ -29,12 +32,21 @@ public class MainActivity extends AppCompatActivity {
     private Button btnRegister;
     private TextView tvPhoneLogin, tvPrivacyPolicy;
     private ImageView ivLoginFB, ivLoginGG, ivLoginApple;
+    private NetworkChangeReceiver networkChangeReceiver;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupEdgeToEdgeMode();
         setContentView(R.layout.activity_main);
+
+        // Đăng ký BroadcastReceiver
+        networkChangeReceiver = new NetworkChangeReceiver();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeReceiver, intentFilter);
 
         setupWindowInsets();
         checkUserSession();
@@ -149,5 +161,14 @@ public class MainActivity extends AppCompatActivity {
 
         tv.getPaint().setShader(textShader);
         tv.setTextColor(color[0]);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Hủy đăng ký BroadcastReceiver khi không cần thiết
+        if (networkChangeReceiver != null) {
+            unregisterReceiver(networkChangeReceiver);
+        }
     }
 }

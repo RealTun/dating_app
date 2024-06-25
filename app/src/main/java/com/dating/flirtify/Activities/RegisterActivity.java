@@ -1,10 +1,12 @@
 package com.dating.flirtify.Activities;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
 import android.location.Location;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.TextPaint;
 import android.util.Log;
@@ -34,6 +36,7 @@ import com.dating.flirtify.Models.Responses.LoginResponse;
 import com.dating.flirtify.R;
 import com.dating.flirtify.Services.DistanceCalculator;
 import com.dating.flirtify.Services.LocationHelper;
+import com.dating.flirtify.Services.NetworkChangeReceiver;
 import com.dating.flirtify.Services.SessionManager;
 
 import java.util.List;
@@ -58,13 +61,19 @@ public class RegisterActivity extends AppCompatActivity implements LocationHelpe
     RegisterWantToSeeFragment wantToSeeFragment;
     RegisterSearchOptionsFragment registerSearchOptionsFragment;
     ProcessingFragment processingFragment;
-
     LocationHelper locationHelper;
+    private NetworkChangeReceiver networkChangeReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        // Đăng ký BroadcastReceiver
+        networkChangeReceiver = new NetworkChangeReceiver();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeReceiver, intentFilter);
+
 
         // Khởi tạo LocationHelper và thiết lập listener
         locationHelper = new LocationHelper(this);
@@ -76,7 +85,7 @@ public class RegisterActivity extends AppCompatActivity implements LocationHelpe
 
         initializeView();
 
-        showFragment(step5Fragment);
+        showFragment(step1Fragment);
 
         eventHandler();
     }
@@ -117,7 +126,6 @@ public class RegisterActivity extends AppCompatActivity implements LocationHelpe
         nextButton.setOnClickListener(v -> {
             switch (currentStep) {
                 case 0:
-                    ivStep.setImageResource(R.drawable.register_step_2);
                     nextButton.setText("Xác nhận");
                     currentStep++;
                 case 1:
@@ -128,7 +136,7 @@ public class RegisterActivity extends AppCompatActivity implements LocationHelpe
                             registerRequest.setEmail(email);
                             currentStep++;
                             showFragment(step2Fragment);
-                            ivStep.setImageResource(R.drawable.register_step_3);
+                            ivStep.setImageResource(R.drawable.register_step_2);
                         }
                     }
                     break;
@@ -137,22 +145,21 @@ public class RegisterActivity extends AppCompatActivity implements LocationHelpe
                         if (step2Fragment.isOTPValid()) {
                             currentStep++;
                             showFragment(step3Fragment);
-                            ivStep.setImageResource(R.drawable.register_step_4);
+                            ivStep.setImageResource(R.drawable.register_step_3);
                         }
                     }
                     break;
                 case 3:
-                    ivStep.setImageResource(R.drawable.register_step_5);
                     if (step3Fragment != null) {
                         if (step3Fragment.areFieldsValid()) {
                             registerRequest.setPw(step3Fragment.getPassword());
                             currentStep++;
                             showFragment(step4Fragment);
+                            ivStep.setImageResource(R.drawable.register_step_4);
                         }
                     }
                     break;
                 case 4:
-                    ivStep.setImageResource(R.drawable.register_step_6);
                     if (step4Fragment != null) {
                         if (step4Fragment.validateFields()) {
                             registerRequest.setFullname(step4Fragment.getName());
@@ -160,15 +167,16 @@ public class RegisterActivity extends AppCompatActivity implements LocationHelpe
                             registerRequest.setGender(step4Fragment.getGender());
                             showFragment(wantToSeeFragment);
                             currentStep++;
+                            ivStep.setImageResource(R.drawable.register_step_5);
                         }
                     }
                     break;
                 case 5:
-                    ivStep.setImageResource(R.drawable.register_step_7);
                     if (wantToSeeFragment.getLookingFor() != -1) {
                         registerRequest.setLooking_for(wantToSeeFragment.getLookingFor());
                         currentStep++;
                         showFragment(registerSearchOptionsFragment);
+                        ivStep.setImageResource(R.drawable.register_step_6);
                     } else {
                         Toast.makeText(RegisterActivity.this, "Vui lòng chọn đối tượng muốn hiển thị!", Toast.LENGTH_SHORT).show();
                     }
@@ -178,6 +186,7 @@ public class RegisterActivity extends AppCompatActivity implements LocationHelpe
                         registerRequest.setRelationship_type(registerSearchOptionsFragment.getRelationshipType());
                         currentStep++;
                         showFragment(step5Fragment);
+                        ivStep.setImageResource(R.drawable.register_step_7);
                     } else {
                         Toast.makeText(RegisterActivity.this, "Vui lòng chọn đối tượng muốn hiển thị!", Toast.LENGTH_SHORT).show();
                     }
@@ -277,6 +286,9 @@ public class RegisterActivity extends AppCompatActivity implements LocationHelpe
         // Giải phóng tài nguyên khi hoạt động bị hủy
         if (locationHelper != null) {
             locationHelper = null;
+        }
+        if (networkChangeReceiver != null) {
+            unregisterReceiver(networkChangeReceiver);
         }
     }
 }
