@@ -1,5 +1,7 @@
 package com.dating.flirtify.Fragments;
 
+import static com.dating.flirtify.Services.DistanceCalculator.calculateDistanceForAddress;
+
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Dialog;
@@ -28,9 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.dating.flirtify.Activities.SettingProfileActivity;
 import com.dating.flirtify.Adapters.CardStackAdapter;
 import com.dating.flirtify.Adapters.InterestAdapter;
 import com.dating.flirtify.Api.ApiClient;
@@ -40,7 +40,6 @@ import com.dating.flirtify.Models.Requests.LikeRequest;
 import com.dating.flirtify.Models.Requests.UserLocationRequest;
 import com.dating.flirtify.Models.Responses.UserResponse;
 import com.dating.flirtify.R;
-import com.dating.flirtify.Services.LocationHelper;
 import com.dating.flirtify.Services.SessionManager;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -69,12 +68,16 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
     private BottomNavigationView footerWrapper;
     private ConstraintLayout mConstraintLayout;
     private RecyclerView rvInterests;
-    private ArrayList<UserResponse> itemsResponse;
+    private final ArrayList<UserResponse> itemsResponse = new ArrayList<>();
     private CardStackView cardStackView;
     private CardStackAdapter adapter;
     private CardStackLayoutManager manager;
     private TextView tvBio, tvRelationShip;
     private String accessToken;
+
+    public interface UserResponseCallback {
+        void onUserResponseReceived(UserResponse userResponse);
+    }
 
     @Nullable
     @Override
@@ -89,8 +92,8 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
                 initViews(view);
                 initCardStackView(address);
                 handlerEvent();
-                getUsers();
-                updateUserLocation(address);
+                getUsers(address);
+//                updateUserLocation(address);
             }
         }, 1000);
 
@@ -128,28 +131,45 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
         manager.setCanScrollVertical(false);
     }
 
-    private void getUsers() {
-        Call<ArrayList<UserResponse>> call = apiService.getUserToConnect(accessToken);
-        call.enqueue(new Callback<ArrayList<UserResponse>>() {
-            @Override
-            public void onResponse(Call<ArrayList<UserResponse>> call, Response<ArrayList<UserResponse>> response) {
-                if (response.isSuccessful()) {
-                    ArrayList<UserResponse> arrMatcher = response.body();
-                    if (arrMatcher != null) {
-                        itemsResponse.addAll(arrMatcher);
-                        adapter.notifyDataSetChanged();
+    private void getUsers(String currentUserLocation) {
+        getCurrentUser(currentUser -> {
+            if (currentUser != null) {
+                Call<ArrayList<UserResponse>> call = apiService.getUserToConnect(accessToken);
+                call.enqueue(new Callback<ArrayList<UserResponse>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<UserResponse>> call, Response<ArrayList<UserResponse>> response) {
+                        if (response.isSuccessful()) {
+                            ArrayList<UserResponse> arrMatcher = response.body();
+                            if (arrMatcher != null) {
+                                int minAge = currentUser.getMin_age();
+                                int maxAge = currentUser.getMax_age();
+                                int maxDistance = currentUser.getMax_distance();
+                                for (UserResponse item : arrMatcher) {
+                                    String matcherLocation = item.getLocation();
+                                    double distance = calculateDistanceForAddress(getActivity(), currentUserLocation, matcherLocation) / 1000;
+                                    if (distance < maxDistance && item.getAge() > minAge && item.getAge() < maxAge) {
+                                        itemsResponse.add(item);
+                                    }
+                                }
+                                adapter.notifyDataSetChanged();
+                            }
+                        } else {
+                            Log.e("Matches", "Response not successful: " + response.message());
+                        }
                     }
-                } else {
-                    Log.e("Matches", "Response not successful: " + response.message());
-                }
-            }
 
-            @Override
-            public void onFailure(Call<ArrayList<UserResponse>> call, Throwable t) {
-                Log.e("Matches", "Request failed: " + t.getMessage());
+                    @Override
+                    public void onFailure(Call<ArrayList<UserResponse>> call, Throwable t) {
+                        Log.e("Matches", "Request failed: " + t.getMessage());
+                    }
+                });
+            } else {
+                // Xử lý trường hợp không lấy được currentUser
+                Log.e("getUsers", "Failed to get current user");
             }
         });
     }
+
 
     private void initViews(View view) {
         cvPreview = view.findViewById(R.id.cv_preview);
@@ -165,11 +185,10 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
         rvInterests = view.findViewById(R.id.rv_interests);
 
         apiService = ApiClient.getClient();
-        itemsResponse = new ArrayList<>();
+        accessToken = SessionManager.getToken();
     }
 
     private void initCardStackView(String location) {
-        itemsResponse = new ArrayList<>();
         adapter = new CardStackAdapter(getActivity(), itemsResponse, this, location);
         manager = new CardStackLayoutManager(getActivity(), new CardStackListener() {
             @Override
@@ -231,7 +250,6 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
             UserResponse currentUser = itemsResponse.get(manager.getTopPosition() - 1);
             LikeRequest likeRequest = new LikeRequest(currentUser.getId(), 1);
 
-            String accessToken = SessionManager.getToken();
             Call<Void> call = apiService.storeUserLike(accessToken, likeRequest);
             call.enqueue(new Callback<Void>() {
                 @Override
@@ -259,7 +277,6 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
             UserResponse currentUser = itemsResponse.get(manager.getTopPosition() - 1);
             LikeRequest likeRequest = new LikeRequest(currentUser.getId(), 0);
 
-            String accessToken = SessionManager.getToken();
             Call<Void> call = apiService.storeUserLike(accessToken, likeRequest);
             call.enqueue(new Callback<Void>() {
                 @Override
@@ -344,8 +361,6 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
     }
 
     private void updateUserLocation(String location) {
-        String accessToken = SessionManager.getToken();
-
         UserLocationRequest userLocation = new UserLocationRequest(location);
         Call<Void> call = apiService.updateUserLocation(accessToken, userLocation);
         call.enqueue(new Callback<Void>() {
@@ -360,6 +375,29 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 Log.e("API Error", "Request failed: " + t.getMessage());
+            }
+        });
+    }
+
+    // Sửa đổi getCurrentUser để sử dụng callback
+    // Sửa đổi getCurrentUser để sử dụng callback
+    private void getCurrentUser(UserResponseCallback callback) {
+        Call<UserResponse> call = apiService.getUser(accessToken);
+        call.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                if (response.isSuccessful()) {
+                    callback.onUserResponseReceived(response.body());
+                } else {
+                    Log.e("getUser", response.message());
+                    callback.onUserResponseReceived(null); // Gọi callback với null khi thất bại
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                Log.e("Error", t.getMessage());
+                callback.onUserResponseReceived(null); // Gọi callback với null khi thất bại
             }
         });
     }

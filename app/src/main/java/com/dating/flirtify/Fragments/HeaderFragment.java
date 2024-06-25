@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,13 +38,14 @@ import retrofit2.Response;
 public class HeaderFragment extends Fragment {
     private FragmentManager fragmentManager;
     private ImageView ivLogo;
-    private TextView tvAppName, tvFullname, tvAge, rangeAge;
+    private TextView tvAppName, tvFullname, tvAge, rangeDistance, rangeAge;
     private ImageButton ibFilter, ibBack, ibArrowDown;
     private RadioButton rbMale, rbFemale, rbOther;
     private BottomSheetDialog bottomSheetDialog;
     private View bottomSheetView;
     private RangeSlider rangeSlider;
     private PreviewFragment previewFragment;
+    private SeekBar sbDistance;
     private UserResponse user;
 
     @Nullable
@@ -72,6 +74,22 @@ public class HeaderFragment extends Fragment {
         bottomSheetDialog.setOnDismissListener(dialog -> {
             Toast.makeText(requireActivity(), "Dismissed", Toast.LENGTH_SHORT).show();
         });
+        sbDistance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                rangeDistance.setText(progress + "km");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     private void initViews(@NonNull View view) {
@@ -82,6 +100,7 @@ public class HeaderFragment extends Fragment {
         ibFilter = view.findViewById(R.id.ib_filter);
         ibBack = view.findViewById(R.id.ib_back);
         ibArrowDown = view.findViewById(R.id.ib_arrow_down);
+        rangeDistance = view.findViewById(R.id.tv_distance);
 
         previewFragment = new PreviewFragment();
         fragmentManager = requireActivity().getSupportFragmentManager();
@@ -94,12 +113,11 @@ public class HeaderFragment extends Fragment {
         bottomSheetDialog.setContentView(bottomSheetView);
 
         getCurrentUser();
-
+        sbDistance = bottomSheetDialog.findViewById(R.id.sb_distance);
+        rangeDistance = bottomSheetDialog.findViewById(R.id.tv_distance);
+        rangeDistance.setText(sbDistance.getProgress() + "km");
         rangeSlider = bottomSheetDialog.findViewById(R.id.rangeSlider);
         rangeAge = bottomSheetDialog.findViewById(R.id.tv_range_age);
-
-        rangeAge.setText("18 - 30");
-        rangeSlider.setValues(18f, 30f);
     }
 
     public void setHeaderType(int type) {
@@ -181,6 +199,10 @@ public class HeaderFragment extends Fragment {
                         rbFemale.setChecked(false);
                         rbOther.setChecked(true);
                     }
+
+                    rangeAge.setText(user.getMin_age() + " - " + user.getMax_age());
+                    rangeSlider.setValues((float) user.getMin_age(), (float) user.getMax_age());
+                    sbDistance.setProgress(user.getMax_distance());
                 } else {
                     Log.e("getUser", response.message());
                 }

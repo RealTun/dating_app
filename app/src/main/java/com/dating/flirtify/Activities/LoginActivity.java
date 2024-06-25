@@ -82,6 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                         // Lưu phiên đăng nhập vào SharedPreferences
                         SessionManager sessionManager = new SessionManager(LoginActivity.this);
                         sessionManager.saveLoginSession(accessToken, tokenType);
+                        sessionManager.saveLocationUser("");
 
                         Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
 
