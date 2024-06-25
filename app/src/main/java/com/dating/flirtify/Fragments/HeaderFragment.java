@@ -23,6 +23,8 @@ import android.widget.Toast;
 import com.dating.flirtify.Activities.PreviewActivity;
 import com.dating.flirtify.Api.ApiClient;
 import com.dating.flirtify.Api.ApiService;
+import com.dating.flirtify.Models.Requests.PreferenceRequest;
+import com.dating.flirtify.Models.Requests.UserLocationRequest;
 import com.dating.flirtify.Models.Responses.UserResponse;
 import com.dating.flirtify.R;
 import com.dating.flirtify.Services.SessionManager;
@@ -72,7 +74,28 @@ public class HeaderFragment extends Fragment {
             setHeaderType(3);
         });
         bottomSheetDialog.setOnDismissListener(dialog -> {
-            Toast.makeText(requireActivity(), "Dismissed", Toast.LENGTH_SHORT).show();
+            int minAge = Math.round(rangeSlider.getValues().get(0));
+            int maxAge = Math.round(rangeSlider.getValues().get(1));
+            int maxDistance = sbDistance.getProgress();
+
+            ApiService apiService = ApiClient.getClient();
+            String accessToken = SessionManager.getToken();
+            PreferenceRequest userLocation = new PreferenceRequest(minAge, maxAge, maxDistance);
+            Call<Void> call = apiService.updatePreference(accessToken, userLocation);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                    } else {
+                        Log.e("API Error", "Request failed: " + response.message());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.e("API Error", "Request failed: " + t.getMessage());
+                }
+            });
         });
         sbDistance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

@@ -93,7 +93,7 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
                 initCardStackView(address);
                 handlerEvent();
                 getUsers(address);
-//                updateUserLocation(address);
+                updateUserLocation(address);
             }
         }, 1000);
 
@@ -379,8 +379,6 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
         });
     }
 
-    // Sửa đổi getCurrentUser để sử dụng callback
-    // Sửa đổi getCurrentUser để sử dụng callback
     private void getCurrentUser(UserResponseCallback callback) {
         Call<UserResponse> call = apiService.getUser(accessToken);
         call.enqueue(new Callback<UserResponse>() {
