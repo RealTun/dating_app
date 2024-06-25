@@ -8,6 +8,7 @@ import com.dating.flirtify.Models.Requests.LoginRequest;
 import com.dating.flirtify.Models.Requests.PhotoRequest;
 import com.dating.flirtify.Models.Requests.RegisterRequest;
 import com.dating.flirtify.Models.Requests.RelationshipRequest;
+import com.dating.flirtify.Models.Requests.UserLocationRequest;
 import com.dating.flirtify.Models.Requests.UserRequest;
 import com.dating.flirtify.Models.Responses.InterestResponse;
 import com.dating.flirtify.Models.Responses.LoginResponse;
@@ -49,7 +50,9 @@ public interface ApiService {
     @PATCH("userTu")
     Call<Void> updateUser(@Header("Authorization") String accessToken, @Body UserRequest user);
 
-    @POST("user-photos/upload")
+    @PATCH("user/location")
+    Call<Void> updateUserLocation(@Header("Authorization") String accessToken, @Body UserLocationRequest userLocationRequest);
+
     Call<Void> storeUserPhotos(@Header("Authorization") String accessToken, @Body PhotoRequest photoRequest);
 
     @DELETE("interest-type/user/{id}")

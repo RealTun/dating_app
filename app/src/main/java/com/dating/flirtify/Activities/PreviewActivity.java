@@ -28,17 +28,20 @@ import com.dating.flirtify.Fragments.PreviewFragment;
 import com.dating.flirtify.Fragments.AccountFragment;
 import com.dating.flirtify.R;
 import com.dating.flirtify.Services.LocationHelper;
+import com.dating.flirtify.Services.SessionManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 
 public class PreviewActivity extends AppCompatActivity implements LocationHelper.LocationResultListener {
-
     private BottomNavigationView footerWrapper;
     private ImageButton ibArrowDown;
     private ConstraintLayout headerWrapper, mConstraintLayout;
     private LinearLayout bottomCardWrapper, layoutSpacer;
     private LocationHelper locationHelper;
-    private String currentLocation;
+    private PreviewFragment previewFragment;
+    private String AddressUser;
+    private FragmentManager fragmentManager;
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -52,6 +55,14 @@ public class PreviewActivity extends AppCompatActivity implements LocationHelper
             return insets;
         });
 
+        previewFragment = new PreviewFragment();
+
+        locationHelper = new LocationHelper(this);
+        locationHelper.setLocationResultListener(this);
+        locationHelper.requestLocationPermission();
+
+        fragmentManager = getSupportFragmentManager();
+
         initializeView();
         handlerEvent();
     }
@@ -63,21 +74,9 @@ public class PreviewActivity extends AppCompatActivity implements LocationHelper
         mConstraintLayout = findViewById(R.id.main);
         bottomCardWrapper = findViewById(R.id.bottom_card_wrapper);
         layoutSpacer = findViewById(R.id.ll_spacer);
-
-        locationHelper = new LocationHelper(this);
-        locationHelper.setLocationResultListener(this);
-        locationHelper.requestLocationPermission();
-
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
 
     private void handlerEvent() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        Bundle bundle = new Bundle();
-        bundle.putString("location", "108 Lò Đúc, Hai Bà Trưng, Hà Nội, Việt Nam");
-        PreviewFragment previewFragment = new PreviewFragment();
-        previewFragment.setArguments(bundle);
-        fragmentManager.beginTransaction().replace(R.id.fragment_container, previewFragment).commit();
         HeaderFragment headerFragment = (HeaderFragment) fragmentManager.findFragmentById(R.id.fragment_header);
         headerFragment.setHeaderType(1);
 
@@ -157,9 +156,16 @@ public class PreviewActivity extends AppCompatActivity implements LocationHelper
     @Override
     public void onLocationReceived(Location location, String addressLine) {
         if (location != null) {
-            currentLocation = addressLine;
+            AddressUser = addressLine;
+        if (!SessionManager.getLocationUser().isEmpty()){
+            SessionManager.clearLocationUser();
+        }
+        SessionManager.saveLocationUser(AddressUser);
+
+//            handlerEvent();
         } else {
             Toast.makeText(this, "Không thể lấy được vị trí hiện tại", Toast.LENGTH_SHORT).show();
         }
     }
+
 }

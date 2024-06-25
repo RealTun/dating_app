@@ -1,6 +1,7 @@
 package com.dating.flirtify.Fragments;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -19,6 +20,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,12 +30,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dating.flirtify.Activities.SettingProfileActivity;
 import com.dating.flirtify.Adapters.CardStackAdapter;
 import com.dating.flirtify.Adapters.InterestAdapter;
 import com.dating.flirtify.Api.ApiClient;
 import com.dating.flirtify.Api.ApiService;
 import com.dating.flirtify.Listeners.OnCardActionListener;
 import com.dating.flirtify.Models.Requests.LikeRequest;
+import com.dating.flirtify.Models.Requests.UserLocationRequest;
 import com.dating.flirtify.Models.Responses.UserResponse;
 import com.dating.flirtify.R;
 import com.dating.flirtify.Services.LocationHelper;
@@ -76,15 +81,19 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_preview, container, false);
 
-        // Lấy dữ liệu từ Bundle
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            String location = bundle.getString("location");
-            initViews(view);
-            initCardStackView(location);
-            handlerEvent();
-            getUsers();
-        }
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                String address = SessionManager.getLocationUser();
+                initViews(view);
+                initCardStackView(address);
+                handlerEvent();
+                getUsers();
+                updateUserLocation(address);
+            }
+        }, 1000);
+
         return view;
     }
 
@@ -155,7 +164,6 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
         tvRelationShip = view.findViewById(R.id.tv_relationship);
         rvInterests = view.findViewById(R.id.rv_interests);
 
-        accessToken = SessionManager.getToken();
         apiService = ApiClient.getClient();
         itemsResponse = new ArrayList<>();
     }
@@ -333,5 +341,26 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
             return (CardStackAdapter.ViewHolder) viewHolder;
         }
         return null;
+    }
+
+    private void updateUserLocation(String location) {
+        String accessToken = SessionManager.getToken();
+
+        UserLocationRequest userLocation = new UserLocationRequest(location);
+        Call<Void> call = apiService.updateUserLocation(accessToken, userLocation);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                } else {
+                    Log.e("API Error", "Request failed: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("API Error", "Request failed: " + t.getMessage());
+            }
+        });
     }
 }

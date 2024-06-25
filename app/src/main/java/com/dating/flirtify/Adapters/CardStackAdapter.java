@@ -67,7 +67,8 @@ public class CardStackAdapter extends RecyclerView.Adapter<CardStackAdapter.View
         holder.tvAge.setText(String.valueOf(item.getAge()));
 
         Double distance = calculateDistanceForAddress(context, userLocation, item.getLocation());
-        holder.tvDistance.setText(String.valueOf(distance));
+        int intDistance = (int) (distance / 1000);
+        holder.tvDistance.setText("Cách xa " + intDistance + " km");
 
         holder.ibArrowUp.setOnClickListener(v -> {
             if (onCardActionListener != null) {
