@@ -76,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity implements LocationHelpe
 
         initializeView();
 
-        showFragment(step1Fragment);
+        showFragment(step5Fragment);
 
         eventHandler();
     }
