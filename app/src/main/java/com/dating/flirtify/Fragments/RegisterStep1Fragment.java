@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.dating.flirtify.Api.ApiClient;
 import com.dating.flirtify.Api.ApiService;
+import com.dating.flirtify.Models.Requests.CheckEmailRequest;
 import com.dating.flirtify.Models.Requests.RegisterRequest;
 import com.dating.flirtify.Models.Responses.LoginResponse;
 import com.dating.flirtify.R;
@@ -67,9 +68,9 @@ public class RegisterStep1Fragment extends Fragment {
     public void checkDuplicateEmail(String email) {
         // Lấy instance của ApiService thông qua ApiClient
         ApiService apiService = ApiClient.getClient();
-
+        CheckEmailRequest checkEmailRequest = new CheckEmailRequest(email);
         // Gửi yêu cầu đăng ký
-        Call<Void> call = apiService.checkDuplicateEmail(email);
+        Call<Void> call = apiService.checkDuplicateEmail(checkEmailRequest);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {

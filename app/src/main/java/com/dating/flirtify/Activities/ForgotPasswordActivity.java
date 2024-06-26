@@ -19,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.dating.flirtify.Api.ApiClient;
 import com.dating.flirtify.Api.ApiService;
+import com.dating.flirtify.Models.Requests.CheckEmailRequest;
 import com.dating.flirtify.R;
 import com.dating.flirtify.Services.GmailSender;
 import com.dating.flirtify.Services.OTPGenerators;
@@ -141,9 +142,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     public void checkDuplicateEmail(String email) {
         // Lấy instance của ApiService thông qua ApiClient
         ApiService apiService = ApiClient.getClient();
-
+        CheckEmailRequest checkEmailRequest = new CheckEmailRequest(email);
         // Gửi yêu cầu đăng ký
-        Call<Void> call = apiService.checkDuplicateEmail(email);
+        Call<Void> call = apiService.checkDuplicateEmail(checkEmailRequest);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {

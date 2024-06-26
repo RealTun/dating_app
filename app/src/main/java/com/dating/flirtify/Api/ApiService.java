@@ -1,6 +1,7 @@
 package com.dating.flirtify.Api;
 
 import com.dating.flirtify.Models.InterestType;
+import com.dating.flirtify.Models.Requests.CheckEmailRequest;
 import com.dating.flirtify.Models.Requests.InterestRequest;
 import com.dating.flirtify.Models.Requests.LikeRequest;
 import com.dating.flirtify.Models.Requests.MessageRequest;
@@ -34,7 +35,7 @@ import retrofit2.http.Path;
 public interface ApiService {
     // auth
     @POST("checkDuplicateEmail")
-    Call<Void> checkDuplicateEmail(@Body String email);
+    Call<Void> checkDuplicateEmail(@Body CheckEmailRequest checkEmailRequest);
 
     @POST("register")
     Call<LoginResponse> register(@Body RegisterRequest registerRequest);
