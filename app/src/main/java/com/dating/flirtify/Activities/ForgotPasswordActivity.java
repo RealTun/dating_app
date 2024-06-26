@@ -95,7 +95,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 }
                 // Gọi phương thức để kiểm tra email trùng lặp
                 checkDuplicateEmail(etEmail.getText().toString());
-                if (!isExistEmail) {
+                if (isExistEmail) {
                     generatedOTP = OTPGenerators.generateOTP();
                     sendOTPEmail(etEmail.getText().toString().trim(), generatedOTP);
                     tvOTP.setVisibility(View.VISIBLE);
