@@ -31,12 +31,14 @@ import com.dating.flirtify.Fragments.RegisterStep3Fragment;
 import com.dating.flirtify.Fragments.RegisterStep4Fragment;
 import com.dating.flirtify.Fragments.RegisterStep5Fragment;
 import com.dating.flirtify.Fragments.RegisterWantToSeeFragment;
+import com.dating.flirtify.Models.Requests.CheckEmailRequest;
 import com.dating.flirtify.Models.Requests.RegisterRequest;
 import com.dating.flirtify.Models.Responses.LoginResponse;
 import com.dating.flirtify.R;
 import com.dating.flirtify.Services.LocationHelper;
 import com.dating.flirtify.Services.NetworkChangeReceiver;
 import com.dating.flirtify.Services.SessionManager;
+import com.dating.flirtify.Services.ShowMessage;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -126,9 +128,7 @@ public class RegisterActivity extends AppCompatActivity implements LocationHelpe
                         String email = step1Fragment.getEmail();
                         if (step1Fragment.isValidEmail()) {
                             registerRequest.setEmail(email);
-                            currentStep++;
-                            showFragment(step2Fragment);
-                            ivStep.setImageResource(R.drawable.register_step_2);
+                            checkDuplicateEmail(email);
                         }
                     }
                     break;
@@ -231,6 +231,32 @@ public class RegisterActivity extends AppCompatActivity implements LocationHelpe
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 Toast.makeText(RegisterActivity.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e("API Error", t.getMessage(), t);
+            }
+        });
+    }
+
+    public void checkDuplicateEmail(String email) {
+        ApiService apiService = ApiClient.getClient();
+        CheckEmailRequest checkEmailRequest = new CheckEmailRequest(email);
+        Call<Void> call = apiService.checkDuplicateEmail(checkEmailRequest);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("checkDuplicateEmail", "Email is unique!");
+                    showFragment(step2Fragment);
+                    ivStep.setImageResource(R.drawable.register_step_2);
+                    currentStep++;
+                }
+                else {
+                    ShowMessage.showCustomDialog(RegisterActivity.this, "Thông báo", "Email đã tồn tại");
+                    Log.e("checkDuplicateEmail", "Duplicate email found!");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
             }
         });
     }

@@ -96,16 +96,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 }
                 // Gọi phương thức để kiểm tra email trùng lặp
                 checkDuplicateEmail(etEmail.getText().toString());
-                if (isExistEmail) {
-                    generatedOTP = OTPGenerators.generateOTP();
-                    sendOTPEmail(etEmail.getText().toString().trim(), generatedOTP);
-                    tvOTP.setVisibility(View.VISIBLE);
-                    etOTP.setVisibility(View.VISIBLE);
-                    btnVerify.setVisibility(View.VISIBLE);
-
-                    etEmail.setVisibility(View.GONE);
-                    btnSend.setVisibility(View.GONE);
-                }
 
             }
         });
@@ -128,11 +118,11 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             String rePassword = etRePW.getText().toString();
 
             if (!validate(password)) {
-                ShowMessage.showCustomDialog(ForgotPasswordActivity.this,"Thông báo", "Mật khẩu phải chứa ít nhất một chữ hoa, một chữ thường, một số, một ký tự đặc biệt và dài tối thiểu 8 ký tự.");
+                ShowMessage.showCustomDialog(ForgotPasswordActivity.this, "Thông báo", "Mật khẩu phải chứa ít nhất một chữ hoa, một chữ thường, một số, một ký tự đặc biệt và dài tối thiểu 8 ký tự.");
                 return;
             }
             if (!password.equals(rePassword)) {
-                ShowMessage.showCustomDialog(ForgotPasswordActivity.this,"Thông báo", "Mật khẩu xác nhận không khớp!");
+                ShowMessage.showCustomDialog(ForgotPasswordActivity.this, "Thông báo", "Mật khẩu xác nhận không khớp!");
                 return;
             }
             updatePassword(etRePW.getText().toString().trim());
@@ -149,13 +139,20 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
+                    ShowMessage.showCustomDialog(ForgotPasswordActivity.this, "Thông báo", "Email không tồn tại trong hệ thống!");
+                    Log.e("checkDuplicateEmail", "Email not found!");
+                }
+                else{
                     // Xử lý khi yêu cầu thành công
-                    isExistEmail = true;
-                    Log.d("CheckExitsEmail", "Email is found!");
-                } else {
-                    // Xử lý khi yêu cầu không thành công
-                    isExistEmail = false;
-                    Log.e("CheckExitsEmail", "Email is not found!");
+                    Log.d("checkDuplicateEmail", "Tồn tại mail user trong hệ thống");
+                    generatedOTP = OTPGenerators.generateOTP();
+                    sendOTPEmail(etEmail.getText().toString().trim(), generatedOTP);
+                    tvOTP.setVisibility(View.VISIBLE);
+                    etOTP.setVisibility(View.VISIBLE);
+                    btnVerify.setVisibility(View.VISIBLE);
+
+                    etEmail.setVisibility(View.GONE);
+                    btnSend.setVisibility(View.GONE);
                 }
             }
 
