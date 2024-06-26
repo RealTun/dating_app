@@ -205,7 +205,12 @@ public class RegisterStep4Fragment extends Fragment {
 
     public int getGender() {
         String selectedItem = genderSpinner.getSelectedItem().toString();
-        return (selectedItem.equals("Nam")) ? 1 : 0;
+        if (selectedItem.equals("Nam")) {
+            return 1;
+        } else if (selectedItem.equals("Nữ")) {
+            return 0;
+        }
+        return 2;
     }
 
     public int getDateOfBirth() {
