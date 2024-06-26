@@ -1,9 +1,12 @@
 package com.dating.flirtify.Activities;
 
 import android.content.Intent;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextPaint;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -34,10 +38,9 @@ import retrofit2.Response;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 
-    private TextView tvEmail, tvOTP, tvPW;
+    private TextView tvEmail, tvOTP, tvPW, tvAppName;
     private EditText etEmail, etOTP, etPW, etRePW;
     private Button btnSend, btnVerify, btnReset;
-    private boolean isExistEmail;
     private static final String EMAIL_PATTERN = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     private static final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
     private static final Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
@@ -56,10 +59,20 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         });
 
         initView();
+        generatedOTP = OTPGenerators.generateOTP();
+        setColorGradient(tvAppName, ResourcesCompat.getColor(getResources(), R.color.gradient_top, null), ResourcesCompat.getColor(getResources(), R.color.gradient_center, null), ResourcesCompat.getColor(getResources(), R.color.gradient_bottom, null));
         EventHandler();
     }
-
+    private void setColorGradient(TextView tv, int... color) {
+        TextPaint textPaint = tv.getPaint();
+        float width = textPaint.measureText(tv.getText().toString());
+        float height = tv.getTextSize();
+        Shader textShader = new LinearGradient(0, 0, 0, height, color, null, Shader.TileMode.CLAMP);
+        tv.getPaint().setShader(textShader);
+        tv.setTextColor(color[0]);
+    }
     private void initView() {
+        tvAppName = findViewById(R.id.tvAppName);
         tvEmail = findViewById(R.id.tvEmail);
         tvOTP = findViewById(R.id.tvOTP);
         tvPW = findViewById(R.id.tvPW);
@@ -145,7 +158,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 else{
                     // Xử lý khi yêu cầu thành công
                     Log.d("checkDuplicateEmail", "Tồn tại mail user trong hệ thống");
-                    generatedOTP = OTPGenerators.generateOTP();
+
                     sendOTPEmail(etEmail.getText().toString().trim(), generatedOTP);
                     tvOTP.setVisibility(View.VISIBLE);
                     etOTP.setVisibility(View.VISIBLE);
