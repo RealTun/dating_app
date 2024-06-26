@@ -23,6 +23,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.dating.flirtify.Api.ApiClient;
 import com.dating.flirtify.Api.ApiService;
+import com.dating.flirtify.Models.Requests.ChangePasswordRequest;
 import com.dating.flirtify.Models.Requests.CheckEmailRequest;
 import com.dating.flirtify.R;
 import com.dating.flirtify.Services.GmailSender;
@@ -199,7 +200,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private void updatePassword(String password) {
         ApiService apiService = ApiClient.getClient();
-        Call<Void> call = apiService.updatePassword(password);
+        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest(etEmail.getText().toString(), password);
+        Call<Void> call = apiService.updatePassword(changePasswordRequest);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {

@@ -1,6 +1,7 @@
 package com.dating.flirtify.Api;
 
 import com.dating.flirtify.Models.InterestType;
+import com.dating.flirtify.Models.Requests.ChangePasswordRequest;
 import com.dating.flirtify.Models.Requests.CheckEmailRequest;
 import com.dating.flirtify.Models.Requests.InterestRequest;
 import com.dating.flirtify.Models.Requests.LikeRequest;
@@ -46,8 +47,8 @@ public interface ApiService {
     @POST("logout")
     Call<Void> logout(@Header("Authorization") String accessToken);
 
-    @POST("checkDuplicateEmail")
-    Call<Void> updatePassword(@Body String Password);
+    @PATCH("changePassword")
+    Call<Void> updatePassword(@Body ChangePasswordRequest changePasswordRequest);
 
     @GET("user")
     Call<UserResponse> getUser(@Header("Authorization") String accessToken);
