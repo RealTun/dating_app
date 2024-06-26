@@ -34,12 +34,9 @@ import com.dating.flirtify.Fragments.RegisterWantToSeeFragment;
 import com.dating.flirtify.Models.Requests.RegisterRequest;
 import com.dating.flirtify.Models.Responses.LoginResponse;
 import com.dating.flirtify.R;
-import com.dating.flirtify.Services.DistanceCalculator;
 import com.dating.flirtify.Services.LocationHelper;
 import com.dating.flirtify.Services.NetworkChangeReceiver;
 import com.dating.flirtify.Services.SessionManager;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -94,7 +91,7 @@ public class RegisterActivity extends AppCompatActivity implements LocationHelpe
         TextView tvAppName = findViewById(R.id.tvAppName);
         setColorGradient(tvAppName, ResourcesCompat.getColor(getResources(), R.color.gradient_top, null), ResourcesCompat.getColor(getResources(), R.color.gradient_center, null), ResourcesCompat.getColor(getResources(), R.color.gradient_bottom, null));
 
-        nextButton = findViewById(R.id.btnLogin);
+        nextButton = findViewById(R.id.btnReset);
         ivStep = findViewById(R.id.ivStep);
         frLayout = findViewById(R.id.frLayout);
 

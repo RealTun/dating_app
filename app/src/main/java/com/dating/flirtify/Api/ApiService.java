@@ -42,6 +42,9 @@ public interface ApiService {
     @POST("logout")
     Call<Void> logout(@Header("Authorization") String accessToken);
 
+    @POST("checkDuplicateEmail")
+    Call<Void> updatePassword(@Body String Password);
+
     @GET("user")
     Call<UserResponse> getUser(@Header("Authorization") String accessToken);
 
