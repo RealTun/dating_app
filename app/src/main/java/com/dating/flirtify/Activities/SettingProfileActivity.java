@@ -1,28 +1,38 @@
 package com.dating.flirtify.Activities;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
+import com.dating.flirtify.Adapters.ImageUserAdapter;
 import com.dating.flirtify.Adapters.RelationshipAdapter;
 import com.dating.flirtify.Api.ApiClient;
 import com.dating.flirtify.Api.ApiService;
 import com.dating.flirtify.Interfaces.OnFilterClickListener;
+import com.dating.flirtify.Models.Requests.PhotoRequest;
 import com.dating.flirtify.Models.Requests.RelationshipRequest;
 import com.dating.flirtify.Models.Requests.UserRequest;
 import com.dating.flirtify.Models.Responses.RelationshipResponse;
@@ -33,9 +43,13 @@ import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,6 +67,12 @@ public class SettingProfileActivity extends AppCompatActivity implements OnFilte
     private RelationshipAdapter relationshipAdapter;
     private String textRelationship;
     private final ArrayList<RelationshipResponse> relationshipItems = new ArrayList<>();
+    private GridView gridImageView;
+    private ImageUserAdapter imageUserAdapter;
+    private final int PERMISSION_REQUEST_READ_EXTERNAL_STORAGE = 100;
+    private List<String> urls;
+    private int currentPosition;
+    private StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +123,7 @@ public class SettingProfileActivity extends AppCompatActivity implements OnFilte
         tvRelationship = findViewById(R.id.tv_relationships);
         tvGender = findViewById(R.id.tv_gender);
         tvDone = findViewById(R.id.tv_done);
+        gridImageView = findViewById(R.id.grid_image_view);
 
         apiService = ApiClient.getClient();
         accessToken = SessionManager.getToken();
@@ -173,6 +194,12 @@ public class SettingProfileActivity extends AppCompatActivity implements OnFilte
                         strGender = "Khác";
                     }
                     tvGender.setText(strGender);
+
+                    List<String> urls = userResponse.getPhotos();
+                    while (urls.size() < 6) {
+                        urls.add("");
+                    }
+                    updateImageView(urls);
                 }
             }
 
@@ -247,6 +274,21 @@ public class SettingProfileActivity extends AppCompatActivity implements OnFilte
 
             builder.create().show();
         });
+
+        gridImageView.setOnItemClickListener((parent, view, position, id) -> {
+            if (Objects.equals(urls.get(position), "")) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("image/*");
+                currentPosition = position;
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_READ_EXTERNAL_STORAGE);
+                } else {
+                    pickImageLauncher.launch(intent);
+                }
+            }
+        });
     }
 
     private void initRelationshipRecyclerView() {
@@ -257,5 +299,55 @@ public class SettingProfileActivity extends AppCompatActivity implements OnFilte
         rvRelationship.setLayoutManager(layoutManager);
         relationshipAdapter = new RelationshipAdapter(this, relationshipItems, textRelationship, this);
         rvRelationship.setAdapter(relationshipAdapter);
+    }
+
+    private void updateImageView(List<String> _urls) {
+        urls = _urls;
+        imageUserAdapter = new ImageUserAdapter(SettingProfileActivity.this, R.layout.image_item, urls);
+        gridImageView.setAdapter(imageUserAdapter);
+        gridImageView.setTranscriptMode(0);
+        imageUserAdapter.notifyDataSetChanged();
+    }
+
+    private final ActivityResultLauncher<Intent> pickImageLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Uri selectedImageUri = result.getData().getData();
+                    uploadImage(selectedImageUri);
+                    updateImageView(urls);
+                }
+            }
+    );
+
+    private void uploadImage(Uri fileUri) {
+        storageReference = FirebaseStorage.getInstance().getReference();
+        String uuid = UUID.randomUUID().toString();
+        String uniqueFileName = "images/" + uuid;
+        StorageReference ref = storageReference.child(uniqueFileName);
+
+        ref.putFile(fileUri).addOnSuccessListener(taskSnapshot -> ref.getDownloadUrl().addOnSuccessListener(downloadUri -> {
+            String downloadUrl = downloadUri.toString();
+
+            apiService = ApiClient.getClient();
+            PhotoRequest photoRequest = new PhotoRequest(downloadUrl);
+            Call<Void> call = apiService.storeUserPhotos(accessToken, photoRequest);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        urls.set(currentPosition, downloadUrl);
+                        Log.d("Photo Upload", response.message());
+                    }
+                }
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.e("Photo Upload Error", t.getMessage(), t);
+                }
+            });
+        })).addOnFailureListener(e -> {
+            // Handle any errors
+            Log.e("Firebase", e.getMessage());
+        });
     }
 }

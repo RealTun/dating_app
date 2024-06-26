@@ -230,51 +230,31 @@ public class RegisterStep5Fragment extends Fragment {
     }
 
     private void uploadImage(String accessToken, Uri fileUri) {
-        String uniqueFileName = "images/" + UUID.randomUUID().toString();
+        String uuid = UUID.randomUUID().toString();
+        String uniqueFileName = "images/" + uuid;
         StorageReference ref = storageReference.child(uniqueFileName);
 
-        ref.putFile(fileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri downloadUri) {
-                        String downloadUrl = downloadUri.toString();
-                        Log.d("Firebase", downloadUri.toString());
+        ref.putFile(fileUri).addOnSuccessListener(taskSnapshot -> ref.getDownloadUrl().addOnSuccessListener(downloadUri -> {
+            String downloadUrl = downloadUri.toString();
 
-                        apiService = ApiClient.getClient();
-                        PhotoRequest photoRequest = new PhotoRequest(downloadUrl);
-                        Call<Void> call = apiService.storeUserPhotos(accessToken, photoRequest);
-                        call.enqueue(new Callback<Void>() {
-                            @Override
-                            public void onResponse(Call<Void> call, Response<Void> response) {
-                                if (response.isSuccessful()) {
-                                    Log.d("Photo Upload", response.message());
-                                }
-                                else {
-                                    Log.e("Photo Upload Error", "Lỗi: " + response.message());
-                                }
-                            }
-                            @Override
-                            public void onFailure(Call<Void> call, Throwable t) {
-                                Log.e("Photo Upload Error", t.getMessage(), t);
-                            }
-                        });
+            apiService = ApiClient.getClient();
+            PhotoRequest photoRequest = new PhotoRequest(downloadUrl);
+            Call<Void> call = apiService.storeUserPhotos(accessToken, photoRequest);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        Log.d("Photo Upload", response.message());
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Handle any errors
-                        Log.e("Firebase", e.getMessage());
-                    }
-                });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                // Handle any errors
-                Log.e("Firebase", e.getMessage());
-            }
+                }
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.e("Photo Upload Error", t.getMessage(), t);
+                }
+            });
+        })).addOnFailureListener(e -> {
+            // Handle any errors
+            Log.e("Firebase", e.getMessage());
         });
     }
 }
