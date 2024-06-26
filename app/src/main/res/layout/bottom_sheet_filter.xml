@@ -40,6 +40,7 @@
                         android:textSize="23sp" />
 
                     <TextView
+                        android:id="@+id/tv_distance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat_medium"
@@ -53,7 +54,9 @@
                     android:id="@+id/sb_distance"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:progress="25"
+                    android:max="50"
+                    android:min="1"
+                    android:progress="49"
                     android:progressDrawable="@drawable/seekbar_progress"
                     android:thumb="@drawable/seekbar_thumb" />
 

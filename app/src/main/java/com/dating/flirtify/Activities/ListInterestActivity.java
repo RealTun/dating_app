@@ -1,5 +1,6 @@
 package com.dating.flirtify.Activities;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -125,6 +126,7 @@ public class ListInterestActivity extends AppCompatActivity {
                 public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
                     if (response.isSuccessful()) {
                         Toast.makeText(ListInterestActivity.this, "Cập nhật sở thích thành công", Toast.LENGTH_SHORT).show();
+                        setResult(Activity.RESULT_OK);
                         finish();
                     }
                 }

@@ -2,12 +2,16 @@ package com.dating.flirtify.Activities;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -23,15 +27,22 @@ import com.dating.flirtify.Fragments.MatcherFragment;
 import com.dating.flirtify.Fragments.PreviewFragment;
 import com.dating.flirtify.Fragments.AccountFragment;
 import com.dating.flirtify.R;
+import com.dating.flirtify.Services.LocationHelper;
+import com.dating.flirtify.Services.SessionManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 
-public class PreviewActivity extends AppCompatActivity {
-
+public class PreviewActivity extends AppCompatActivity implements LocationHelper.LocationResultListener {
     private BottomNavigationView footerWrapper;
     private ImageButton ibArrowDown;
     private ConstraintLayout headerWrapper, mConstraintLayout;
     private LinearLayout bottomCardWrapper, layoutSpacer;
+    private LocationHelper locationHelper;
+    private PreviewFragment previewFragment;
+    private String AddressUser;
+    private FragmentManager fragmentManager;
+
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +55,14 @@ public class PreviewActivity extends AppCompatActivity {
             return insets;
         });
 
+        previewFragment = new PreviewFragment();
+
+        locationHelper = new LocationHelper(this);
+        locationHelper.setLocationResultListener(this);
+        locationHelper.requestLocationPermission();
+
+        fragmentManager = getSupportFragmentManager();
+
         initializeView();
         handlerEvent();
     }
@@ -55,17 +74,11 @@ public class PreviewActivity extends AppCompatActivity {
         mConstraintLayout = findViewById(R.id.main);
         bottomCardWrapper = findViewById(R.id.bottom_card_wrapper);
         layoutSpacer = findViewById(R.id.ll_spacer);
-
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
 
     private void handlerEvent() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        PreviewFragment previewFragment = new PreviewFragment();
-        fragmentManager.beginTransaction().replace(R.id.fragment_container, previewFragment).commit();
         HeaderFragment headerFragment = (HeaderFragment) fragmentManager.findFragmentById(R.id.fragment_header);
         headerFragment.setHeaderType(1);
-
 
         ibArrowDown.setOnClickListener(v -> {
             footerWrapper.setVisibility(View.VISIBLE);
@@ -122,4 +135,37 @@ public class PreviewActivity extends AppCompatActivity {
             return true;
         });
     }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // Xử lý kết quả yêu cầu quyền vị trí
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Quyền đã được cấp, lấy vị trí hiện tại
+                locationHelper.getCurrentLocation();
+            } else {
+                // Quyền không được cấp, thông báo cho người dùng
+                Toast.makeText(this, "Ứng dụng cần quyền truy cập vị trí để hoạt động", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onLocationReceived(Location location, String addressLine) {
+        if (location != null) {
+            AddressUser = addressLine;
+        if (!SessionManager.getLocationUser().isEmpty()){
+            SessionManager.clearLocationUser();
+        }
+        SessionManager.saveLocationUser(AddressUser);
+
+//            handlerEvent();
+        } else {
+            Toast.makeText(this, "Không thể lấy được vị trí hiện tại", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

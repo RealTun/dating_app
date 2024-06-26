@@ -1,6 +1,7 @@
 package com.dating.flirtify.Fragments;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -54,12 +55,12 @@ public class RegisterStep5Fragment extends Fragment {
     private static final int PERMISSION_REQUEST_READ_EXTERNAL_STORAGE = 100;
     private static final int MAX_IMAGES = 6;
 
-    private Map<Integer, Uri> imagesURIs = new HashMap<>();
+    private final Map<Integer, Uri> imagesURIs = new HashMap<>();
     private int selectedImageIndex = -1; // Vị trí của ImageView đang được chọn
     private ImageView[] imageViews; // Mảng chứa các ImageView
     private ImageView[] imageViewsCloses; // Mảng chứa các ImageViewClose
     private ApiService apiService;
-    private Context context;
+    private final Context context;
     private StorageReference storageReference;
 
     public RegisterStep5Fragment(Context context) {
@@ -120,10 +121,8 @@ public class RegisterStep5Fragment extends Fragment {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             intent.setType("image/*");
 
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(requireActivity(),
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_READ_EXTERNAL_STORAGE);
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_READ_EXTERNAL_STORAGE);
             } else {
                 // Quyền đã được cấp, khởi chạy intent chọn hình ảnh.
                 startActivityForResult(intent, PICK_IMAGE_REQUEST);
@@ -192,23 +191,26 @@ public class RegisterStep5Fragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == getActivity().RESULT_OK && data != null && data.getData() != null) {
-            Uri selectedImageUri = data.getData();
-            if (selectedImageUri != null) {
-                // Cập nhật ảnh tại vị trí được chọn trong Map
-                imagesURIs.put(selectedImageIndex + 1, selectedImageUri); // Vị trí +1 để lấy key từ 1 đến 6
-                imageViews[selectedImageIndex].setImageURI(selectedImageUri); // Hiển thị ảnh tương ứng vào ImageView
+        if (requestCode == PICK_IMAGE_REQUEST) {
+            getActivity();
+            if (resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+                Uri selectedImageUri = data.getData();
+                if (selectedImageUri != null) {
+                    // Cập nhật ảnh tại vị trí được chọn trong Map
+                    imagesURIs.put(selectedImageIndex + 1, selectedImageUri); // Vị trí +1 để lấy key từ 1 đến 6
+                    imageViews[selectedImageIndex].setImageURI(selectedImageUri); // Hiển thị ảnh tương ứng vào ImageView
 
-                // Hiển thị ImageViewClose tương ứng
-                imageViewsCloses[selectedImageIndex].setVisibility(View.VISIBLE);
+                    // Hiển thị ImageViewClose tương ứng
+                    imageViewsCloses[selectedImageIndex].setVisibility(View.VISIBLE);
 
-                // Kích hoạt ImageView tiếp theo nếu có
-                if (selectedImageIndex < MAX_IMAGES - 1) {
-                    selectedImageIndex++;
-                    updateImageViews();
+                    // Kích hoạt ImageView tiếp theo nếu có
+                    if (selectedImageIndex < MAX_IMAGES - 1) {
+                        selectedImageIndex++;
+                        updateImageViews();
+                    }
                 }
+                Log.d("RegisterStep5Fragment", "imagesURIs: " + imagesURIs);
             }
-            Log.d("RegisterStep5Fragment", "imagesURIs: " + imagesURIs.toString());
         }
     }
 

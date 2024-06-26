@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -95,6 +96,7 @@ public class SettingProfileActivity extends AppCompatActivity implements OnFilte
         accessToken = SessionManager.getToken();
         RelationshipRequest relationshipRequest = new RelationshipRequest(relationship.getId());
         Call<Void> call = apiService.updateRelationshipType(accessToken, relationshipRequest);
+        Log.d("RelationshipType", String.valueOf(relationshipRequest.getRelationship_type_id()));
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -239,6 +241,7 @@ public class SettingProfileActivity extends AppCompatActivity implements OnFilte
                     if (response.isSuccessful()) {
                         if (response.code() == 200) {
                             Toast.makeText(SettingProfileActivity.this, "Cập nhật thông tin thành công", Toast.LENGTH_SHORT).show();
+                            setResult(Activity.RESULT_OK);
                             finish();
                         }
                     } else {
@@ -349,5 +352,14 @@ public class SettingProfileActivity extends AppCompatActivity implements OnFilte
             // Handle any errors
             Log.e("Firebase", e.getMessage());
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 9 && resultCode == Activity.RESULT_OK) {
+            getCurrentUser();
+        }
     }
 }

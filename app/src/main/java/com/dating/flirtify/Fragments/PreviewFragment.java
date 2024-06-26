@@ -1,11 +1,18 @@
 package com.dating.flirtify.Fragments;
 
+import static com.dating.flirtify.Services.DistanceCalculator.calculateDistanceForAddress;
+
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -15,6 +22,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +37,7 @@ import com.dating.flirtify.Api.ApiClient;
 import com.dating.flirtify.Api.ApiService;
 import com.dating.flirtify.Listeners.OnCardActionListener;
 import com.dating.flirtify.Models.Requests.LikeRequest;
+import com.dating.flirtify.Models.Requests.UserLocationRequest;
 import com.dating.flirtify.Models.Responses.UserResponse;
 import com.dating.flirtify.R;
 import com.dating.flirtify.Services.SessionManager;
@@ -42,11 +52,6 @@ import com.yuyakaido.android.cardstackview.Duration;
 import com.yuyakaido.android.cardstackview.StackFrom;
 import com.yuyakaido.android.cardstackview.SwipeAnimationSetting;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,20 +68,36 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
     private BottomNavigationView footerWrapper;
     private ConstraintLayout mConstraintLayout;
     private RecyclerView rvInterests;
-    private ArrayList<UserResponse> itemsResponse;
+    private final ArrayList<UserResponse> itemsResponse = new ArrayList<>();
     private CardStackView cardStackView;
     private CardStackAdapter adapter;
     private CardStackLayoutManager manager;
     private TextView tvBio, tvRelationShip;
     private String accessToken;
 
+    public interface UserResponseCallback {
+        void onUserResponseReceived(UserResponse userResponse);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_preview, container, false);
-        initViews(view);
-        handlerEvent();
-        getUsers();
+
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+//                String address = SessionManager.getLocationUser();
+                String address = "Ha Noi";
+                initViews(view);
+                initCardStackView(address);
+                handlerEvent();
+                getUsers(address);
+                updateUserLocation(address);
+            }
+        }, 1000);
+
         return view;
     }
 
@@ -111,28 +132,45 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
         manager.setCanScrollVertical(false);
     }
 
-    private void getUsers() {
-        Call<ArrayList<UserResponse>> call = apiService.getUserToConnect(accessToken);
-        call.enqueue(new Callback<ArrayList<UserResponse>>() {
-            @Override
-            public void onResponse(Call<ArrayList<UserResponse>> call, Response<ArrayList<UserResponse>> response) {
-                if (response.isSuccessful()) {
-                    ArrayList<UserResponse> arrMatcher = response.body();
-                    if (arrMatcher != null) {
-                        itemsResponse.addAll(arrMatcher);
-                        adapter.notifyDataSetChanged();
+    private void getUsers(String currentUserLocation) {
+        getCurrentUser(currentUser -> {
+            if (currentUser != null) {
+                Call<ArrayList<UserResponse>> call = apiService.getUserToConnect(accessToken);
+                call.enqueue(new Callback<ArrayList<UserResponse>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<UserResponse>> call, Response<ArrayList<UserResponse>> response) {
+                        if (response.isSuccessful()) {
+                            ArrayList<UserResponse> arrMatcher = response.body();
+                            if (arrMatcher != null) {
+                                int minAge = currentUser.getMin_age();
+                                int maxAge = currentUser.getMax_age();
+                                int maxDistance = currentUser.getMax_distance();
+                                for (UserResponse item : arrMatcher) {
+                                    String matcherLocation = item.getLocation();
+                                    double distance = calculateDistanceForAddress(getActivity(), currentUserLocation, matcherLocation) / 1000;
+                                    if (distance < maxDistance && item.getAge() > minAge && item.getAge() < maxAge) {
+                                        itemsResponse.add(item);
+                                    }
+                                }
+                                adapter.notifyDataSetChanged();
+                            }
+                        } else {
+                            Log.e("Matches", "Response not successful: " + response.message());
+                        }
                     }
-                } else {
-                    Log.e("Matches", "Response not successful: " + response.message());
-                }
-            }
 
-            @Override
-            public void onFailure(Call<ArrayList<UserResponse>> call, Throwable t) {
-                Log.e("Matches", "Request failed: " + t.getMessage());
+                    @Override
+                    public void onFailure(Call<ArrayList<UserResponse>> call, Throwable t) {
+                        Log.e("Matches", "Request failed: " + t.getMessage());
+                    }
+                });
+            } else {
+                // Xử lý trường hợp không lấy được currentUser
+                Log.e("getUsers", "Failed to get current user");
             }
         });
     }
+
 
     private void initViews(View view) {
         cvPreview = view.findViewById(R.id.cv_preview);
@@ -147,11 +185,13 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
         tvRelationShip = view.findViewById(R.id.tv_relationship);
         rvInterests = view.findViewById(R.id.rv_interests);
 
-        accessToken = SessionManager.getToken();
         apiService = ApiClient.getClient();
-        itemsResponse = new ArrayList<>();
-        adapter = new CardStackAdapter(itemsResponse, this);
-        manager = new CardStackLayoutManager(view.getContext(), new CardStackListener() {
+        accessToken = SessionManager.getToken();
+    }
+
+    private void initCardStackView(String location) {
+        adapter = new CardStackAdapter(getActivity(), itemsResponse, this, location);
+        manager = new CardStackLayoutManager(getActivity(), new CardStackListener() {
             @Override
             public void onCardDragging(Direction direction, float ratio) {
                 CardStackAdapter.ViewHolder currentViewHolder = getCurrentViewHolder();
@@ -211,7 +251,6 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
             UserResponse currentUser = itemsResponse.get(manager.getTopPosition() - 1);
             LikeRequest likeRequest = new LikeRequest(currentUser.getId(), 1);
 
-            String accessToken = SessionManager.getToken();
             Call<Void> call = apiService.storeUserLike(accessToken, likeRequest);
             call.enqueue(new Callback<Void>() {
                 @Override
@@ -239,7 +278,6 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
             UserResponse currentUser = itemsResponse.get(manager.getTopPosition() - 1);
             LikeRequest likeRequest = new LikeRequest(currentUser.getId(), 0);
 
-            String accessToken = SessionManager.getToken();
             Call<Void> call = apiService.storeUserLike(accessToken, likeRequest);
             call.enqueue(new Callback<Void>() {
                 @Override
@@ -321,5 +359,45 @@ public class PreviewFragment extends Fragment implements OnCardActionListener {
             return (CardStackAdapter.ViewHolder) viewHolder;
         }
         return null;
+    }
+
+    private void updateUserLocation(String location) {
+        UserLocationRequest userLocation = new UserLocationRequest(location);
+        Call<Void> call = apiService.updateUserLocation(accessToken, userLocation);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                } else {
+                    Log.e("API Error", "Request failed: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("API Error", "Request failed: " + t.getMessage());
+            }
+        });
+    }
+
+    private void getCurrentUser(UserResponseCallback callback) {
+        Call<UserResponse> call = apiService.getUser(accessToken);
+        call.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                if (response.isSuccessful()) {
+                    callback.onUserResponseReceived(response.body());
+                } else {
+                    Log.e("getUser", response.message());
+                    callback.onUserResponseReceived(null); // Gọi callback với null khi thất bại
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                Log.e("Error", t.getMessage());
+                callback.onUserResponseReceived(null); // Gọi callback với null khi thất bại
+            }
+        });
     }
 }

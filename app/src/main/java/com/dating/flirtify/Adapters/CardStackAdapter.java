@@ -1,6 +1,10 @@
 package com.dating.flirtify.Adapters;
 
+import static com.dating.flirtify.Services.DistanceCalculator.calculateDistanceForAddress;
+
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -10,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -18,18 +23,24 @@ import com.dating.flirtify.Listeners.OnCardActionListener;
 import com.dating.flirtify.Listeners.OnCurrentViewHolderChangeListener;
 import com.dating.flirtify.Models.Responses.UserResponse;
 import com.dating.flirtify.R;
+import com.dating.flirtify.Services.DistanceCalculator;
+import com.dating.flirtify.Services.LocationHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CardStackAdapter extends RecyclerView.Adapter<CardStackAdapter.ViewHolder> {
+    private final Context context;
     private final ArrayList<UserResponse> items;
     private final OnCardActionListener onCardActionListener;
     private OnCurrentViewHolderChangeListener currentViewHolderChangeListener;
+    private final String userLocation;
 
-    public CardStackAdapter(ArrayList<UserResponse> items, OnCardActionListener listener) {
+    public CardStackAdapter(Context context, ArrayList<UserResponse> items, OnCardActionListener listener, String userLocation) {
+        this.context = context;
         this.items = items;
         this.onCardActionListener = listener;
+        this.userLocation = userLocation;
     }
 
     @Override
@@ -54,6 +65,11 @@ public class CardStackAdapter extends RecyclerView.Adapter<CardStackAdapter.View
         ImagePagerAdapter adapter = new ImagePagerAdapter(holder.itemView.getContext(), imageUrls);
         holder.tvName.setText(item.getFullname());
         holder.tvAge.setText(String.valueOf(item.getAge()));
+
+        Double distance = calculateDistanceForAddress(context, userLocation, item.getLocation());
+        int intDistance = (int) (distance / 1000);
+        holder.tvDistance.setText("Cách xa " + intDistance + " km");
+
         holder.ibArrowUp.setOnClickListener(v -> {
             if (onCardActionListener != null) {
                 holder.ibArrowUp.setVisibility(View.GONE);
@@ -132,12 +148,13 @@ public class CardStackAdapter extends RecyclerView.Adapter<CardStackAdapter.View
         LinearLayout indicatorLayout;
         public ImageButton ibArrowUp;
         public LinearLayout infoWrapper;
-        public TextView tvLike, tvDislike;
+        public TextView tvLike, tvDislike, tvDistance;
 
         public ViewHolder(View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tv_name);
             tvAge = itemView.findViewById(R.id.tv_age);
+            tvDistance = itemView.findViewById(R.id.tv_distance);
             ibArrowUp = itemView.findViewById(R.id.ib_arrow_up);
             infoWrapper = itemView.findViewById(R.id.ll_info_wrapper);
             viewPager = itemView.findViewById(R.id.vp_card);

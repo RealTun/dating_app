@@ -16,11 +16,15 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dating.flirtify.Activities.PreviewActivity;
 import com.dating.flirtify.Api.ApiClient;
 import com.dating.flirtify.Api.ApiService;
+import com.dating.flirtify.Models.Requests.PreferenceRequest;
+import com.dating.flirtify.Models.Requests.UserLocationRequest;
 import com.dating.flirtify.Models.Responses.UserResponse;
 import com.dating.flirtify.R;
 import com.dating.flirtify.Services.SessionManager;
@@ -36,13 +40,14 @@ import retrofit2.Response;
 public class HeaderFragment extends Fragment {
     private FragmentManager fragmentManager;
     private ImageView ivLogo;
-    private TextView tvAppName, tvFullname, tvAge, rangeAge;
+    private TextView tvAppName, tvFullname, tvAge, rangeDistance, rangeAge;
     private ImageButton ibFilter, ibBack, ibArrowDown;
     private RadioButton rbMale, rbFemale, rbOther;
     private BottomSheetDialog bottomSheetDialog;
     private View bottomSheetView;
     private RangeSlider rangeSlider;
     private PreviewFragment previewFragment;
+    private SeekBar sbDistance;
     private UserResponse user;
 
     @Nullable
@@ -69,7 +74,44 @@ public class HeaderFragment extends Fragment {
             setHeaderType(3);
         });
         bottomSheetDialog.setOnDismissListener(dialog -> {
-            Toast.makeText(requireActivity(), "Dismissed", Toast.LENGTH_SHORT).show();
+            int minAge = Math.round(rangeSlider.getValues().get(0));
+            int maxAge = Math.round(rangeSlider.getValues().get(1));
+            int maxDistance = sbDistance.getProgress();
+
+            ApiService apiService = ApiClient.getClient();
+            String accessToken = SessionManager.getToken();
+            PreferenceRequest userLocation = new PreferenceRequest(minAge, maxAge, maxDistance);
+            Call<Void> call = apiService.updatePreference(accessToken, userLocation);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                    } else {
+                        Log.e("API Error", "Request failed: " + response.message());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.e("API Error", "Request failed: " + t.getMessage());
+                }
+            });
+        });
+        sbDistance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                rangeDistance.setText(progress + "km");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
         });
     }
 
@@ -81,6 +123,7 @@ public class HeaderFragment extends Fragment {
         ibFilter = view.findViewById(R.id.ib_filter);
         ibBack = view.findViewById(R.id.ib_back);
         ibArrowDown = view.findViewById(R.id.ib_arrow_down);
+        rangeDistance = view.findViewById(R.id.tv_distance);
 
         previewFragment = new PreviewFragment();
         fragmentManager = requireActivity().getSupportFragmentManager();
@@ -93,12 +136,11 @@ public class HeaderFragment extends Fragment {
         bottomSheetDialog.setContentView(bottomSheetView);
 
         getCurrentUser();
-
+        sbDistance = bottomSheetDialog.findViewById(R.id.sb_distance);
+        rangeDistance = bottomSheetDialog.findViewById(R.id.tv_distance);
+        rangeDistance.setText(sbDistance.getProgress() + "km");
         rangeSlider = bottomSheetDialog.findViewById(R.id.rangeSlider);
         rangeAge = bottomSheetDialog.findViewById(R.id.tv_range_age);
-
-        rangeAge.setText("18 - 30");
-        rangeSlider.setValues(18f, 30f);
     }
 
     public void setHeaderType(int type) {
@@ -180,6 +222,10 @@ public class HeaderFragment extends Fragment {
                         rbFemale.setChecked(false);
                         rbOther.setChecked(true);
                     }
+
+                    rangeAge.setText(user.getMin_age() + " - " + user.getMax_age());
+                    rangeSlider.setValues((float) user.getMin_age(), (float) user.getMax_age());
+                    sbDistance.setProgress(user.getMax_distance());
                 } else {
                     Log.e("getUser", response.message());
                 }

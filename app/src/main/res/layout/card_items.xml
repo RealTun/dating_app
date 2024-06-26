@@ -109,7 +109,7 @@
                 android:src="@drawable/location" />
 
             <TextView
-                android:id="@+id/tvDistance"
+                android:id="@+id/tv_distance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"

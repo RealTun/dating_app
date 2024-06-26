@@ -9,6 +9,7 @@ public class SessionManager {
     private static final String PREF_NAME = "login_pref"; // Tên file SharedPreferences
     private static final String PREF_ACCESS_TOKEN = "access_token";
     private static final String PREF_TOKEN_TYPE = "token_type";
+    private static final String PREF_LOCATION_USER = "location_user";
     private static SharedPreferences sharedPreferences;
     private static SharedPreferences.Editor editor;
     private Gson gson;
@@ -25,6 +26,11 @@ public class SessionManager {
         editor.apply();
     }
 
+    public static void saveLocationUser(String locationUser) {
+        editor.putString(PREF_LOCATION_USER, locationUser);
+        editor.apply();
+    }
+
     public static String getAccessToken() {
         return sharedPreferences.getString(PREF_ACCESS_TOKEN, null);
     }
@@ -33,13 +39,24 @@ public class SessionManager {
         return sharedPreferences.getString(PREF_TOKEN_TYPE, null);
     }
 
+
     public static String getToken() {
         return getTokenType() + " " + getAccessToken();
+    }
+
+    public static String getLocationUser() {
+        return sharedPreferences.getString(PREF_LOCATION_USER, null);
+    }
+
+    public static void clearLocationUser() {
+        editor.remove(PREF_LOCATION_USER);
+        editor.apply();
     }
 
     public static void clearSession() {
         editor.remove(PREF_ACCESS_TOKEN);
         editor.remove(PREF_TOKEN_TYPE);
+        editor.remove(PREF_LOCATION_USER);
         editor.apply();
     }
 }

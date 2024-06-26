@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -70,15 +71,22 @@ public class ListInterestAdapter extends RecyclerView.Adapter<ListInterestAdapte
         holder.tvInterest.setOnClickListener(v -> {
             if (interestResponse != null && interestResponse.getName_interest() != null) {
                 List<String> userInterests = interestResponse.getName_interest();
+
                 if (userInterests.contains(item.getName_interest_type())) {
                     userInterests.remove(item.getName_interest_type());
                     selectedInterestIds.remove(Integer.valueOf(item.getId()));
                 } else {
+                    if (selectedInterestIds.size() >= 5) {
+                        Toast.makeText(context, "Tối đa là 5 sở thích", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     userInterests.add(item.getName_interest_type());
                     selectedInterestIds.add(item.getId());
                 }
+
+                notifyDataSetChanged();
             }
-            notifyDataSetChanged();
         });
     }
 
