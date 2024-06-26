@@ -188,9 +188,9 @@ public class SettingProfileActivity extends AppCompatActivity implements OnFilte
                     edtFullname.setText(userResponse.getFullname());
                     edtBio.setText(userResponse.getBio());
                     String strGender;
-                    if (userResponse.getGender() == 0) {
+                    if (userResponse.getGender() == 1) {
                         strGender = "Nam";
-                    } else if (userResponse.getGender() == 1) {
+                    } else if (userResponse.getGender() == 0) {
                         strGender = "Nữ";
                     } else {
                         strGender = "Khác";
@@ -226,9 +226,9 @@ public class SettingProfileActivity extends AppCompatActivity implements OnFilte
             accessToken = SessionManager.getToken();
             int gender;
             if (tvGender.getText().toString().equals("Nam")) {
-                gender = 0;
-            } else if (tvGender.getText().toString().equals("Nữ")) {
                 gender = 1;
+            } else if (tvGender.getText().toString().equals("Nữ")) {
+                gender = 0;
             } else {
                 gender = 2;
             }
@@ -340,6 +340,7 @@ public class SettingProfileActivity extends AppCompatActivity implements OnFilte
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
                         urls.set(currentPosition, downloadUrl);
+                        imageUserAdapter.notifyDataSetChanged();
                         Log.d("Photo Upload", response.message());
                     }
                 }

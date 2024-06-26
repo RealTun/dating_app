@@ -62,6 +62,7 @@ public interface ApiService {
     @PATCH("user/updatePreference")
     Call<Void> updatePreference(@Header("Authorization") String accessToken, @Body PreferenceRequest userLocationRequest);
 
+    @POST("user-photos/upload")
     Call<Void> storeUserPhotos(@Header("Authorization") String accessToken, @Body PhotoRequest photoRequest);
 
     @POST("user/photos/delete")
