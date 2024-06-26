@@ -14,6 +14,10 @@ public class UserResponse {
     private String relationship;
     private List<String> photos;
 
+    private int max_distance;
+    private int max_age;
+    private int min_age;
+
     public int getMax_distance() {
         return max_distance;
     }
@@ -37,10 +41,6 @@ public class UserResponse {
     public void setMin_age(int min_age) {
         this.min_age = min_age;
     }
-
-    private int max_distance;
-    private int max_age;
-    private int min_age;
 
     public int getId() {
         return id;

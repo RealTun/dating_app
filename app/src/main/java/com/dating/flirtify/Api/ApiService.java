@@ -48,7 +48,7 @@ public interface ApiService {
     @GET("user")
     Call<UserResponse> getUser(@Header("Authorization") String accessToken);
 
-    @PATCH("userTu")
+    @PATCH("user")
     Call<Void> updateUser(@Header("Authorization") String accessToken, @Body UserRequest user);
 
     @PATCH("user/location")
