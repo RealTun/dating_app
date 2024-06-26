@@ -240,24 +240,23 @@ public class RegisterActivity extends AppCompatActivity implements LocationHelpe
     }
 
     public void checkDuplicateEmail(String email) {
-        // Lấy instance của ApiService thông qua ApiClient
         ApiService apiService = ApiClient.getClient();
 
-        // Gửi yêu cầu đăng ký
         Call<Void> call = apiService.checkDuplicateEmail(email);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    // Xử lý khi yêu cầu thành công
-                    Log.d("checkDuplicateEmail", "Email is unique!");
-                    showFragment(step2Fragment);
-                    ivStep.setImageResource(R.drawable.register_step_2);
-                    currentStep++;
-                } else {
-                    // Xử lý khi yêu cầu không thành công
-                    ShowMessage.showCustomDialog(RegisterActivity.this, "Thông báo", "Email đã tồn tại");
-                    Log.e("checkDuplicateEmail", "Duplicate email found!");
+                    if(response.code() == 200){
+                        // Xử lý khi yêu cầu thành công
+                        Log.d("checkDuplicateEmail", "Email is unique!");
+                        showFragment(step2Fragment);
+                        ivStep.setImageResource(R.drawable.register_step_2);
+                        currentStep++;
+                    } else if (response.code() == 400) {
+                        ShowMessage.showCustomDialog(RegisterActivity.this, "Thông báo", "Email đã tồn tại");
+                        Log.e("checkDuplicateEmail", "Duplicate email found!");
+                    }
                 }
             }
 
