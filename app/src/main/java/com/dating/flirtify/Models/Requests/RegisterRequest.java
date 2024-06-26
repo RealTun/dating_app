@@ -16,6 +16,10 @@ public class RegisterRequest {
     public RegisterRequest() {
     }
 
+    public RegisterRequest(String email) {
+        this.email = email;
+    }
+
     public String getEmail() {
         return email;
     }

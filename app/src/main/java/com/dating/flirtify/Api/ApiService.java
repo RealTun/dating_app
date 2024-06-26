@@ -15,25 +15,24 @@ import com.dating.flirtify.Models.Responses.MatcherResponse;
 import com.dating.flirtify.Models.Responses.MessageResponse;
 import com.dating.flirtify.Models.Responses.RelationshipResponse;
 import com.dating.flirtify.Models.Responses.UserResponse;
-import com.dating.flirtify.Models.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface ApiService {
     // auth
+    @POST("checkDuplicateEmail")
+    Call<Void> checkDuplicateEmail(@Body String email);
+
     @POST("register")
     Call<LoginResponse> register(@Body RegisterRequest registerRequest);
 
