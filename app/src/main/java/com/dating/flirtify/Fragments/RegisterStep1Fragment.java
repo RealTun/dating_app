@@ -55,41 +55,10 @@ public class RegisterStep1Fragment extends Fragment {
             return false;
         }
 
-        // Gọi phương thức để kiểm tra email trùng lặp
-        checkDuplicateEmail(etEmail.getText().toString());
-        if (isDuplicateEmail) {
-            ShowMessage.showCustomDialog(getContext(), "Thông báo", "Email đã tồn tại!");
-            return false;
-        }
         return true;
     }
 
-    public void checkDuplicateEmail(String email) {
-        // Lấy instance của ApiService thông qua ApiClient
-        ApiService apiService = ApiClient.getClient();
 
-        // Gửi yêu cầu đăng ký
-        Call<Void> call = apiService.checkDuplicateEmail(email);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    // Xử lý khi yêu cầu thành công
-                    isDuplicateEmail = true;
-                    Log.d("checkDuplicateEmail", "Email is unique!");
-                } else {
-                    // Xử lý khi yêu cầu không thành công
-                    isDuplicateEmail = false;
-                    Log.e("checkDuplicateEmail", "Duplicate email found!");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-
-            }
-        });
-    }
 
 
     @Override
