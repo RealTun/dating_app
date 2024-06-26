@@ -59,6 +59,7 @@ public class RegisterStep1Fragment extends Fragment {
         checkDuplicateEmail(etEmail.getText().toString());
         if (isDuplicateEmail) {
             ShowMessage.showCustomDialog(getContext(), "Thông báo", "Email đã tồn tại!");
+            return false;
         }
         return true;
     }

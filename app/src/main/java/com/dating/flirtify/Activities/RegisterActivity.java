@@ -221,8 +221,11 @@ public class RegisterActivity extends AppCompatActivity implements LocationHelpe
 
                         if (step5Fragment.Upload()) {
                             Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
-//                            Intent intent = new Intent(RegisterActivity.this, PreviewActivity.class);
-//                            startActivity(intent);
+                            Intent intent = new Intent(RegisterActivity.this, PreviewActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Toast.makeText(RegisterActivity.this, "Đăng ký thất bại!", Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -250,14 +253,12 @@ public class RegisterActivity extends AppCompatActivity implements LocationHelpe
     @Override
     public void onLocationReceived(Location location, String address) {
         if (location != null) {
-            // Hiển thị thông tin vị trí và quận/huyện
-            Toast.makeText(this, "Lat: " + location.getLatitude() + ", Lon:" + location.getLongitude(), Toast.LENGTH_LONG).show();
-            Toast.makeText(this, "Vị trí hiện tại: " + address, Toast.LENGTH_LONG).show();
-
             registerRequest.setLocation(address);
-
-            double distance = DistanceCalculator.calculateDistanceForAddress(this, address, "175 Tây Sơn, Đống Đa, Hà Nội, Việt Nam");
-            Toast.makeText(this, "Khoảng cách là: " + Double.toString(distance), Toast.LENGTH_SHORT).show();
+            // Hiển thị thông tin vị trí và quận/huyện
+//            Toast.makeText(this, "Lat: " + location.getLatitude() + ", Lon:" + location.getLongitude(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Vị trí hiện tại: " + address, Toast.LENGTH_LONG).show();
+//            double distance = DistanceCalculator.calculateDistanceForAddress(this, address, "175 Tây Sơn, Đống Đa, Hà Nội, Việt Nam");
+//            Toast.makeText(this, "Khoảng cách là: " + Double.toString(distance), Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Không thể lấy được vị trí hiện tại", Toast.LENGTH_SHORT).show();
         }
