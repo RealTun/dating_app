@@ -1,6 +1,5 @@
 package com.dating.flirtify.Fragments;
 
-import android.content.Intent;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
 import android.os.Bundle;
@@ -16,8 +15,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.dating.flirtify.Activities.PreviewActivity;
-import com.dating.flirtify.Activities.RegisterActivity;
 import com.dating.flirtify.R;
 
 public class ProcessingFragment extends Fragment {
@@ -30,7 +27,7 @@ public class ProcessingFragment extends Fragment {
         TextView tvAppName = view.findViewById(R.id.tvAppName);
         setColorGradient(tvAppName, getResources().getColor(R.color.gradient_top), getResources().getColor(R.color.gradient_center), getResources().getColor(R.color.gradient_bottom));
 
-        getActivity().getWindow().findViewById(R.id.btnLogin).setVisibility(View.GONE);
+        getActivity().getWindow().findViewById(R.id.btnReset).setVisibility(View.GONE);
         getActivity().getWindow().findViewById(R.id.tvAppName).setVisibility(View.GONE);
 
 

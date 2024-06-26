@@ -1,23 +1,22 @@
 package com.dating.flirtify.Fragments;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-
 import com.dating.flirtify.R;
+import com.dating.flirtify.Services.ShowMessage;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class RegisterStep4Fragment extends Fragment {
 
@@ -29,11 +28,9 @@ public class RegisterStep4Fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_register_step4, container, false);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-
         initializeViews(view);
         setupSpinners();
         addSpinnerListeners();
-
 
         return view;
     }
@@ -164,19 +161,19 @@ public class RegisterStep4Fragment extends Fragment {
 
     public boolean validateFields() {
         if (etName.getText().toString().trim().isEmpty()) {
-            showToast("Vui lòng nhập tên.");
+            ShowMessage.showCustomDialog(getContext(), "Thông báo", "Bạn không được bỏ trống tên của mình!");
             return false;
         }
 
         if (genderSpinner.getSelectedItemPosition() == AdapterView.INVALID_POSITION) {
-            showToast("Vui lòng chọn giới tính.");
+            ShowMessage.showCustomDialog(getContext(),"Thông báo", "Vui lòng chọn giới tính!");
             return false;
         }
 
         if (daySpinner.getSelectedItemPosition() == AdapterView.INVALID_POSITION ||
                 monthSpinner.getSelectedItemPosition() == AdapterView.INVALID_POSITION ||
                 yearSpinner.getSelectedItemPosition() == AdapterView.INVALID_POSITION) {
-            showToast("Vui lòng chọn ngày sinh hợp lệ.");
+            ShowMessage.showCustomDialog(getContext(),"Thông báo", "Vui lòng chọn ngày sinh hợp lệ không hợp lệ!");
             return false;
         }
 
@@ -194,17 +191,12 @@ public class RegisterStep4Fragment extends Fragment {
         }
 
         if (age < 18) {
-            showToast("Bạn phải đủ 18 tuổi trở lên.");
+            ShowMessage.showCustomDialog(getContext(),"Thông báo", "Bạn chưa đủ 18 tuổi!");
             return false;
         }
 
         return true;
     }
-
-    private void showToast(String message) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
 
     public String getName() {
         String name = etName.getText().toString().trim();
@@ -213,7 +205,12 @@ public class RegisterStep4Fragment extends Fragment {
 
     public int getGender() {
         String selectedItem = genderSpinner.getSelectedItem().toString();
-        return (selectedItem.equals("Nam")) ? 1 : 0;
+        if (selectedItem.equals("Nam")) {
+            return 1;
+        } else if (selectedItem.equals("Nữ")) {
+            return 0;
+        }
+        return 2;
     }
 
     public int getDateOfBirth() {
@@ -224,11 +221,14 @@ public class RegisterStep4Fragment extends Fragment {
 
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 
-
-
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, day);
 
         return currentYear - year;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 }

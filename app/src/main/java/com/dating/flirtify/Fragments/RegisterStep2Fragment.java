@@ -18,11 +18,12 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.dating.flirtify.R;
 import com.dating.flirtify.Activities.RegisterActivity;
+import com.dating.flirtify.R;
 import com.dating.flirtify.Services.CountdownTimerHelper;
 import com.dating.flirtify.Services.GmailSender;
 import com.dating.flirtify.Services.OTPGenerators;
+import com.dating.flirtify.Services.ShowMessage;
 
 public class RegisterStep2Fragment extends Fragment {
     private EditText etNum1, etNum2, etNum3, etNum4, etNum5, etNum6;
@@ -174,9 +175,9 @@ public class RegisterStep2Fragment extends Fragment {
             boolean emailSent = GmailSender.sendEmail(email, subject, message);
             new Handler(Looper.getMainLooper()).post(() -> {
                 if (emailSent) {
-                    Toast.makeText(getContext(), "Chúng tôi đã gửi mã OTP đến email của bạn!", Toast.LENGTH_SHORT).show();
+                    ShowMessage.showToast(getContext(), "Chúng tôi đã gửi mã OTP đến email của bạn!");
                 } else {
-                    Toast.makeText(getContext(), "Gửi mã OTP thất bại!", Toast.LENGTH_SHORT).show();
+                    ShowMessage.showToast(getContext(), "Gửi mã OTP thất bại!");
                 }
             });
         }).start();
@@ -190,5 +191,10 @@ public class RegisterStep2Fragment extends Fragment {
         etNum5.setText("");
         etNum6.setText("");
         etNum1.requestFocus();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 }

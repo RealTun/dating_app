@@ -53,13 +53,19 @@ public class RegisterWantToSeeFragment extends Fragment {
 
     public int getLookingFor() {
         if (isMale) {
-            return 0;
-        } else if (isFemale) {
             return 1;
+        } else if (isFemale) {
+            return 0;
         } else if (isPeople) {
             return 2;
         } else {
             return -1;
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // Giải phóng tài nguyên nặng ở đây
     }
 }
